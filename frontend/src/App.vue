@@ -1,8 +1,7 @@
 <template>
   <v-app>
     <app-navbar />
-
-    <v-main> </v-main>
+    <app-main />
   </v-app>
 </template>
 
@@ -10,11 +9,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import HelloWorld from "./components/HelloWorld.vue";
 import AppNavbar from "@/components/app/AppNavbar.vue";
+import AppMain from "@/components/app/AppMain.vue";
 
 @Component({
   components: {
     HelloWorld,
-    AppNavbar
+    AppNavbar,
+    AppMain
   }
 })
 export default class App extends Vue {}
