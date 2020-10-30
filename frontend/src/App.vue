@@ -7,13 +7,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "./components/HelloWorld.vue";
 import AppNavbar from "@/components/app/AppNavbar.vue";
 import AppMain from "@/components/app/AppMain.vue";
 
 @Component({
   components: {
-    HelloWorld,
     AppNavbar,
     AppMain
   }
