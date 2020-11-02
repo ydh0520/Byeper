@@ -51,13 +51,10 @@ def extract_from_youtube_url(youtube_url):
         y1 = usable1.match(char)
         y2 = usable2.match(char)
         y3 = usable3.match(char)
-        print(char)
-        print(y1, y2, y3)
         if y1.end() + y2.end() + y3.end():
             tmp_title = tmp_title + char
         
     title = tmp_title
-    print(title)
     if not(os.path.isdir('images')):
         os.makedirs(os.path.join('images'))
     if not(os.path.isdir('images\\' + title)):
@@ -98,12 +95,20 @@ def extract_from_youtube_url(youtube_url):
     # cv2.imwrite("images/{}/{}_{}.jpg".format(title, count, sum_diff), prev)
     vidcap.release()
 
+def extract_from_videoid(id):
+    base_url = 'https://www.youtube.com/watch?v='
+    extract_from_youtube_url(base_url + id)
+
+
 def main():
     while True:
         url = input('ppt를 추출할 유튜브 url을 입력해주세요(종료 0): ')
         if url == '0':
             break
-        extract_from_youtube_url(url)
+        if url[:32] == 'https://www.youtube.com/watch?v=':
+            extract_from_youtube_url(url)
+        else:
+            extract_from_videoid(url)
 
 
 if __name__ == '__main__':
