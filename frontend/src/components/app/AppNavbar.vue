@@ -8,14 +8,17 @@
       <v-col cols="6">
         <v-text-field
           style="margin-top: 30px"
-          solo
-          placeholder="검색"
-          clearable
+          outlined
+          dense
+          label="검색"
           prepend-inner-icon="mdi-magnify"
           v-model="inputText"
-          color="white"
         >
         </v-text-field>
+      </v-col>
+      <v-col cols="1.5"></v-col>
+      <v-col cols="1">
+        <v-btn> <v-icon>mdi-account</v-icon>로그인 </v-btn>
       </v-col>
     </v-app-bar>
 
@@ -40,9 +43,9 @@
 
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-book-open-page-variant</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>계정</v-list-item-title>
+            <v-list-item-title>학습 관리</v-list-item-title>
           </v-list-item>
 
           <v-list-item>
@@ -50,6 +53,13 @@
               <v-icon>mdi-fire</v-icon>
             </v-list-item-icon>
             <v-list-item-title>인기</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-play-box-multiple</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>구독</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -64,6 +74,7 @@ import { Component, Vue } from "vue-property-decorator";
 export default class AppNavbar extends Vue {
   drawer = false;
   group = null;
+  inputText = null;
 }
 </script>
 
