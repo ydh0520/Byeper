@@ -17,13 +17,16 @@ export default class InstructorDashboard extends Vue {
     return {
       instructorTabs: [
         {
-          name: "댓글"
+          name: "대시보드"
         },
         {
-          name: "오우야"
+          name: "강의 만들기"
         },
         {
-          name: "타타타"
+          name: "강의 관리"
+        },
+        {
+          name: "피드백"
         }
       ]
     }
