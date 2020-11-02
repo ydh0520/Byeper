@@ -24,7 +24,7 @@ const routes: Array<RouteConfig> = [
     path: "/instructor/CreateLecture",
     name: "CreateLecture",
     component: CreateLecture
-  }
+  },
 ];
 
 const router = new VueRouter({
