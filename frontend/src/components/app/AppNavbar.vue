@@ -1,34 +1,57 @@
 <template>
-  <v-app-bar app color="primary" dark>
-    <div class="d-flex align-center">
-      <v-img
-        alt="Vuetify Logo"
-        class="shrink mr-2"
-        contain
-        src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-        transition="scale-transition"
-        width="40"
-      />
-    </div>
+  <div>
+    <v-app-bar color="deep-purple" dark>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-    <v-spacer></v-spacer>
+      <v-toolbar-title>VideoSummary</v-toolbar-title>
+    </v-app-bar>
 
-    <v-btn
-      href="https://github.com/vuetifyjs/vuetify/releases/latest"
-      target="_blank"
-      text
+    <v-navigation-drawer
+      app
+      clipped
+      permanent
+      v-if="drawer"
+      style="height: 100vh; margin-top: 64px"
     >
-      <span class="mr-2">Latest Release</span>
-      <v-icon>mdi-open-in-new</v-icon>
-    </v-btn>
-  </v-app-bar>
+      <v-list nav dense>
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>홈</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>계정</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-fire</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>인기</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class AppNavbar extends Vue {}
+export default class AppNavbar extends Vue {
+  drawer = false;
+  group = null;
+}
 </script>
 
 <style></style>
