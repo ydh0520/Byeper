@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-fade-transition mode="out-in">
-      <router-view />
+      <router-view style="background: rgba(0, 0, 0, 0.05)" />
     </v-fade-transition>
   </v-main>
 </template>

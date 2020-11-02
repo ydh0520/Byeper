@@ -1,9 +1,22 @@
 <template>
   <div>
-    <v-app-bar color="deep-purple" dark>
+    <v-app-bar color="white">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-      <v-toolbar-title>VideoSummary</v-toolbar-title>
+      <v-col cols="3">
+        <v-toolbar-title>VideoSummary</v-toolbar-title>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          style="margin-top: 30px"
+          solo
+          placeholder="검색"
+          clearable
+          prepend-inner-icon="mdi-magnify"
+          v-model="inputText"
+          color="white"
+        >
+        </v-text-field>
+      </v-col>
     </v-app-bar>
 
     <v-navigation-drawer
