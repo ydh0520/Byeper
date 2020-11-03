@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -41,6 +42,11 @@ public class GoogleLoginController {
 	private GoogleConnectionFactory googleConnectionFactory;
 	@Autowired
 	private OAuth2Parameters oAuth2Parameters;
+	
+	@Value("${googlelogin.client}")
+	public String GOOGLE_CLIENT_ID;
+	@Value("${googlelogin.secret}")
+	public String GOOGLE_SECRIT_ID;
 
 	@Autowired
 	private UserService userService;
@@ -68,8 +74,8 @@ public class GoogleLoginController {
 
 		MultiValueMap<String, String> parma = new LinkedMultiValueMap<String, String>();
 		parma.add("code", request.getParameter("code"));
-		parma.add("client_id", GoogleLoginConfig.GOOGLE_CLIENT_ID);
-		parma.add("client_secret", GoogleLoginConfig.GOOGLE_SECRIT_ID);
+		parma.add("client_id", GOOGLE_CLIENT_ID);
+		parma.add("client_secret", GOOGLE_SECRIT_ID);
 		parma.add("redirect_uri", "http://j3b205.p.ssafy.io/api/public/google/redirect");
 		parma.add("grant_type", "authorization_code");
 
@@ -118,8 +124,8 @@ public class GoogleLoginController {
 		System.out.println(URLDecoder.decode(authToken));
 
 		parma.add("code", URLDecoder.decode(authToken));
-		parma.add("client_id", GoogleLoginConfig.GOOGLE_CLIENT_ID);
-		parma.add("client_secret", GoogleLoginConfig.GOOGLE_SECRIT_ID);
+		parma.add("client_id", GOOGLE_CLIENT_ID);
+		parma.add("client_secret", GOOGLE_SECRIT_ID);
 		parma.add("redirect_uri", "postmessage");
 		parma.add("grant_type", "authorization_code");
 		System.out.println(authToken);

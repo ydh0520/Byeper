@@ -10,9 +10,9 @@ import org.springframework.social.oauth2.OAuth2Parameters;
 public class GoogleLoginConfig {
 
 	@Value("${googlelogin.client}")
-	public static String GOOGLE_CLIENT_ID;
+	public String GOOGLE_CLIENT_ID;
 	@Value("${googlelogin.secret}")
-	public static String GOOGLE_SECRIT_ID;
+	public String GOOGLE_SECRIT_ID;
 
 	@Bean
 	GoogleConnectionFactory googleConnectionFactory() {
