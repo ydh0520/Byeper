@@ -2,7 +2,7 @@
 
 <script>
 export default {
-  name: "InstructorFeedback"
+  name: "LectureDetail"
 };
 </script>
 

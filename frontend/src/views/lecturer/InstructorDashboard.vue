@@ -1,34 +1,38 @@
 <template>
   <div>
     <v-row style="margin: 10px 10%" cols="12" sm="6" offset-sm="3">
-
-      <vue-slick-carousel
-          v-if="Lectures"
-          class="slick"
-          v-bind="settings"
-      >
+      <vue-slick-carousel v-if="Lectures" class="slick" v-bind="settings">
         <div v-for="lecture in Lectures" :key="lecture.LectureId">
           <router-link
-              class="router-link"
-              :to="{ name: 'DetailArtView', params: { LectureId : lecture.LectureId } }"
+            class="router-link"
+            :to="{
+              name: 'DetailArtView',
+              params: { LectureId: lecture.LectureId }
+            }"
           >
             <img
-                class="Lecture-img"
-                :src="lecture.LectureThumb"
-                :alt="lecture.LectureName"
+              class="Lecture-img"
+              :src="lecture.LectureThumb"
+              :alt="lecture.LectureName"
             />
           </router-link>
         </div>
       </vue-slick-carousel>
-
     </v-row>
-
+    <v-row>
+      <v-col cols="5">
+        <v-card>jihih</v-card>
+      </v-col>
+      <v-col cols="7">
+        <v-card>sdfsdf</v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 import { Vue, Component } from "vue-property-decorator";
-import {namespace} from "vuex-class";
+import { namespace } from "vuex-class";
 // carousel 관련 import
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
@@ -48,41 +52,47 @@ export default class InstructorDashboard extends Vue {
         {
           LectureName: "파이썬 좋아",
           LectureId: "1",
-          LectureThumb: "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요",
+          LectureThumb:
+            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+          LectureDesc: "파이썬 12만원 타세요"
         },
         {
           LectureName: "파이썬 좋아",
           LectureId: "2",
-          LectureThumb: "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요",
+          LectureThumb:
+            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+          LectureDesc: "파이썬 12만원 타세요"
         },
         {
           LectureName: "파이썬 좋아",
           LectureId: "3",
-          LectureThumb: "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요",
+          LectureThumb:
+            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+          LectureDesc: "파이썬 12만원 타세요"
         },
         {
           LectureName: "파이썬 좋아",
           LectureId: "4",
-          LectureThumb: "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요",
+          LectureThumb:
+            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+          LectureDesc: "파이썬 12만원 타세요"
         },
         {
           LectureName: "파이썬 좋아",
           LectureId: "5",
-          LectureThumb: "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요",
+          LectureThumb:
+            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+          LectureDesc: "파이썬 12만원 타세요"
         },
         {
           LectureName: "파이썬 좋아",
           LectureId: "6",
-          LectureThumb: "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요",
-        },
+          LectureThumb:
+            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+          LectureDesc: "파이썬 12만원 타세요"
+        }
       ],
-      settings:  {
+      settings: {
         arrows: true,
         dots: false,
         infinite: true,
@@ -118,14 +128,10 @@ export default class InstructorDashboard extends Vue {
           }
         ]
       }
-
-
-    }
+    };
   }
-
 }
 </script>
-
 
 <style scoped>
 .slick {
@@ -151,5 +157,4 @@ export default class InstructorDashboard extends Vue {
   border: 0;
   outline: none;
 }
-
 </style>
