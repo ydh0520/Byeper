@@ -23,6 +23,8 @@ def imwrite(filename, img, params=None):
 def save(frame, image, title):
     print('Saved frame number : ' + str(frame))
     sec = frame // 30
+    # h, m, s = get_time(sec)
+    # imwrite("images/{}/{:0>2}h {:0>2}m {:0>2}s.jpg".format(title, h, m, s), image)
     imwrite("images/{}/{}.jpg".format(title, sec), image)
 
 def binary_search(vidcap, left, right, left_image, right_image, title):
@@ -67,8 +69,13 @@ def get_time(sec):
     minute, sec = remain // 60, remain % 60
     return hour, minute, sec
 
-def extract_from_youtube_url(youtube_url):
+def extract_from_videoid(id):
+    extract_from_youtube_url('https://www.youtube.com/watch?v=' + id, 0)
+
+def extract_from_youtube_url(youtube_url, n):
     global save_frames
+    if n == 5: 
+        raise ValueError('url이 잘못되었습니다.')
     index = re.compile('&index=')
     url = index.search(youtube_url)
     if url:
@@ -81,7 +88,7 @@ def extract_from_youtube_url(youtube_url):
     try:
         video = pafy.new(youtube_url)
     except:
-        raise ValueError('url이 잘못 되었습니다.')
+        extract_from_youtube_url(youtube_url, n+1)
     best = video.getbest()
     title = video.title
 
@@ -94,19 +101,19 @@ def extract_from_youtube_url(youtube_url):
         if char == ' ':
             tmp_title = tmp_title + char
             continue
+        elif char == ':':
+            continue
         y1 = usable1.match(char)
         y2 = usable2.match(char)
         y3 = usable3.match(char)
         if y1.end() + y2.end() + y3.end():
             tmp_title = tmp_title + char
-        
+    
     title = tmp_title
-
     if not(os.path.isdir('images')):
         os.makedirs(os.path.join('images'))
     if not(os.path.isdir('images\\' + title)):
         os.makedirs(os.path.join('images\\' + title))
-
     vidcap = cv2.VideoCapture(best.url)
     vidcap.set(3, 400)
     vidcap.set(4, 225)
@@ -129,11 +136,14 @@ def extract_from_youtube_url(youtube_url):
 
 def main():
     while True:
-        url = input('ppt를 추출할 유튜브 url을 입력해주세요(종료 0): ')
+        url = input('ppt를 추출할 유튜브 url을 입력해주세요(종료: 0): ')
         if url == '0':
             break
         start = datetime.datetime.now()
-        extract_from_youtube_url(url)
+        if url[:32] == 'https://www.youtube.com/watch?v=':
+            extract_from_youtube_url(url, 0)
+        else:
+            extract_from_videoid(url)
         end = datetime.datetime.now()
         print(end - start)
 
