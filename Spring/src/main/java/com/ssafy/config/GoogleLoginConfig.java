@@ -1,5 +1,6 @@
 package com.ssafy.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
@@ -7,8 +8,11 @@ import org.springframework.social.oauth2.OAuth2Parameters;
 
 @Configuration
 public class GoogleLoginConfig {
-	public static final String GOOGLE_CLIENT_ID = "110473550923-l77b5sv8d1vh1mnuvbrsrljqc3ttgd6u.apps.googleusercontent.com";
-	public static final String GOOGLE_SECRIT_ID = "WjZFPZx5DqT7nab5-JCLxNWC";
+
+	@Value("${googlelogin.client}")
+	public static String GOOGLE_CLIENT_ID;
+	@Value("${googlelogin.secret}")
+	public static String GOOGLE_SECRIT_ID;
 
 	@Bean
 	GoogleConnectionFactory googleConnectionFactory() {
