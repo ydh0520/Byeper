@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar color="white">
+    <v-app-bar color="white" style="position: fixed; z-index: 100">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-col cols="3">
         <v-toolbar-title>VideoSummary</v-toolbar-title>
@@ -22,13 +22,7 @@
       </v-col>
     </v-app-bar>
 
-    <v-navigation-drawer
-      app
-      clipped
-      permanent
-      v-if="drawer"
-      style="height: 100vh; margin-top: 64px"
-    >
+    <v-navigation-drawer app v-model="drawer" style="margin-top: 64px;">
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
@@ -72,10 +66,10 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class AppNavbar extends Vue {
-  drawer = false;
+  drawer = true;
   group = null;
   inputText = null;
 }
 </script>
 
-<style></style>
+<style scoped></style>

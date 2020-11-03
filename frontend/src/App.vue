@@ -1,7 +1,7 @@
 <template>
-  <v-app>
+  <v-app style="background: rgba(0, 0, 0, 0.05)">
     <app-navbar />
-    <app-main style="background: rgba(0, 0, 0, 0.05)" />
+    <app-main style=" margin-top: 64px;" />
   </v-app>
 </template>
 
