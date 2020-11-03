@@ -13,6 +13,10 @@
         <learning-video />
       </v-col>
     </v-row>
+    <div class="text-h5 my-5">
+      전체 재생 목록
+    </div>
+    <lecture-list class="mb-10" />
   </div>
 </template>
 
@@ -22,13 +26,15 @@ import Profile from "@/components/dashboard/Profile.vue";
 import StatisticsByAll from "@/components/dashboard/StatisticsByAll.vue";
 import LearningVideo from "@/components/dashboard/LearningVideo.vue";
 import FinishedLecture from "@/components/dashboard/FinishedLecture.vue";
+import LectureList from "@/components/lecture/LectureList.vue";
 
 @Component({
   components: {
     Profile,
     StatisticsByAll,
     LearningVideo,
-    FinishedLecture
+    FinishedLecture,
+    LectureList
   }
 })
 export default class StudentPage extends Vue {}
