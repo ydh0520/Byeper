@@ -1,5 +1,5 @@
 <template>
-  <v-app style="background: rgba(0, 0, 0, 0.05)">
+  <v-app>
     <app-navbar />
     <app-main style=" margin-top: 64px;" />
   </v-app>

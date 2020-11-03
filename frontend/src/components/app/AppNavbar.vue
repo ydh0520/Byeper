@@ -1,12 +1,13 @@
 <template>
   <div>
-    <v-app-bar color="white" style="position: fixed; z-index: 100">
+    <v-app-bar style="position: fixed; z-index: 100">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-col cols="3">
         <v-toolbar-title>VideoSummary</v-toolbar-title>
       </v-col>
       <v-col cols="6">
         <v-text-field
+          color="white"
           style="margin-top: 30px"
           outlined
           dense
