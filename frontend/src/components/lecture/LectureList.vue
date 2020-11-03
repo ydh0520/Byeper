@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="4" v-for="(v, i) in img" :key="i">
-        <v-card height="350">
+        <v-card height="350" @click="routingToCource">
           <v-img :src="v" height="200px"></v-img>
           <v-row>
             <v-col>
@@ -44,6 +44,10 @@ export default class LectureList extends Vue {
     "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
     "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
   ];
+
+  routingToCource() {
+    this.$router.push({ name: "LectureListPage" });
+  }
 }
 </script>
 
