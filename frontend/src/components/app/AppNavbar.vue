@@ -26,7 +26,7 @@
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
-          active-class="deep-purple--text text--accent-4"
+          active-class="deep-gray--text text--accent-4"
         >
           <v-list-item>
             <v-list-item-icon>
