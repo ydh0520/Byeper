@@ -181,12 +181,7 @@
     </editor-menu-bar>
 
     <editor-content class="editor__content" :editor="editor" />
-    <v-btn class="mx-2" fab dark>
-      <v-icon>mdi-camera-outline</v-icon>
-    </v-btn>
-    <v-btn class="mx-2" fab dark>
-      <v-icon>mdi-image-multiple-outline</v-icon>
-    </v-btn>
+    <image-capture-chip />
   </div>
 </template>
 
@@ -212,11 +207,13 @@ import {
   History,
   Image
 } from "tiptap-extensions";
+import ImageCaptureChip from "@/components/lecture/ImageCaptureChip.vue";
 
 @Component({
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    ImageCaptureChip
   }
 })
 export default class TextEditor extends Vue {
