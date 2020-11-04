@@ -31,7 +31,7 @@ public class UserController {
 	public Object signup(@RequestBody UserDto user) {
 		BasicResponse response = new BasicResponse();
 
-		if (userService.CheckEmail(user.getUserId())) {
+		if (!userService.CheckEmail(user.getUserId())) {
 			response.status = false;
 			response.message = "이미 등록된 이메일 입니다.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
