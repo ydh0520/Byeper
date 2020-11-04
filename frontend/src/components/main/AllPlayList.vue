@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row style="margin: 10px 10%">
+    <v-row style="margin: 20px 10%">
       <v-row>
         <v-col
           v-for="item in list"
@@ -15,8 +15,8 @@
             <div
               class="mx-auto"
               color="grey lighten-4"
-              width="270px"
-              style="border: 0px; cursor: pointer"
+              width="100px"
+              style="border: 0px; cursor: pointer;"
             >
               <v-img :aspect-ratio="16 / 9" src="@/assets/jun.png">
                 <div
