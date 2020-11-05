@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-row style="margin: 10px 10%" cols="12" sm="6" offset-sm="3">
-      <vue-slick-carousel v-if="Lectures" class="slick" v-bind="settings">
+      <h2 class="mt-12">나의 강좌</h2>
+      <vue-slick-carousel v-if="Lectures" class="slick mt-12" v-bind="settings">
         <div v-for="lecture in Lectures" :key="lecture.LectureId">
           <router-link
             class="router-link"
@@ -19,12 +20,44 @@
         </div>
       </vue-slick-carousel>
     </v-row>
-    <v-row>
+    <v-row style="margin: 10px 10%">
       <v-col cols="5">
-        <v-card>jihih</v-card>
+        <v-card class="mt-12">
+          <h2 class="ml-3">최근 질문</h2>
+          <v-list three-line>
+            <template v-for="(item, index) in items">
+              <v-subheader
+                v-if="item.header"
+                :key="item.header"
+                v-text="item.header"
+              ></v-subheader>
+
+              <v-divider
+                v-else-if="item.divider"
+                :key="index"
+                :inset="item.inset"
+              ></v-divider>
+
+              <v-list-item v-else :key="item.title">
+                <v-list-item-avatar>
+                  <v-img :src="item.avatar"></v-img>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title v-html="item.title"></v-list-item-title>
+                  <v-list-item-subtitle
+                    v-html="item.subtitle"
+                  ></v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </v-list>
+        </v-card>
       </v-col>
       <v-col cols="7">
-        <v-card>sdfsdf</v-card>
+        <v-card class="mt-12">
+          <h2 class="ml-3">수강 통계</h2>
+        </v-card>
       </v-col>
     </v-row>
   </div>
@@ -32,13 +65,13 @@
 
 <script>
 import { Vue, Component } from "vue-property-decorator";
-import { namespace } from "vuex-class";
+// import { namespace } from "vuex-class";
 // carousel 관련 import
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 
-const InstructorModule = namespace("InstructorModule");
+// const InstructorModule = namespace("InstructorModule");
 
 @Component({
   components: {
@@ -90,6 +123,37 @@ export default class InstructorDashboard extends Vue {
           LectureThumb:
             "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
           LectureDesc: "파이썬 12만원 타세요"
+        }
+      ],
+      items: [
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+          title: "Brunch this weekend?",
+          subtitle: "h"
+        },
+        { divider: true, inset: true },
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
+          title: "dsf",
+          subtitle: "hi"
+        },
+        { divider: true, inset: true },
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
+          title: "Oui oui",
+          subtitle: "jo"
+        },
+        { divider: true, inset: true },
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
+          title: "Birthday gift",
+          subtitle: "fsd"
+        },
+        { divider: true, inset: true },
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
+          title: "Recipe to try",
+          subtitle: "nana"
         }
       ],
       settings: {

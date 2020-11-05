@@ -6,6 +6,7 @@ import HelloWorld from "@/components/HelloWorld.vue";
 // lecturer
 import InstructorDashboard from "@/views/lecturer/InstructorDashboard.vue";
 import CreateLecture from "@/views/lecturer/CreateLecture.vue";
+import InstructorFeedback from "@/views/lecturer/InstructorFeedback.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,11 @@ const routes: Array<RouteConfig> = [
     path: "/instructor/CreateLecture",
     name: "CreateLecture",
     component: CreateLecture
+  },
+  {
+    path: "/instructor/Feedback",
+    name: "InstructorFeedback",
+    component: InstructorFeedback
   }
 ];
 

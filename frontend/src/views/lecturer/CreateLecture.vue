@@ -39,20 +39,21 @@
                 <v-col>
                   <div class="list">
                     <drag
-                      v-for="n in [1, 2, 3, 4, 5]"
-                      :data="n"
+                      v-for="video in UserVideos"
+                      :data="video"
                       class="item"
-                      :key="n"
-                      >{{ n }}</drag
+                      :key="video"
+                      >{{ video }}</drag
                     >
                   </div>
                 </v-col>
                 <v-col>
                   <drop-list
-                    :items="items"
+                    :items="SelectedVideos"
                     class="list"
+                    style="min-height: 380px"
                     @insert="onInsert"
-                    @reorder="$event.apply(items)"
+                    @reorder="$event.apply(SelectedVideos)"
                   >
                     <template v-slot:item="{ item }">
                       <drag class="item" :key="item">{{ item }}</drag>
@@ -76,7 +77,10 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
+          <v-card class="mb-12" color="grey lighten-1" height="200px">
+            {{ UserVideos }}
+            {{ SelectedVideos }}
+          </v-card>
 
           <v-btn color="primary" @click="CreateLectureStep = 1">
             Continue
@@ -102,11 +106,12 @@ import { Drag, DropList } from "vue-easy-dnd";
   }
 })
 export default class CreateLecture extends Vue {
-  items = ["a", "b", "c", "d", "e"];
+  UserVideos = ["1", "2", "3", "4", "5"];
+  SelectedVideos = [];
   CreateLectureStep = 1;
 
   onInsert(event: any) {
-    this.items.splice(event.index, 0, event.data);
+    this.SelectedVideos.splice(event.index, 0, event.data);
   }
 }
 </script>
@@ -154,4 +159,3 @@ body,
   }
 }
 </style>
-
