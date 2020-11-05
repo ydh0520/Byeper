@@ -3,6 +3,8 @@ import VueRouter, { RouteConfig } from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
 import StudentPage from "@/views/student/StudentPage.vue";
 import LectureListPage from "@/views/student/LectureListPage.vue";
+import Home from "../views/Home.vue";
+import PlayList from "../views/main/PlayList.vue";
 
 Vue.use(VueRouter);
 
@@ -10,7 +12,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Home",
-    component: HelloWorld
+    component: Home
   },
   {
     path: "/student",
@@ -21,6 +23,11 @@ const routes: Array<RouteConfig> = [
     path: "/course",
     name: "LectureListPage",
     component: LectureListPage
+  },
+  {
+    path: "/playList/:playListName",
+    name: "PlayList",
+    component: PlayList
   }
 ];
 
