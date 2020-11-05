@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="app">
     <app-navbar />
     <app-main style=" margin-top: 64px;" />
   </v-app>
@@ -18,3 +18,21 @@ import AppMain from "@/components/app/AppMain.vue";
 })
 export default class App extends Vue {}
 </script>
+
+<style>
+#app {
+  /* background-image: url("assets/backgoundColorImg.png"); */
+  background-color: #121212;
+  animation: fadein 1s;
+  -webkit-animation: fadein 1s; /* Safari and Chrome */
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+</style>

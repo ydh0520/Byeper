@@ -1,7 +1,7 @@
 <template>
   <div class="full-height">
     <div>
-      <intro-main />
+      <video-background />
     </div>
     <v-divider
       class="light"
@@ -14,15 +14,14 @@
 
 <script>
 import { Component, Vue } from "vue-property-decorator";
-import VueOdometer from "v-odometer/src";
+
 import AllPlayList from "@/components/main/AllPlayList.vue";
-import IntroMain from "@/components/main/IntroMain.vue";
+import VideoBackground from "@/components/main/VideoBackground.vue";
 
 @Component({
   components: {
-    "vue-odometer": VueOdometer,
     AllPlayList,
-    IntroMain
+    VideoBackground
   }
 })
 export default class Home extends Vue {
