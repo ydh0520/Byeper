@@ -181,7 +181,8 @@
     </editor-menu-bar>
 
     <editor-content class="editor__content" :editor="editor" />
-    <image-capture-chip />
+    <div id="focus-position"></div>
+    <image-capture-chip @addCapture="addCapture" />
   </div>
 </template>
 
@@ -258,10 +259,20 @@ export default class TextEditor extends Vue {
             <br />
             – mom
           </blockquote>
-        `
+        `,
+    autoFocus: true
   });
   beforeDestroy() {
     this.editor.destroy();
+  }
+
+  async addCapture(imgUrl) {
+    this.editor.setContent(
+      `${this.editor.getHTML()}<p><img draggable="true" contenteditable="false" src="${imgUrl}"><br></p>`
+    );
+    this.editor.focus();
+    const focused = await document.querySelector("#focus-position");
+    this.$vuetify.goTo(focused.offsetTop);
   }
 }
 </script>

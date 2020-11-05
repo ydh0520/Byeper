@@ -13,11 +13,20 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import h2c from "html2canvas";
 
 @Component
 export default class ImageCaptureChip extends Vue {
+  addCapture(img: string) {
+    this.$emit("addCapture", img);
+  }
+  capture() {
+    h2c(document.querySelector(".editor__content") as HTMLElement)
+      .then(canvas => this.addCapture(canvas.toDataURL("image/jpeg")))
+      .catch(err => console.error(err));
+  }
   imageCapture() {
-    console.log("capture");
+    this.capture();
   }
 
   imageCaptureAll() {
