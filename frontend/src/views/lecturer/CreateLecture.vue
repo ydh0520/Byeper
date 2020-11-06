@@ -21,7 +21,35 @@
 
       <v-stepper-items>
         <v-stepper-content step="1">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
+          <v-card class="mb-12" color="grey lighten-1">
+            <h2>강의 제목</h2>
+            <v-text-field></v-text-field>
+            <h2>강의 설명</h2>
+            <v-text-field></v-text-field>
+            <h2>선수 과목, 지식</h2>
+            <v-text-field></v-text-field>
+            <h2>카테고리</h2>
+            <v-chip-group column multiple>
+              <v-chip filter outlined>
+                jiji
+              </v-chip>
+              <v-chip filter outlined>
+                hohoh
+              </v-chip>
+            </v-chip-group>
+            <h2>강의 수준</h2>
+            <v-chip-group mandatory>
+              <v-chip>
+                하
+              </v-chip>
+              <v-chip>
+                중
+              </v-chip>
+              <v-chip>
+                상
+              </v-chip>
+            </v-chip-group>
+          </v-card>
 
           <v-btn color="primary" @click="CreateLectureStep = 2">
             Continue
@@ -49,11 +77,13 @@
                 </v-col>
                 <v-col>
                   <drop-list
-                    :items="SelectedVideos"
+                    v-for="(Section, idx) in SelectedVideos"
+                    :items="Section"
+                    :key="idx"
                     class="list"
                     style="min-height: 380px"
-                    @insert="onInsert"
-                    @reorder="$event.apply(SelectedVideos)"
+                    @insert="onInsert($event, Section)"
+                    @reorder="$event.apply(Section)"
                   >
                     <template v-slot:item="{ item }">
                       <drag class="item" :key="item">{{ item }}</drag>
@@ -64,6 +94,7 @@
                   </drop-list>
                 </v-col>
               </v-row>
+              {{ SelectedVideos }}
             </v-container>
           </v-card>
 
@@ -95,7 +126,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { Vue, Component } from "vue-property-decorator";
 import { Drag, DropList } from "vue-easy-dnd";
 
@@ -107,11 +138,13 @@ import { Drag, DropList } from "vue-easy-dnd";
 })
 export default class CreateLecture extends Vue {
   UserVideos = ["1", "2", "3", "4", "5"];
-  SelectedVideos = [];
+  SelectedVideos = [["1"], []];
   CreateLectureStep = 1;
 
-  onInsert(event: any) {
-    this.SelectedVideos.splice(event.index, 0, event.data);
+  onInsert(event, Section) {
+    console.log(event);
+    Section.splice(event.index, 0, event.data);
+    this.UserVideos = this.UserVideos.filter(item => item !== event.data);
   }
 }
 </script>
