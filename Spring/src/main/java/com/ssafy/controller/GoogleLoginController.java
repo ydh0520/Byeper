@@ -121,14 +121,13 @@ public class GoogleLoginController {
 	@PostMapping("/api/public/google/login")
 	public Object googleLogin(@RequestBody String authToken, RedirectAttributes rediAttributes) {
 		MultiValueMap<String, String> parma = new LinkedMultiValueMap<String, String>();
-		System.out.println(URLDecoder.decode(authToken));
 
-		parma.add("code", URLDecoder.decode(authToken));
+		parma.add("code", authToken);
 		parma.add("client_id", GOOGLE_CLIENT_ID);
 		parma.add("client_secret", GOOGLE_SECRIT_ID);
 		parma.add("redirect_uri", "postmessage");
 		parma.add("grant_type", "authorization_code");
-		System.out.println(authToken);
+		
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 		factory.setReadTimeout(5000);
 		factory.setConnectTimeout(3000);
