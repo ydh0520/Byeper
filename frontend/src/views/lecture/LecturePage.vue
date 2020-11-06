@@ -6,7 +6,7 @@
         class="lecture-video"
         width="100%"
         height="371"
-        src="https://www.youtube.com/embed/s9FHdj6jd_U"
+        :src="videoURL"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
@@ -14,6 +14,7 @@
     </v-col>
     <v-col class="editor-container">
       <text-editor />
+      <v-btn @click="startVideo">버튼</v-btn>
     </v-col>
   </v-row>
 </template>
@@ -27,7 +28,16 @@ import TextEditor from "@/components/lecture/TextEditor.vue";
     TextEditor
   }
 })
-export default class LecturePage extends Vue {}
+export default class LecturePage extends Vue {
+  start = 0;
+
+  videoURL = "https://www.youtube.com/embed/s9FHdj6jd_U";
+
+  startVideo() {
+    this.start += 10;
+    this.videoURL = `https://www.youtube.com/embed/s9FHdj6jd_U?autoplay=1&start=${this.start}`;
+  }
+}
 </script>
 
 <style scoped>
@@ -52,6 +62,7 @@ export default class LecturePage extends Vue {}
   min-width: 300px;
   height: 100%;
   padding: 0;
+  background-color: white;
 }
 .lecture-video {
   position: fixed;

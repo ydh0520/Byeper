@@ -318,4 +318,10 @@ symbol {
     display: none;
   }
 }
+.menubar {
+  margin: 20px 0px;
+}
+.editor__content {
+  color: black;
+}
 </style>
