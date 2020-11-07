@@ -1,7 +1,6 @@
 <template>
   <v-row class="lecture-container">
     <v-col class="video-container">
-      비디오
       <iframe
         class="lecture-video"
         width="100%"
@@ -13,19 +12,29 @@
       ></iframe>
     </v-col>
     <v-col class="editor-container">
-      <text-editor />
-      <v-btn @click="startVideo">버튼</v-btn>
+      <v-row style="margin: 0px">
+        <v-col class="menu-col">
+          <v-btn class="menu-btn" tile @click="toNoteTab">노트</v-btn>
+        </v-col>
+        <v-col class="menu-col">
+          <v-btn class="menu-btn" tile @click="toListTab">목록</v-btn>
+        </v-col>
+      </v-row>
+      <text-editor v-if="$route.query.tab === 'note' || !$route.query.tab" />
+      <v-btn @click="startVideo">{{ $route.query.tab }}</v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import TextEditor from "@/components/lecture/TextEditor.vue";
+import Curriculum from "@/components/lecture/Curriculum.vue";
 
 @Component({
   components: {
-    TextEditor
+    TextEditor,
+    Curriculum
   }
 })
 export default class LecturePage extends Vue {
@@ -36,6 +45,12 @@ export default class LecturePage extends Vue {
   startVideo() {
     this.start += 10;
     this.videoURL = `https://www.youtube.com/embed/s9FHdj6jd_U?autoplay=1&start=${this.start}`;
+  }
+  toNoteTab() {
+    this.$router.replace({ name: "LecturePage", query: { tab: "note" } });
+  }
+  toListTab() {
+    this.$router.replace({ name: "LecturePage", query: { tab: "list" } });
   }
 }
 </script>
@@ -69,5 +84,11 @@ export default class LecturePage extends Vue {
   top: 30%;
   left: 0;
   width: 50%;
+}
+.menu-col {
+  padding: 0;
+}
+.menu-btn {
+  width: 100%;
 }
 </style>
