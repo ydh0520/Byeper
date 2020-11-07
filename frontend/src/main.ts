@@ -5,6 +5,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "./styles/tiptap/main.scss";
 import GAuth from "vue-google-oauth2";
+import VueYoutube from "vue-youtube";
 
 const gauthOption = {
   clientId:
@@ -12,6 +13,8 @@ const gauthOption = {
   scope: "profile email",
   prompt: "select_account"
 };
+
+Vue.use(VueYoutube);
 
 Vue.use(GAuth, gauthOption);
 Vue.config.productionTip = false;
