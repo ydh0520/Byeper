@@ -12,11 +12,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import h2c from "html2canvas";
 
 @Component
 export default class ImageCaptureChip extends Vue {
+  @Prop(Object) readonly player: any;
   addCapture(img: string) {
     this.$emit("addCapture", img);
   }
@@ -25,10 +26,11 @@ export default class ImageCaptureChip extends Vue {
       .then(canvas => this.addCapture(canvas.toDataURL("image/jpeg")))
       .catch(err => console.error(err));
   }
-  imageCapture() {
+  async imageCapture() {
     this.capture();
+    const getVideoTime = await this.player.getCurrentTime();
+    console.log(getVideoTime);
   }
-
   imageCaptureAll() {
     console.log("all");
   }

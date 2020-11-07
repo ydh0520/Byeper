@@ -1,7 +1,9 @@
 <template>
   <v-row class="lecture-container">
     <v-col class="video-container">
-      <iframe
+      <lecture-video @player="getPlayer" />
+      <!-- <youtube :video-id="videoURL" ref="youtube"></youtube> -->
+      <!-- <iframe
         class="lecture-video"
         width="100%"
         height="371"
@@ -9,7 +11,7 @@
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-      ></iframe>
+      ></iframe> -->
     </v-col>
     <v-col class="editor-container">
       <v-row style="margin: 0px">
@@ -20,27 +22,33 @@
           <v-btn class="menu-btn" tile @click="toListTab">목록</v-btn>
         </v-col>
       </v-row>
-      <text-editor v-if="$route.query.tab === 'note' || !$route.query.tab" />
+      <text-editor
+        :player="player"
+        v-if="$route.query.tab === 'note' || !$route.query.tab"
+      />
       <v-btn @click="startVideo">{{ $route.query.tab }}</v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import TextEditor from "@/components/lecture/TextEditor.vue";
 import Curriculum from "@/components/lecture/Curriculum.vue";
+import LectureVideo from "@/components/lecture/LectureVideo.vue";
 
 @Component({
   components: {
     TextEditor,
-    Curriculum
+    Curriculum,
+    LectureVideo
   }
 })
 export default class LecturePage extends Vue {
+  player: {} | null = null;
   start = 0;
 
-  videoURL = "https://www.youtube.com/embed/s9FHdj6jd_U";
+  videoURL = "s9FHdj6jd_U";
 
   startVideo() {
     this.start += 10;
@@ -51,6 +59,9 @@ export default class LecturePage extends Vue {
   }
   toListTab() {
     this.$router.replace({ name: "LecturePage", query: { tab: "list" } });
+  }
+  getPlayer(v: {}) {
+    this.player = v;
   }
 }
 </script>
