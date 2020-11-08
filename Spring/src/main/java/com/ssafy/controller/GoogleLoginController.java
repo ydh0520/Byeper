@@ -1,9 +1,11 @@
 package com.ssafy.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,11 +40,7 @@ import com.ssafy.model.service.UserService;
 
 @Controller
 public class GoogleLoginController {
-	@Autowired
-	private GoogleConnectionFactory googleConnectionFactory;
-	@Autowired
-	private OAuth2Parameters oAuth2Parameters;
-	
+
 	@Value("${googlelogin.client}")
 	public String GOOGLE_CLIENT_ID;
 	@Value("${googlelogin.secret}")
@@ -51,91 +49,19 @@ public class GoogleLoginController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/api/public/google")
-	public Object googleSignOnButton() throws URISyntaxException, MalformedURLException, IOException {
-		ResponseEntity response = null;
-		BasicResponse result = new BasicResponse();
-
-		OAuth2Operations oAuth2Operations = googleConnectionFactory.getOAuthOperations();
-		result.data = oAuth2Operations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, oAuth2Parameters);
-		result.status = (result.data != null) ? true : false;
-		if (result.status) {
-			result.message = "Google Login code";
-			response = new ResponseEntity(result, HttpStatus.OK);
-		} else {
-			result.message = "Fall Create Googl Login Code";
-			response = new ResponseEntity(result, HttpStatus.BAD_REQUEST);
-		}
-		return response;
-	}
-
-	@GetMapping("/api/public/google/redirect")
-	public Object googleSignOnButtonRedirect(HttpServletRequest request, RedirectAttributes rediAttributes) {
-
-		MultiValueMap<String, String> parma = new LinkedMultiValueMap<String, String>();
-		parma.add("code", request.getParameter("code"));
-		parma.add("client_id", GOOGLE_CLIENT_ID);
-		parma.add("client_secret", GOOGLE_SECRIT_ID);
-		parma.add("redirect_uri", "http://k3b108.p.ssafy.io/api/public/google/redirect");
-		parma.add("grant_type", "authorization_code");
-
-		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-		factory.setReadTimeout(5000);
-		factory.setConnectTimeout(3000);
-		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(100).setMaxConnPerRoute(5).build();
-		factory.setHttpClient(httpClient);
-
-		RestTemplate restTemplate = new RestTemplate(factory);
-		String url = "https://accounts.google.com/o/oauth2/token";
-		String obj = restTemplate.postForEntity(url, parma, String.class).getBody();
-
-		JsonParser jsonParser = new JsonParser();
-		JsonObject result = jsonParser.parse(obj).getAsJsonObject();
-
-		String id_token = result.get("id_token").getAsString();
-		String access_token = result.get("access_token").getAsString();
-
-		DecodedJWT decodedJwt = JWT.decode(id_token);
-		String email = decodedJwt.getClaim("email").asString();
-
-		UserDto user = userService.GoogleLogin(email);
-
-		if (user == null) {
-			BasicResponse basicResponse = new BasicResponse();
-			basicResponse.data = null;
-			basicResponse.status = false;
-			basicResponse.message = "이미 가입된 이메일 입니다.";
-
-			return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
-		}
-
-		rediAttributes.addAttribute("userId", user.getUserId());
-		rediAttributes.addAttribute("userPassword", user.getUserId());
-		rediAttributes.addAttribute("type", user.getUserType());
-
-		String redirectUrl = "redirect:/api/public/login";
-
-		return redirectUrl;
-	}
-
 	@PostMapping("/api/public/google/login")
 	public Object googleLogin(@RequestBody String authToken, RedirectAttributes rediAttributes) {
 		MultiValueMap<String, String> parma = new LinkedMultiValueMap<String, String>();
 
-		parma.add("code", authToken);
+		parma.add("code", authToken.replaceAll("\"", ""));
 		parma.add("client_id", GOOGLE_CLIENT_ID);
 		parma.add("client_secret", GOOGLE_SECRIT_ID);
 		parma.add("redirect_uri", "postmessage");
 		parma.add("grant_type", "authorization_code");
-		
-		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-		factory.setReadTimeout(5000);
-		factory.setConnectTimeout(3000);
-		HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(100).setMaxConnPerRoute(5).build();
-		factory.setHttpClient(httpClient);
 
-		RestTemplate restTemplate = new RestTemplate(factory);
+		RestTemplate restTemplate = new RestTemplate();
 		String url = "https://accounts.google.com/o/oauth2/token";
+
 		String obj = restTemplate.postForEntity(url, parma, String.class).getBody();
 
 		JsonParser jsonParser = new JsonParser();

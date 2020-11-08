@@ -22,7 +22,7 @@ public class GoogleLoginConfig {
 	@Bean
 	OAuth2Parameters oAuth2Parameters() {
 		OAuth2Parameters oAuth2Parameters = new OAuth2Parameters();
-		oAuth2Parameters.setRedirectUri("http://k3b108.p.ssafy.io/api/public/google/redirect");
+		oAuth2Parameters.setRedirectUri("postmessage");
 		oAuth2Parameters.setScope(
 				"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid");
 		return oAuth2Parameters;

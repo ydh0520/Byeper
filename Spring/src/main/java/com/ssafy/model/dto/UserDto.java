@@ -1,5 +1,7 @@
 package com.ssafy.model.dto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class UserDto {
+public class UserDto implements Serializable {
 	@Id
 	@Column(name = "user_id")
 	private String userId;
