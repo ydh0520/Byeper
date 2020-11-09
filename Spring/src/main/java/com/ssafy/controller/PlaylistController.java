@@ -99,8 +99,24 @@ public class PlaylistController {
 	}
 
 	@DeleteMapping("/api/public/playlist/delete")
-	public Object DeletePlaylist(@RequestHeader("Authorization") String jwtToken, @RequestBody PlaylistDto playlist) {
-		return null;
+	public Object DeletePlaylist(@RequestHeader("Authorization") String jwtToken, @RequestParam int playlistId) {
+		BasicResponse response = new BasicResponse();
+
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+		PlaylistDto playlist = playlistService.findPlaylistDetail(playlistId);
+
+		if (user.getUserId() != playlist.getUserId()) {
+			response.status = false;
+			response.message = "사용자가 일치하지 않습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		playlistService.deletePlaylist(playlistId);
+
+		response.status = true;
+		response.message = "삭제에 성공하였습니다.";
+		return new ResponseEntity<>(response, HttpStatus.OK);
+
 	}
 
 	@PutMapping("/api/public/playlist/update")
