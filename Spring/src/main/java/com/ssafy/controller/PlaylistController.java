@@ -120,8 +120,27 @@ public class PlaylistController {
 	}
 
 	@PutMapping("/api/public/playlist/update")
-	public Object UpdatePlaylist() {
-		return null;
+	public Object UpdatePlaylist(@RequestHeader("Authorization") String jwtToken, @RequestBody PlaylistDto playlist) {
+		BasicResponse response = new BasicResponse();
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+
+		if (user.getUserId() != playlist.getUserId()) {
+			response.status = false;
+			response.message = "사용자가 일치하지 않습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		response.data = playlistService.updatePlaylist(playlist);
+
+		if (response.data != null) {
+			response.status = true;
+			response.message = "저장에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.status = false;
+			response.message = "저장에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }
