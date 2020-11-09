@@ -77,17 +77,23 @@
                 <v-col>
                   <v-card>
                     <h2>내 동영상</h2>
-                    <div class="list" style="height: 75vh">
+                    <div class="list" style="height: 65vh; width: 40vw">
                       <drag
                           v-for="video in UserVideos"
                           :data="video"
-                          class="item"
+                          class="item my-0"
                           :key="video"
                       >
                         <v-list-item>
+                          <v-avatar size="82" class="mr-5" tile>
+                            <img
+                                :src="video.thumbnailurl"
+                                :alt="video.title"
+                            >
+                          </v-avatar>
                           <v-list-item-content>
-                            <v-list-item-title>파이썬 조아</v-list-item-title>
-                            <v-list-item-content>호호</v-list-item-content>
+                            <v-list-item-title><b>{{ video.title }}</b></v-list-item-title>
+                            <v-list-item-content>{{ video.description }}</v-list-item-content>
                           </v-list-item-content>
                         </v-list-item>
                       </drag
@@ -101,12 +107,12 @@
                     :items="Section"
                     :key="idx"
                     class="list"
-                    style="min-height: 380px"
+                    style="min-height: 200px"
                     @insert="onInsert($event, Section)"
                     @reorder="$event.apply(Section)"
                   >
                     <template v-slot:item="{ item }">
-                      <drag class="item" :key="item">{{ item }}</drag>
+                      <drag class="item" :key="item">{{ item.title }}</drag>
                     </template>
                     <template v-slot:feedback="{ data }">
                       <div class="item feedback" :key="data">{{ data }}</div>
@@ -157,7 +163,56 @@ import { Drag, DropList } from "vue-easy-dnd";
   }
 })
 export default class CreateLecture extends Vue {
-  UserVideos = ["1", "2", "3", "4", "5","6"];
+  UserVideos = [
+    {
+      thumbnailurl: "https://i.ytimg.com/vi/lddJ3kKhfXo/sddefault.jpg",
+      title: "내게 거짓을 고해요: Sasha Sloan - Lie (2020) [가사해석]",
+      description: "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
+      videoId: "lddJ3kKhfXo",
+    },
+    {
+      thumbnailurl: "https://i.ytimg.com/vi/To1GnIBlDAg/sddefault.jpg",
+      title: "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
+      description: "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
+      videoId : "To1GnIBlDAg",
+    },
+    {
+      thumbnailurl: "https://i.ytimg.com/vi/lddJ3kKhfXo/sddefault.jpg",
+      title: "내게 거짓을 고해요: Sasha Sloan - Lie (2020) [가사해석]",
+      description: "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
+      videoId: "lddJ3kKhfXo",
+    },
+    {
+      thumbnailurl: "https://i.ytimg.com/vi/To1GnIBlDAg/sddefault.jpg",
+      title: "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
+      description: "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
+      videoId : "To1GnIBlDAg",
+    },
+    {
+      thumbnailurl: "https://i.ytimg.com/vi/lddJ3kKhfXo/sddefault.jpg",
+      title: "내게 거짓을 고해요: Sasha Sloan - Lie (2020) [가사해석]",
+      description: "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
+      videoId: "lddJ3kKhfXo",
+    },
+    {
+      thumbnailurl: "https://i.ytimg.com/vi/To1GnIBlDAg/sddefault.jpg",
+      title: "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
+      description: "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
+      videoId : "To1GnIBlDAg",
+    },
+    {
+      thumbnailurl: "https://i.ytimg.com/vi/lddJ3kKhfXo/sddefault.jpg",
+      title: "내게 거짓을 고해요: Sasha Sloan - Lie (2020) [가사해석]",
+      description: "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
+      videoId: "lddJ3kKhfXo",
+    },
+    {
+      thumbnailurl: "https://i.ytimg.com/vi/To1GnIBlDAg/sddefault.jpg",
+      title: "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
+      description: "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
+      videoId : "To1GnIBlDAg",
+    },
+  ];
   SelectedVideos = [["1"], []];
   CreateLectureStep = 1;
   LectureCategories = [];
@@ -201,7 +256,6 @@ body,
     margin: 10px auto;
     overflow-y: scroll;
     .item {
-      padding: 20px;
       margin: 10px;
       display: flex;
       align-items: center;
