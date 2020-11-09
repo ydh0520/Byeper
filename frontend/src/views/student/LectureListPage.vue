@@ -4,7 +4,7 @@
     style="font-family: 'Do Hyeon', sans-serif !important;"
   >
     <div
-      class="text-h3 mb-10 "
+      class="lecture-title text-h3 mb-10 "
       style="text-align: center; font-family: 'Do Hyeon', sans-serif !important;"
     >
       {{ this.$route.params.courseName }}
@@ -31,5 +31,24 @@ export default class LectureListPage extends Vue {}
 <style>
 .lecture-list-page {
   width: 80%;
+}
+.lecture-title:before {
+  content: "";
+  position: absolute;
+  background: #121212;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  transform-origin: right;
+  animation: revealText 3s ease-in-out forwards;
+}
+@keyframes revealText {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
 }
 </style>
