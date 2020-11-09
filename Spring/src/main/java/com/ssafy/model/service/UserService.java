@@ -16,5 +16,5 @@ public interface UserService {
 
 	public UserDto UpdateUserName(String userId, String userName);
 
-	public UserDto RegistTeacher(String userId);
+	public UserDto RegistTeacher(String userId,String channelId);
 }

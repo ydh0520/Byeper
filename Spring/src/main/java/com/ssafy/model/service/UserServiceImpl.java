@@ -78,9 +78,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto RegistTeacher(String userId) {
+	public UserDto RegistTeacher(String userId,String channelId) {
 		// TODO Auto-generated method stub
-		int result = userRepository.registTeacher(userId);
+		int result = userRepository.registTeacher(userId,channelId);
 		if (result != 0) {
 			UserDto user = userRepository.findById(userId).get();
 			user.setUserPassword("");

@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<UserDto, String> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "update ssafy.user set user_type = 2 where user_id = :user_id", nativeQuery = true)
-	public int registTeacher(@Param("user_id") String userId);
+	@Query(value = "update ssafy.user set user_type = 2,user_channel_id = :user_channel_id where user_id = :user_id", nativeQuery = true)
+	public int registTeacher(@Param("user_id") String userId,@Param("user_channel_id")String channelId);
 
 }

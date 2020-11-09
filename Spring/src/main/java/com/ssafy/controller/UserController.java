@@ -1,8 +1,15 @@
 package com.ssafy.controller;
 
+import java.nio.charset.Charset;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,7 +19,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ssafy.model.dto.UserDto;
 import com.ssafy.model.response.BasicResponse;
 import com.ssafy.model.service.UserService;
@@ -26,6 +39,8 @@ public class UserController {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
+	@Value("${youtubeapi}")
+	public String YOUTUBE_API;
 
 	@PostMapping("/api/public/user/signup")
 	public Object signup(@RequestBody UserDto user) {
@@ -128,7 +143,32 @@ public class UserController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
-		response.data = userService.RegistTeacher(user.getUserId());
+		String url = "https://www.googleapis.com/youtube/v3/channels";
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8"))); // Response Header to
+																								// UTF-8
+		UriComponents builder = UriComponentsBuilder.fromHttpUrl(url).queryParam("part", "id")
+				.queryParam("forUsername", user.getUserId().split("@")[0])
+				.queryParam("key", YOUTUBE_API).build(false); // 자동으로 encode해주는 것을 막기 위해
+																							// false
+
+		String youtubeResult = restTemplate
+				.exchange(builder.toUriString(), HttpMethod.GET, new HttpEntity<String>(headers), String.class)
+				.getBody();
+
+		JsonParser parser = new JsonParser();
+		JsonObject youtubeJson = parser.parse(youtubeResult).getAsJsonObject();
+		JsonArray items = youtubeJson.getAsJsonArray("items");
+
+		if (items.size() == 0) {
+			response.status = false;
+			response.message = "등록된 채널이 없습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		response.data = userService.RegistTeacher(user.getUserId(),
+				items.get(0).getAsJsonObject().get("id").toString());
 		response.status = (response.data != null) ? true : false;
 
 		if (response.status) {
