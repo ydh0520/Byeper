@@ -14,7 +14,7 @@
           Video Summary 서비스를 이용하여 동영상을 학습하고 자동으로 PPT를
           추출해보세요!
         </p>
-        <a href="/">영상 담기</a>
+        <a @click="moveScroll">영상 담기</a>
       </div>
       <div class="videoBx">
         <video
@@ -33,7 +33,13 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class IntroMain extends Vue {}
+export default class IntroMain extends Vue {
+  $vuetify: any;
+
+  moveScroll() {
+    this.$vuetify.goTo(530);
+  }
+}
 </script>
 
 <style scoped>
