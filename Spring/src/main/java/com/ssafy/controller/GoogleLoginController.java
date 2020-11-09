@@ -1,9 +1,11 @@
 package com.ssafy.controller;
 
 import java.net.URLDecoder;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,9 +17,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ssafy.config.JwtProperties;
 import com.ssafy.model.dto.UserDto;
 import com.ssafy.model.response.BasicResponse;
 import com.ssafy.model.service.UserService;
@@ -32,6 +36,9 @@ public class GoogleLoginController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
 
 	@PostMapping("/api/public/google/login")
 	public Object googleLogin(@RequestBody String authToken, RedirectAttributes rediAttributes) {
@@ -68,11 +75,19 @@ public class GoogleLoginController {
 			return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
 		}
 
-		rediAttributes.addAttribute("userId", user.getUserId());
-		rediAttributes.addAttribute("userPassword", user.getUserId() + "google");
+		user.setUserPassword("");
+		String token = JwtProperties.TOKEN_PREFIX + JWT.create().withSubject(user.getUserId())
+				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+				.sign(Algorithm.HMAC512(JwtProperties.SECRET.getBytes()));
 
-		String redirectUrl = "redirect:/api/public/login";
+		this.redisTemplate.opsForValue().set(JwtProperties.TOKEN_PREFIX + token, user);
 
-		return redirectUrl;
+		user.setUserPassword(token);
+		BasicResponse basicResponse = new BasicResponse();
+		basicResponse.data = user;
+		basicResponse.status = true;
+		basicResponse.message = "로그인이 완료되었습니다.";
+
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 }
