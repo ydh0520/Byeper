@@ -1,7 +1,9 @@
 <template>
   <v-row class="lecture-container">
     <v-col class="video-container">
-      <lecture-video @player="getPlayer" />
+      <div class="lecture-video">
+        <lecture-video @player="getPlayer" />
+      </div>
       <!-- <youtube :video-id="videoURL" ref="youtube"></youtube> -->
       <!-- <iframe
         class="lecture-video"
@@ -52,7 +54,7 @@ export default class LecturePage extends Vue {
 
   startVideo() {
     this.start += 10;
-    this.videoURL = `https://www.youtube.com/embed/s9FHdj6jd_U?autoplay=1&start=${this.start}`;
+    this.player.seekTo(this.start);
   }
   toNoteTab() {
     this.$router.replace({ name: "LecturePage", query: { tab: "note" } });
@@ -62,6 +64,19 @@ export default class LecturePage extends Vue {
   }
   getPlayer(v: {}) {
     this.player = v;
+  }
+  scroll(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  async preventScroll() {
+    const video = await document.querySelector(".video-container");
+    video?.addEventListener("scroll", this.scroll);
+    video?.addEventListener("mousewheel", this.scroll);
+  }
+
+  mounted() {
+    this.preventScroll();
   }
 }
 </script>
@@ -77,11 +92,13 @@ export default class LecturePage extends Vue {
   justify-content: center;
   align-items: center;
   width: 50%;
-  min-width: 450px;
+  min-width: 650px;
   height: 100%;
   padding: 0;
   background-color: black;
   overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 .editor-container {
   width: 50%;
@@ -89,12 +106,11 @@ export default class LecturePage extends Vue {
   height: 100%;
   padding: 0;
   background-color: white;
+  padding-bottom: 100px;
 }
 .lecture-video {
   position: fixed;
   top: 30%;
-  left: 0;
-  width: 50%;
 }
 .menu-col {
   padding: 0;

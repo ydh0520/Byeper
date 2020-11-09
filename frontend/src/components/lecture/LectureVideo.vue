@@ -1,5 +1,5 @@
 <template>
-  <youtube :video-id="videoURL" ref="youtube"></youtube>
+  <youtube :video-id="videoURL" fitParent ref="youtube"></youtube>
 </template>
 
 <script>
@@ -14,4 +14,4 @@ export default class LectureVideo extends Vue {
 }
 </script>
 
-<style></style>
+<style scoped></style>
