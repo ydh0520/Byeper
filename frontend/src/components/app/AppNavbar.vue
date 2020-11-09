@@ -1,37 +1,46 @@
 <template>
   <div>
-    <v-app-bar color="white">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar style="position: fixed; z-index: 100">
+      <v-app-bar-nav-icon @click="TOGGLE_SIDEBAR"></v-app-bar-nav-icon>
       <v-col cols="3">
         <v-toolbar-title>VideoSummary</v-toolbar-title>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="6" style="padding: 0">
         <v-text-field
-          style="margin-top: 30px"
           solo
-          placeholder="검색"
-          clearable
-          prepend-inner-icon="mdi-magnify"
-          v-model="inputText"
           color="white"
+          outlined
+          dense
+          label="검색"
+          prepend-inner-icon="mdi-magnify"
+          hide-details="true"
+          v-model="inputText"
         >
         </v-text-field>
+      </v-col>
+      <v-col cols="1.5"></v-col>
+      <v-col cols="1">
+        <v-btn v-if="!isLoggedIn" @click="toGoogleLogin">
+          <v-icon>mdi-account</v-icon>로그인
+        </v-btn>
+        <v-btn v-if="isLoggedIn" @click="logout">
+          <v-icon>mdi-account</v-icon>로그인
+        </v-btn>
       </v-col>
     </v-app-bar>
 
     <v-navigation-drawer
       app
-      clipped
       permanent
-      v-if="drawer"
-      style="height: 100vh; margin-top: 64px"
+      v-if="isSidebar"
+      style="margin-top: 64px;"
     >
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
-          active-class="deep-purple--text text--accent-4"
+          active-class="deep-gray--text text--accent-4"
         >
-          <v-list-item>
+          <v-list-item @click="goHome">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
@@ -40,9 +49,9 @@
 
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-book-open-page-variant</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>계정</v-list-item-title>
+            <v-list-item-title>학습 관리</v-list-item-title>
           </v-list-item>
 
           <v-list-item>
@@ -50,6 +59,13 @@
               <v-icon>mdi-fire</v-icon>
             </v-list-item-icon>
             <v-list-item-title>인기</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-play-box-multiple</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>구독</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -59,12 +75,34 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { namespace } from "vuex-class";
+const AccountsModule = namespace("AccountsModule");
 
 @Component
 export default class AppNavbar extends Vue {
-  drawer = false;
+  @AccountsModule.State isSidebar!: boolean;
+  @AccountsModule.Getter isLoggedIn!: boolean;
+  @AccountsModule.Action GOOGLE_LOGIN: any;
+  @AccountsModule.Mutation REMOVE_TOKEN: any;
+  @AccountsModule.Mutation TOGGLE_SIDEBAR: any;
+
   group = null;
+  inputText = null;
+  $gAuth: any;
+  toGoogleLogin() {
+    this.$gAuth
+      .getAuthCode()
+      .then((authToken: string) => this.GOOGLE_LOGIN(authToken));
+  }
+  goHome() {
+    this.$router.push({ name: "Home" });
+  }
+  logout() {
+    // this.LOGOUT();
+    this.REMOVE_TOKEN();
+    this.$router.push({ name: "Home" });
+  }
 }
 </script>
 
-<style></style>
+<style scoped></style>
