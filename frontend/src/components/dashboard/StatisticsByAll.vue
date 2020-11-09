@@ -16,6 +16,7 @@
         </v-col>
         <v-col>
           <v-progress-circular
+            class="graph-class"
             rotate="-90"
             size="100"
             width="15"
@@ -74,4 +75,4 @@ export default class StatisticsByAll extends Vue {
 }
 </script>
 
-<style></style>
+<style scoped></style>

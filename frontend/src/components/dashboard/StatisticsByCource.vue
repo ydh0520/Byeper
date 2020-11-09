@@ -45,7 +45,7 @@ export default class StatisticsByCource extends Vue {
         if (this.value === 60) {
           return;
         }
-        this.value += 10;
+        this.value += 5;
       }, 150);
     });
   }
