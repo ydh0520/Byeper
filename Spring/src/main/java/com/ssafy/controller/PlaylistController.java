@@ -39,8 +39,20 @@ public class PlaylistController {
 	}
 
 	@GetMapping("/api/public/palylist/detail")
-	public Object FindPlaylist() {
-		return null;
+	public Object FindPlaylist(@RequestParam int playlistId) {
+		BasicResponse response = new BasicResponse();
+
+		response.data = playlistService.findPlaylistDetail(playlistId);
+
+		if (response.data != null) {
+			response.status = true;
+			response.message = "조회에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.status = false;
+			response.message = "조회에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PutMapping("/api/private/playlist/save")
