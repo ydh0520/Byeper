@@ -133,6 +133,7 @@
                             placeholder="섹션의 제목을 적어주세요"
                             class="mt-4 mb-0"
                             style="width: 35vw;"
+                            v-model="LectureSectionTitles[idx]"
                             outlined
                           ></v-text-field>
                         </v-col>
@@ -186,6 +187,8 @@
               </v-row>
             </v-container>
           </v-card>
+          {{ SelectedVideos }}
+          {{ LectureSectionTitles }}
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -283,6 +286,7 @@ export default class CreateLecture extends Vue {
   SelectedVideos = [];
   CreateLectureStep = 1;
   LectureCategories = [];
+  LectureSectionTitles = [];
   LectureDifficulty = "";
 
   onInsert(event, Section) {
@@ -293,6 +297,7 @@ export default class CreateLecture extends Vue {
 
   addSection() {
     this.SelectedVideos.push([]);
+    this.LectureSectionTitles.push("");
   }
 
   deleteSection(idx) {
