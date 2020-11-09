@@ -3,8 +3,10 @@ package com.ssafy.model.dto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "playlist")
 public class PlaylistDto {
 	@Id
 	@Column(name = "playlist_id")

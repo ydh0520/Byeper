@@ -26,7 +26,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 	@Override
 	public List<PlaylistDto> findAllPlaylistUser(String userId) {
 		// TODO Auto-generated method stub
-		return playlistRepository.findbyUserId(userId);
+		return playlistRepository.findbyUserid(userId);
 	}
 
 	@Override
