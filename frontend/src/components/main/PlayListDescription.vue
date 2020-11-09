@@ -15,6 +15,32 @@
         <h2>{{ playList.playListName }}</h2>
         <p>{{ playList.playListDescription }}</p>
       </div>
+      <div class="tableBox">
+        <v-simple-table dense>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">
+                  재생번호
+                </th>
+                <th class="text-left">
+                  제목
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="item in desserts"
+                :key="item.name"
+                @click="moveScroll(item.id)"
+              >
+                <td style="cursor: pointer">{{ item.id }}</td>
+                <td style="cursor: pointer">{{ item.playName }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </div>
     </div>
   </div>
 </template>
@@ -24,11 +50,52 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class IntroMain extends Vue {
+  $vuetify: any;
+
   playList = {
     playListName: this.$route.params.playListName,
     playListDescription:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecatieum voluptate est eius, voluptatibus earum ipsum asperiores modi odit numquam alias. Reiciendis saepe ex, eius animi maxime non debitis! Recusandae!"
   };
+
+  desserts = [
+    {
+      id: 1,
+      playName: "머신러닝"
+    },
+    {
+      id: 2,
+      playName: "인공지능 개론"
+    },
+    {
+      id: 3,
+      playName: "인공신경망 최적화"
+    },
+    {
+      id: 4,
+      playName: "IOT 접목하기"
+    },
+    {
+      id: 5,
+      playName: "텐서플로우와 코드"
+    },
+    {
+      id: 6,
+      playName: "KERAS와 코드"
+    },
+    {
+      id: 7,
+      playName: "CNN과 RNN"
+    }
+  ];
+
+  moveScroll(scrollId: string) {
+    const target: HTMLElement = document.getElementById(
+      scrollId
+    ) as HTMLElement;
+    const scrollLocation: number = target.offsetTop;
+    this.$vuetify.goTo(scrollLocation + 500);
+  }
 }
 </script>
 
@@ -41,15 +108,6 @@ export default class IntroMain extends Vue {
   min-height: 500px;
   justify-content: flex-start;
   align-items: center;
-}
-.banner:before {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 400px;
-  height: 100%;
-  /* background: rgba(0, 0, 0, 0.5); */
 }
 
 .banner video {
@@ -65,9 +123,10 @@ export default class IntroMain extends Vue {
 
 .banner .textBox {
   position: relative;
-  max-width: 550px;
+  max-width: 500px;
   z-index: 2;
 }
+
 .banner .textBox:before {
   content: "";
   position: absolute;
@@ -87,27 +146,32 @@ export default class IntroMain extends Vue {
     transform: scaleX(0);
   }
 }
+
+.tableBox {
+  margin-left: 80px;
+  opacity: 0;
+  animation: fadeInBottom 0.5s linear forwards;
+  animation-delay: 1.5s;
+}
+@keyframes fadeInBottom {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY();
+    opacity: 1;
+  }
+}
 .banner .textBox h2 {
   font-size: 3em;
 }
 
 .banner .textBox p {
   font-size: 1.1em;
-  margin: 5px 0 25px;
+  margin: 5px 0 0 0;
 }
 
-.banner .textBox a {
-  position: relative;
-  display: inline-block;
-  background: #fff;
-  color: #111;
-  padding: 15px 25px;
-  text-decoration: none;
-  font-size: 1.1em;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 500;
-}
 .banner .videoBx {
   position: relative;
   background: #fff;
