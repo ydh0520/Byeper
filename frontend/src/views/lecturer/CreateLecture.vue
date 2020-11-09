@@ -21,59 +21,79 @@
 
       <v-stepper-items>
         <v-stepper-content step="1">
-          <v-card class="mb-12" color="grey lighten-1">
-            <h2>강의 제목</h2>
-            <v-text-field></v-text-field>
-            <h2>강의 설명</h2>
-            <v-text-field></v-text-field>
-            <h2>선수 과목, 지식</h2>
-            <v-text-field></v-text-field>
-            <h2>카테고리</h2>
-            <v-chip-group column multiple>
-              <v-chip filter outlined>
-                jiji
+          <v-card dark flat class="mb-12" style="margin: 10px 20%">
+            <h3 class="mb-0">강의 제목</h3>
+            <v-text-field class="classdesc mb-0" height="20" outlined></v-text-field>
+            <h3 class="my-0">강의 설명</h3>
+            <v-text-field class="classdesc" height="20" outlined></v-text-field>
+            <h3 class="my-0">선수 과목, 지식</h3>
+            <v-text-field class="classdesc" height="20" outlined></v-text-field>
+            <h3>카테고리</h3>
+            <v-chip-group column multiple v-model="LectureCategories">
+              <v-chip label filter outlined>
+                개발ㆍ프로그래밍
               </v-chip>
-              <v-chip filter outlined>
-                hohoh
+              <v-chip label filter outlined>
+                데이터 사이언스
+              </v-chip>
+              <v-chip label filter outlined>
+                크리에이티브
+              </v-chip>
+              <v-chip label filter outlined>
+                업무 스킬
+              </v-chip>
+              <v-chip label filter outlined>
+                직무기초ㆍ학문
+              </v-chip>
+              <v-chip label filter outlined>
+                커리어
               </v-chip>
             </v-chip-group>
-            <h2>강의 수준</h2>
-            <v-chip-group mandatory>
-              <v-chip>
-                하
+            <h3>강의 수준</h3>
+            <v-chip-group mandatory v-model="LectureDifficulty">
+              <v-chip filter outlined>
+                입문
               </v-chip>
-              <v-chip>
-                중
+              <v-chip filter outlined>
+                초급
               </v-chip>
-              <v-chip>
-                상
+              <v-chip filter outlined>
+                중급이상
               </v-chip>
             </v-chip-group>
+          <v-btn class="mt-12 mx-auto" color="primary" @click="CreateLectureStep = 2">
+            다음 단계로
+          </v-btn>
+          <v-btn class="mt-12">
+            취소하기
+          </v-btn>
           </v-card>
-
-          <v-btn color="primary" @click="CreateLectureStep = 2">
-            Continue
-          </v-btn>
-
-          <v-btn text>
-            Cancel
-          </v-btn>
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <v-card class="mb-12" color="grey lighten-1">
+          <v-card class="mb-12">
             <v-container fluid class="wrapper">
               <v-row>
                 <v-col>
-                  <div class="list">
-                    <drag
-                      v-for="video in UserVideos"
-                      :data="video"
-                      class="item"
-                      :key="video"
-                      >{{ video }}</drag
-                    >
-                  </div>
+                  <v-card>
+                    <h2>내 동영상</h2>
+                    <div class="list" style="height: 75vh">
+                      <drag
+                          v-for="video in UserVideos"
+                          :data="video"
+                          class="item"
+                          :key="video"
+                      >
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-list-item-title>파이썬 조아</v-list-item-title>
+                            <v-list-item-content>호호</v-list-item-content>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </drag
+                      >
+                    </div>
+                  </v-card>
                 </v-col>
                 <v-col>
                   <drop-list
@@ -137,14 +157,20 @@ import { Drag, DropList } from "vue-easy-dnd";
   }
 })
 export default class CreateLecture extends Vue {
-  UserVideos = ["1", "2", "3", "4", "5"];
+  UserVideos = ["1", "2", "3", "4", "5","6"];
   SelectedVideos = [["1"], []];
   CreateLectureStep = 1;
+  LectureCategories = [];
+  LectureDifficulty = "";
 
   onInsert(event, Section) {
     console.log(event);
     Section.splice(event.index, 0, event.data);
     this.UserVideos = this.UserVideos.filter(item => item !== event.data);
+  }
+
+  addSection() {
+    this.SelectedVideos.push([]);
   }
 }
 </script>
@@ -165,16 +191,18 @@ body,
 </style>
 
 <style scoped lang="scss">
+.classdesc {
+  width: 45vw;
+}
+
 .wrapper {
   .list {
     border: 1px solid black;
-    margin: 100px auto;
-    width: 200px;
-
+    margin: 10px auto;
+    overflow-y: scroll;
     .item {
       padding: 20px;
       margin: 10px;
-      background-color: rgb(220, 220, 255);
       display: flex;
       align-items: center;
       justify-content: center;
