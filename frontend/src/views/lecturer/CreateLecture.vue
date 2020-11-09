@@ -23,7 +23,11 @@
         <v-stepper-content step="1">
           <v-card dark flat class="mb-12" style="margin: 10px 20%">
             <h3 class="mb-0">강의 제목</h3>
-            <v-text-field class="classdesc mb-0" height="20" outlined></v-text-field>
+            <v-text-field
+              class="classdesc mb-0"
+              height="20"
+              outlined
+            ></v-text-field>
             <h3 class="my-0">강의 설명</h3>
             <v-text-field class="classdesc" height="20" outlined></v-text-field>
             <h3 class="my-0">선수 과목, 지식</h3>
@@ -61,12 +65,16 @@
                 중급이상
               </v-chip>
             </v-chip-group>
-          <v-btn class="mt-12 mx-auto" color="primary" @click="CreateLectureStep = 2">
-            다음 단계로
-          </v-btn>
-          <v-btn class="mt-12">
-            취소하기
-          </v-btn>
+            <v-btn
+              class="mt-12 mx-auto"
+              color="primary"
+              @click="CreateLectureStep = 2"
+            >
+              다음 단계로
+            </v-btn>
+            <v-btn class="mt-12">
+              취소하기
+            </v-btn>
           </v-card>
         </v-stepper-content>
 
@@ -77,60 +85,102 @@
                 <v-col>
                   <v-card>
                     <h2>내 동영상</h2>
-                    <div class="list" style="height: 65vh; width: 40vw">
+                    <div class="list" style="height: 60vh; width: 40vw">
                       <drag
-                          v-for="video in UserVideos"
-                          :data="video"
-                          class="item my-0"
-                          :key="video"
+                        v-for="video in UserVideos"
+                        :data="video"
+                        class="item my-0"
+                        :key="video"
                       >
                         <v-list-item>
                           <v-avatar size="82" class="mr-5" tile>
-                            <img
-                                :src="video.thumbnailurl"
-                                :alt="video.title"
-                            >
+                            <img :src="video.thumbnailurl" :alt="video.title" />
                           </v-avatar>
                           <v-list-item-content>
-                            <v-list-item-title><b>{{ video.title }}</b></v-list-item-title>
-                            <v-list-item-content>{{ video.description }}</v-list-item-content>
+                            <v-list-item-title
+                              ><b>{{ video.title }}</b></v-list-item-title
+                            >
+                            <v-list-item-content>{{
+                              video.description
+                            }}</v-list-item-content>
                           </v-list-item-content>
                         </v-list-item>
-                      </drag
-                      >
+                      </drag>
                     </div>
+                    <v-btn
+                      class="ml-12"
+                      color="primary"
+                      @click="CreateLectureStep = 3"
+                    >
+                      다음 단계로
+                    </v-btn>
+
+                    <v-btn text>
+                      취소하기
+                    </v-btn>
                   </v-card>
                 </v-col>
                 <v-col>
-                  <drop-list
-                    v-for="(Section, idx) in SelectedVideos"
-                    :items="Section"
-                    :key="idx"
-                    class="list"
-                    style="min-height: 200px"
-                    @insert="onInsert($event, Section)"
-                    @reorder="$event.apply(Section)"
+                  <v-btn @click="addSection" tile
+                    ><v-icon left>mdi-plus-box-outline</v-icon>섹션
+                    추가하기</v-btn
                   >
-                    <template v-slot:item="{ item }">
-                      <drag class="item" :key="item">{{ item.title }}</drag>
-                    </template>
-                    <template v-slot:feedback="{ data }">
-                      <div class="item feedback" :key="data">{{ data }}</div>
-                    </template>
-                  </drop-list>
+                  <v-card style="height: 65vh; overflow-y: scroll">
+                    <v-card v-for="(Section, idx) in SelectedVideos" :key="idx">
+                      <v-row align="center">
+                        <v-col cols="7">
+                          <v-text-field placeholder="섹션의 제목을 적어주세요" class="mt-4 mb-0" style="width: 35vw;" outlined></v-text-field>
+                        </v-col>
+                        <v-col cols="5">
+                          <v-btn large class="mb-4">섹션 제거</v-btn>
+                        </v-col>
+                      </v-row>
+                      <drop-list
+                        :items="Section"
+                        class="list mt-0"
+                        style="min-height: 200px; margin-right: 20px;"
+                        @insert="onInsert($event, Section)"
+                        @reorder="$event.apply(Section)"
+                      >
+                        <template v-slot:item="{ item }">
+                          <drag class="item" :key="item">
+                            <v-list-item>
+                              <v-list-item-content>
+                                <v-list-item-title
+                                  ><strong>{{
+                                    item.title
+                                  }}</strong></v-list-item-title
+                                >
+                                <v-list-item-content>{{
+                                  item.description
+                                }}</v-list-item-content>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </drag>
+                        </template>
+                        <template v-slot:feedback="{ data }">
+                          <div class="item feedback" :key="data">
+                            <v-list-item>
+                              <v-list-item-content>
+                                <v-list-item-title
+                                  ><strong>{{
+                                    data.title
+                                  }}</strong></v-list-item-title
+                                >
+                                <v-list-item-content>{{
+                                  data.description
+                                }}</v-list-item-content>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </div>
+                        </template>
+                      </drop-list>
+                    </v-card>
+                  </v-card>
                 </v-col>
               </v-row>
-              {{ SelectedVideos }}
             </v-container>
           </v-card>
-
-          <v-btn color="primary" @click="CreateLectureStep = 3">
-            Continue
-          </v-btn>
-
-          <v-btn text>
-            Cancel
-          </v-btn>
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -167,53 +217,65 @@ export default class CreateLecture extends Vue {
     {
       thumbnailurl: "https://i.ytimg.com/vi/lddJ3kKhfXo/sddefault.jpg",
       title: "내게 거짓을 고해요: Sasha Sloan - Lie (2020) [가사해석]",
-      description: "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
-      videoId: "lddJ3kKhfXo",
+      description:
+        "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
+      videoId: "lddJ3kKhfXo"
     },
     {
       thumbnailurl: "https://i.ytimg.com/vi/To1GnIBlDAg/sddefault.jpg",
-      title: "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
-      description: "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
-      videoId : "To1GnIBlDAg",
+      title:
+        "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
+      description:
+        "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
+      videoId: "To1GnIBlDAg"
     },
     {
       thumbnailurl: "https://i.ytimg.com/vi/lddJ3kKhfXo/sddefault.jpg",
       title: "내게 거짓을 고해요: Sasha Sloan - Lie (2020) [가사해석]",
-      description: "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
-      videoId: "lddJ3kKhfXo",
+      description:
+        "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
+      videoId: "lddJ3kKhfXo"
     },
     {
       thumbnailurl: "https://i.ytimg.com/vi/To1GnIBlDAg/sddefault.jpg",
-      title: "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
-      description: "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
-      videoId : "To1GnIBlDAg",
+      title:
+        "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
+      description:
+        "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
+      videoId: "To1GnIBlDAg"
     },
     {
       thumbnailurl: "https://i.ytimg.com/vi/lddJ3kKhfXo/sddefault.jpg",
       title: "내게 거짓을 고해요: Sasha Sloan - Lie (2020) [가사해석]",
-      description: "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
-      videoId: "lddJ3kKhfXo",
+      description:
+        "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
+      videoId: "lddJ3kKhfXo"
     },
     {
       thumbnailurl: "https://i.ytimg.com/vi/To1GnIBlDAg/sddefault.jpg",
-      title: "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
-      description: "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
-      videoId : "To1GnIBlDAg",
+      title:
+        "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
+      description:
+        "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
+      videoId: "To1GnIBlDAg"
     },
     {
       thumbnailurl: "https://i.ytimg.com/vi/lddJ3kKhfXo/sddefault.jpg",
       title: "내게 거짓을 고해요: Sasha Sloan - Lie (2020) [가사해석]",
-      description: "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
-      videoId: "lddJ3kKhfXo",
+      description:
+        "오른쪽 상단의 i를 눌러 뮤직비디오를 보고 오시는 것을 추천드립니다",
+      videoId: "lddJ3kKhfXo"
     },
     {
       thumbnailurl: "https://i.ytimg.com/vi/To1GnIBlDAg/sddefault.jpg",
-      title: "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
-      description: "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
-      videoId : "To1GnIBlDAg",
-    },
+      title:
+        "[직키픽🔥] 네 갈 길 가: Astrid S - Marilyn Monroe (2020) [가사해석]",
+      description:
+        "이 뮤직비디오는 재편집되었습니다.\n오른쪽 상단의 i를 누르시면 원본 뮤직비디오를 감상하실 수 있습니다.",
+      videoId: "To1GnIBlDAg"
+    }
   ];
-  SelectedVideos = [["1"], []];
+  SelectedVideos = [];
   CreateLectureStep = 1;
   LectureCategories = [];
   LectureDifficulty = "";
