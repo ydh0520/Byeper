@@ -26,11 +26,29 @@ public class PlaylistController {
 	@Autowired
 	private PlaylistService playlistService;
 
-	@GetMapping("/api/public/palylist/list")
+	@GetMapping("/api/public/palylist/teacher")
 	public Object FindAllPlaylist(@RequestParam int start) {
 		BasicResponse response = new BasicResponse();
 
-		response.data = playlistService.findAllPlaylistList(start);
+		response.data = playlistService.findAllPlaylistTeacher(start);
+
+		if (response.data != null) {
+			response.status = true;
+			response.message = "조회에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.status = false;
+			response.message = "조회에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/api/public/palylist/user")
+	public Object FindAllPlaylist(@RequestHeader("Authorization") String jwtToken) {
+		BasicResponse response = new BasicResponse();
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+
+		response.data = playlistService.findAllPlaylistUser(user.getUserId());
 
 		if (response.data != null) {
 			response.status = true;
@@ -81,7 +99,7 @@ public class PlaylistController {
 	}
 
 	@DeleteMapping("/api/public/playlist/delete")
-	public Object DeletePlaylist() {
+	public Object DeletePlaylist(@RequestHeader("Authorization") String jwtToken, @RequestBody PlaylistDto playlist) {
 		return null;
 	}
 
