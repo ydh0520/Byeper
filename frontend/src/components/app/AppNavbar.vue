@@ -3,7 +3,10 @@
     <v-app-bar style="position: fixed; z-index: 100">
       <v-app-bar-nav-icon @click="TOGGLE_SIDEBAR"></v-app-bar-nav-icon>
       <v-col cols="3">
-        <v-toolbar-title>VideoSummary</v-toolbar-title>
+        <v-toolbar-title
+          style="font-family: 'Noto Sans KR', sans-serif !important; font-weight: bold"
+          >VPT</v-toolbar-title
+        >
       </v-col>
       <v-col cols="6" style="padding: 0">
         <v-text-field
