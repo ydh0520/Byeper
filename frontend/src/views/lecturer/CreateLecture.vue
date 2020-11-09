@@ -129,10 +129,15 @@
                     <v-card v-for="(Section, idx) in SelectedVideos" :key="idx">
                       <v-row align="center">
                         <v-col cols="7">
-                          <v-text-field placeholder="섹션의 제목을 적어주세요" class="mt-4 mb-0" style="width: 35vw;" outlined></v-text-field>
+                          <v-text-field
+                            placeholder="섹션의 제목을 적어주세요"
+                            class="mt-4 mb-0"
+                            style="width: 35vw;"
+                            outlined
+                          ></v-text-field>
                         </v-col>
                         <v-col cols="5">
-                          <v-btn large class="mb-4">섹션 제거</v-btn>
+                          <v-btn @click="deleteSection(idx)" large class="mb-4">섹션 제거</v-btn>
                         </v-col>
                       </v-row>
                       <drop-list
@@ -288,6 +293,12 @@ export default class CreateLecture extends Vue {
 
   addSection() {
     this.SelectedVideos.push([]);
+  }
+
+  deleteSection(idx) {
+    this.SelectedVideos[idx].map( elem => this.UserVideos.push(elem));
+    this.SelectedVideos.sort();
+    this.SelectedVideos.splice(idx, 1);
   }
 }
 </script>
