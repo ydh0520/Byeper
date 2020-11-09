@@ -1,6 +1,12 @@
 <template>
-  <div class="lecture-list-page mx-auto mt-10">
-    <div class="text-h3 my-5">
+  <div
+    class="lecture-list-page mx-auto mt-10"
+    style="font-family: 'Do Hyeon', sans-serif !important;"
+  >
+    <div
+      class="text-h3 mb-10 "
+      style="text-align: center; font-family: 'Do Hyeon', sans-serif !important;"
+    >
       {{ this.$route.params.courseName }}
     </div>
     <statistics-by-cource />
