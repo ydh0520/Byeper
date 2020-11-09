@@ -18,5 +18,5 @@ public interface PlaylistService {
 
 	public void deletePlaylist(int playlistId);
 
-	public PlaylistDto updatePlaylist(PlaylistDto playlist);
+	public PlaylistDto updatePlaylist(PlaylistDto update);
 }
