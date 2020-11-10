@@ -513,7 +513,7 @@ export default class CreateLecture extends Vue {
     }
   }
 
-  async GetPlayList() {}
+  // async GetPlayList() {}
 }
 </script>
 
