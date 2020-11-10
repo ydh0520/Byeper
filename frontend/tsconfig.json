@@ -16,6 +16,9 @@
       "webpack-env",
       "vuetify"
     ],
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "declaration": true,
+    "declarationDir": "./types",
     "paths": {
       "@/*": [
         "src/*"
@@ -28,6 +31,7 @@
       "scripthost"
     ]
   },
+  "typeRoots": ["./types", "./node_modules/@types"],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",

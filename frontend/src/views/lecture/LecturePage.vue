@@ -47,7 +47,7 @@ import LectureVideo from "@/components/lecture/LectureVideo.vue";
   }
 })
 export default class LecturePage extends Vue {
-  player: {} | null = null;
+  player: { seekTo: (n: number) => {} } | null = null;
   start = 0;
 
   videoURL = "s9FHdj6jd_U";
@@ -62,7 +62,7 @@ export default class LecturePage extends Vue {
   toListTab() {
     this.$router.replace({ name: "LecturePage", query: { tab: "list" } });
   }
-  getPlayer(v: {}) {
+  getPlayer(v: { seekTo: (n: number) => {} }) {
     this.player = v;
   }
   scroll(event: Event) {

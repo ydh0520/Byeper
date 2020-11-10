@@ -26,7 +26,7 @@ const module: Module<AccountsModule, RootState> = {
       state.token = token;
       window.sessionStorage.setItem("jwt-token", token);
       Axios.instance.defaults.headers.common["Authorization"] = token;
-      Axios.instanceRec.defaults.headers.common["Authorization"] = token;
+      Axios.instanceDjango.defaults.headers.common["Authorization"] = token;
     },
     REMOVE_TOKEN(state) {
       state.token = null;
