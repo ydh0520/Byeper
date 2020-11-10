@@ -1,6 +1,8 @@
 package com.ssafy.controller;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
@@ -19,10 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.model.dto.PlayDto;
 import com.ssafy.model.dto.PlaylistDto;
 import com.ssafy.model.dto.UserDto;
+import com.ssafy.model.dto.Video;
 import com.ssafy.model.response.BasicResponse;
+import com.ssafy.model.service.PlayService;
 import com.ssafy.model.service.PlaylistService;
+import com.ssafy.model.service.VideoService;
 
 import io.swagger.models.Response;
 
@@ -32,9 +38,13 @@ public class PlaylistController {
 	private RedisTemplate<String, Object> redisTemplate;
 	@Autowired
 	private PlaylistService playlistService;
+	@Autowired
+	private PlayService playService;
+	@Autowired
+	private VideoService videoService;
 
 	private String[] allowFile = { "jpg", "png", "JPG", "PNG" };
-	
+
 	@GetMapping("/api/public/palylist/teacher")
 	public Object FindAllPlaylist(@RequestParam int start) {
 		BasicResponse response = new BasicResponse();
@@ -155,7 +165,7 @@ public class PlaylistController {
 	@PostMapping("/api/public/playlist/imgupload")
 	public Object UploadFile(@RequestPart("file") MultipartFile file) {
 		BasicResponse response = new BasicResponse();
-		
+
 		String fileName = UUID.randomUUID().toString();
 		String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
 
@@ -192,4 +202,37 @@ public class PlaylistController {
 		}
 	}
 
+	@PostMapping("/api/pirvate/playlist/addvide")
+	public Object AddVideo(@RequestHeader("Authorization") String jwtToken, @RequestParam int playlistId,
+			@RequestBody List<Video> videos) {
+		BasicResponse response = new BasicResponse();
+
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+
+		List<PlayDto> plays = new LinkedList<PlayDto>();
+
+		for (int i = 0; i < videos.size(); i++) {
+			PlayDto play = new PlayDto();
+
+			play.setPlaylistId(playlistId);
+			play.setVideoId(videos.get(i).getVideoId());
+			play.setPlayLog(0);
+			play.setPlayComplete(0);
+
+			plays.add(play);
+		}
+
+		List<Video> videoResult = videoService.SaveAllVideo(videos);
+		List<PlayDto> playResult = playService.SaveAllPlay(plays);
+
+		response.data = videoResult;
+		response.status = (response.data != null) ? true : false;
+		if (response.status) {
+			response.message = "그림 등록에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.message = "그림 등록에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
 }
