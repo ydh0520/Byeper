@@ -54,7 +54,7 @@ export default class LecturePage extends Vue {
 
   startVideo() {
     this.start += 10;
-    this.player.seekTo(this.start);
+    this.player?.seekTo(this.start);
   }
   toNoteTab() {
     this.$router.replace({ name: "LecturePage", query: { tab: "note" } });
@@ -65,7 +65,7 @@ export default class LecturePage extends Vue {
   getPlayer(v: {}) {
     this.player = v;
   }
-  scroll(event) {
+  scroll(event: Event) {
     event.preventDefault();
     event.stopPropagation();
   }
