@@ -202,7 +202,7 @@ public class PlaylistController {
 		}
 	}
 
-	@PostMapping("/api/pirvate/playlist/addvide")
+	@PostMapping("/api/pirvate/playlist/addvideo")
 	public Object AddVideo(@RequestHeader("Authorization") String jwtToken, @RequestParam int playlistId,
 			@RequestBody List<Video> videos) {
 		BasicResponse response = new BasicResponse();
