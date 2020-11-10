@@ -152,7 +152,7 @@ public class PlaylistController {
 		}
 	}
 
-	@PostMapping("/api/pulbic/playlist/imgupload")
+	@PostMapping("/api/public/playlist/imgupload")
 	public Object UploadFile(@RequestPart("file") MultipartFile file) {
 		BasicResponse response = new BasicResponse();
 		
