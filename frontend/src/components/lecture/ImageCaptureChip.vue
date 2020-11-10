@@ -4,7 +4,7 @@
       <v-btn class="mx-2" fab icon large color="teal" @click="imageCapture">
         <v-icon>mdi-camera-outline</v-icon>
       </v-btn>
-      <!-- <v-btn @click="toPdf">ㅇ</v-btn> -->
+      <v-btn @click="toPdf">ㅇ</v-btn>
       <v-dialog v-model="dialog" width="600px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
