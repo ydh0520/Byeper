@@ -196,14 +196,18 @@
             <v-col cols="6">
               <v-card class="mb-12">
                 <v-list v-for="(Section, idx) in SelectedVideos" :key="idx">
-                  <h2>섹션 {{idx + 1}} : {{ LectureSectionTitles[idx] }}</h2>
+                  <h2>섹션 {{ idx + 1 }} : {{ LectureSectionTitles[idx] }}</h2>
                   <v-list-item v-for="Video in Section" :key="Video.videoId">
                     <v-avatar size="82" class="mr-5" tile>
                       <img :src="Video.thumbnailurl" :alt="Video.title" />
                     </v-avatar>
                     <v-list-item-content>
-                      <v-list-item-title><strong>{{ Video.title }}</strong></v-list-item-title>
-                      <v-list-item-content>{{ Video.description }}</v-list-item-content>
+                      <v-list-item-title
+                        ><strong>{{ Video.title }}</strong></v-list-item-title
+                      >
+                      <v-list-item-content>{{
+                        Video.description
+                      }}</v-list-item-content>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -211,41 +215,47 @@
             </v-col>
             <v-col cols="6">
               <v-card>
-                <h2>커버 이미지</h2>
+                <h2 class="mb-5">커버 이미지</h2>
                 <v-row>
                   <v-col cols="6">
-                    <v-img :src="LectureThumbnailURL" alt="썸네일 이미지"></v-img>
+                    <v-img
+                      v-if="LectureThumbnailURL"
+                      class="ml-15"
+                      width="320"
+                      height="200"
+                      :src="LectureThumbnailURL"
+                      alt="강의 썸네일 이미지"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      class="ml-15"
+                      width="320"
+                      height="200"
+                      src="@/assets/jun.png"></v-img>
                   </v-col>
                   <v-col cols="6">
+                    <h5 class="mt-10 mb-3">강의를 대표하는 이미지</h5>
                     <v-file-input
-                        v-model="LectureThumbnail"
-                        color="deep-purple accent-4"
-                        counter
-                        label="File input"
-                        placeholder="Select your files"
-                        prepend-icon="mdi-paperclip"
-                        outlined
-                        :show-size="500"
-                        @change="ThumbnailChange"
+                      v-model="LectureThumbnail"
+                      color="deep-purple accent-4"
+                      counter
+                      label="File input"
+                      placeholder="Select your files"
+                      prepend-icon="mdi-paperclip"
+                      outlined
+                      :show-size="500"
+                      @change="ThumbnailChange"
                     >
                       <template v-slot:selection="{ index, text }">
-                        <v-chip
-                            color="deep-purple accent-4"
-                            dark
-                            label
-                            small
-                        >
+                        <v-chip color="deep-purple accent-4" dark label small>
                           {{ text }}
                         </v-chip>
                       </template>
                     </v-file-input>
                   </v-col>
                 </v-row>
-
               </v-card>
             </v-col>
-
-
           </v-row>
 
           <v-btn color="primary" @click="CreateLectureStep = 1">
