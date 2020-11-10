@@ -80,7 +80,7 @@ public class GoogleLoginController {
 				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
 				.sign(Algorithm.HMAC512(JwtProperties.SECRET.getBytes()));
 
-		this.redisTemplate.opsForValue().set(JwtProperties.TOKEN_PREFIX + token, user);
+		this.redisTemplate.opsForValue().set(token, user);
 
 		user.setUserPassword(token);
 		BasicResponse basicResponse = new BasicResponse();
