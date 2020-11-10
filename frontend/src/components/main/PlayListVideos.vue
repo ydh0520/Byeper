@@ -15,6 +15,18 @@
                   voluptatum ipsum distinctio maiores. Voluptas ullam ratione
                   nostrum non maiores quia molestiae aperiam. Magnam.
                 </p>
+                <div>
+                  학습상태 (수강중)
+                  <v-progress-linear
+                    color="deep-orange"
+                    height="18"
+                    value="40"
+                    striped
+                    ><strong style="font-size: 0.8em"
+                      >{{ 40 }}%</strong
+                    ></v-progress-linear
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -130,7 +142,7 @@ export default class PlayListRoadmap extends Vue {
 
 .videodescription .content {
   position: absolute;
-  padding: 20px;
+  display: flex;
   width: calc(100% - 75px);
   height: 100%;
   justify-content: center;
