@@ -211,20 +211,49 @@
             </v-col>
             <v-col cols="6">
               <v-card>
-                hihihihihihih
+                <h2>커버 이미지</h2>
+                <v-row>
+                  <v-col cols="6">
+                    <v-img :src="LectureThumbnailURL" alt="썸네일 이미지"></v-img>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-file-input
+                        v-model="LectureThumbnail"
+                        color="deep-purple accent-4"
+                        counter
+                        label="File input"
+                        placeholder="Select your files"
+                        prepend-icon="mdi-paperclip"
+                        outlined
+                        :show-size="500"
+                        @change="ThumbnailChange"
+                    >
+                      <template v-slot:selection="{ index, text }">
+                        <v-chip
+                            color="deep-purple accent-4"
+                            dark
+                            label
+                            small
+                        >
+                          {{ text }}
+                        </v-chip>
+                      </template>
+                    </v-file-input>
+                  </v-col>
+                </v-row>
+
               </v-card>
             </v-col>
 
 
           </v-row>
 
-
           <v-btn color="primary" @click="CreateLectureStep = 1">
-            Continue
+            강의 생성
           </v-btn>
 
           <v-btn text>
-            Cancel
+            이전 단계로
           </v-btn>
         </v-stepper-content>
       </v-stepper-items>
@@ -310,6 +339,8 @@ export default class CreateLecture extends Vue {
   LectureCategories = [];
   LectureSectionTitles = [];
   LectureDifficulty = "";
+  LectureThumbnail = null;
+  LectureThumbnailURL = null;
 
   onInsert(event, Section) {
     console.log(event);
@@ -326,6 +357,10 @@ export default class CreateLecture extends Vue {
     this.SelectedVideos[idx].map(elem => this.UserVideos.push(elem));
     this.SelectedVideos.sort();
     this.SelectedVideos.splice(idx, 1);
+  }
+
+  ThumbnailChange() {
+    this.LectureThumbnailURL = URL.createObjectURL(this.LectureThumbnail);
   }
 }
 </script>
