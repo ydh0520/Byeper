@@ -21,7 +21,7 @@
         >
         </v-text-field>
       </v-col>
-      <v-col cols="1.5"></v-col>
+      <v-col cols="1" style="margin-left: 30px"></v-col>
       <v-col cols="1">
         <v-btn v-if="!isLoggedIn" @click="toGoogleLogin">
           <v-icon>mdi-account</v-icon>로그인
