@@ -4,6 +4,7 @@
       <v-btn class="mx-2" fab icon large color="teal" @click="imageCapture">
         <v-icon>mdi-camera-outline</v-icon>
       </v-btn>
+      <!-- <v-btn @click="toPdf">ㅇ</v-btn> -->
       <v-dialog v-model="dialog" width="600px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -72,6 +73,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import h2c from "html2canvas";
+import { jsPDF } from "jspdf";
 
 @Component
 export default class ImageCaptureChip extends Vue {
@@ -80,11 +82,12 @@ export default class ImageCaptureChip extends Vue {
   ticksLabels = ["하", "중", "상"];
 
   dialog = false;
+  $vuetify: any;
 
   addCapture(img: string) {
     this.$emit("addCapture", img);
   }
-  capture() {
+  async capture() {
     h2c(document.querySelector(".editor__content") as HTMLElement)
       .then(canvas => this.addCapture(canvas.toDataURL("image/jpeg")))
       .catch(err => console.error(err));
@@ -96,6 +99,32 @@ export default class ImageCaptureChip extends Vue {
   }
   imageCaptureAll() {
     console.log("all");
+  }
+  async toPdf() {
+    await this.$vuetify.goTo(0);
+    h2c((await document.querySelector(".ProseMirror")) as HTMLElement).then(
+      canvas => {
+        const imgData = canvas.toDataURL("image/jpeg");
+        console.log(imgData);
+        const imgWidth = 190;
+        const pageHeight = imgWidth * 1.414;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        const margin = 10;
+        const doc = new jsPDF("p", "mm", "a4");
+        let position = 0;
+
+        doc.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+        while (heightLeft >= 20) {
+          position = heightLeft - imgHeight;
+          doc.addPage();
+          doc.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        doc.save("저장.pdf");
+      }
+    );
   }
 }
 </script>
