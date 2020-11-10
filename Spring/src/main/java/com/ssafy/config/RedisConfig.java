@@ -12,7 +12,7 @@ public class RedisConfig {
 
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
-		LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory();
+		LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory("http://k3b108.p.ssafy.io",3679);
 		return lettuceConnectionFactory;
 	}
 
