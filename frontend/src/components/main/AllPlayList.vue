@@ -35,9 +35,9 @@
                     class="d-flex transition-fast-in-fast-out black darken-2 v-card--reveal display-3 "
                     style="height: 100%;"
                   >
-                    <div style="color: white; font-size: 0.5em">
-                      <span class="mdi mdi-play-circle"></span>
-                      모두 재생
+                    <div style="color: white; font-size: 0.3em">
+                      자세히 보기
+                      <span class="mdi mdi-launch"></span>
                     </div>
                   </div>
                 </v-expand-transition>

@@ -24,7 +24,7 @@
           dense
           disable-sort
           hide-default-footer
-          style="font-family: 'Noto Sans KR', sans-serif; cursor: pointer"
+          style="cursor: pointer"
           @click:row="moveScroll"
         ></v-data-table>
       </div>
