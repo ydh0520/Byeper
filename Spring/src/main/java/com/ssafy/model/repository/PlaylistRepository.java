@@ -18,3 +18,4 @@ public interface PlaylistRepository extends JpaRepository<PlaylistDto, Integer> 
 	@Query(value = "select * from ssafy.playlist where user_id = :user_id", nativeQuery = true)
 	public List<PlaylistDto> findbyUserid(@Param("user_id") String userId);
 }
+ 

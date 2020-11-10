@@ -1,5 +1,9 @@
 package com.ssafy.controller;
 
+import java.io.File;
+import java.util.UUID;
+
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -7,10 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.model.dto.PlaylistDto;
 import com.ssafy.model.dto.UserDto;
@@ -26,6 +33,8 @@ public class PlaylistController {
 	@Autowired
 	private PlaylistService playlistService;
 
+	private String[] allowFile = { "jpg", "png", "JPG", "PNG" };
+	
 	@GetMapping("/api/public/palylist/teacher")
 	public Object FindAllPlaylist(@RequestParam int start) {
 		BasicResponse response = new BasicResponse();
@@ -78,7 +87,7 @@ public class PlaylistController {
 		}
 	}
 
-	@PutMapping("/api/private/playlist/save")
+	@PostMapping("/api/private/playlist/save")
 	public Object Saveplaylist(@RequestHeader("Authorization") String jwtToken, @RequestBody PlaylistDto playlist) {
 		BasicResponse response = new BasicResponse();
 		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
@@ -139,6 +148,46 @@ public class PlaylistController {
 		} else {
 			response.status = false;
 			response.message = "저장에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/api/public/playlist/imgupload")
+	public Object UploadFile(@RequestPart("file") MultipartFile file) {
+		BasicResponse response = new BasicResponse();
+		
+		String fileName = UUID.randomUUID().toString();
+		String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+
+		boolean allow = false;
+
+		for (int i = 0; i < allowFile.length; i++) {
+			if (fileExtension.equals(allowFile[i]))
+				allow = true;
+		}
+
+		if (!allow) {
+			response.status = false;
+			response.message = "허용되지 않은 파일 확장자 입니다.(사용가능 확장자 png,jpg)";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+		String path = fileName + '.' + fileExtension;
+		try {
+			file.transferTo(new File("/var/file/playlist/" + path));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			response.status = false;
+			response.message = "파일 업로드에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+		response.data = path;
+		response.status = (response.data != null) ? true : false;
+		if (response.status) {
+			response.message = "그림 등록에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.message = "그림 등록에 실패하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}

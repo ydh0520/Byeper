@@ -19,6 +19,19 @@ public class PlaylistDto {
 	private String userId;
 	@Column(name = "playlist_type")
 	private int playlistType;
+	@Column(name = "playlist_category")
+	private int playlistCategory;
+	@Column(name = "playlist_level")
+	private int playlistLevel;
+	@Column(name = "playlist_img")
+	private String playlistImg;
+
+	@Override
+	public String toString() {
+		return "PlaylistDto [playlistId=" + playlistId + ", playlistTitle=" + playlistTitle + ", playlistDescription="
+				+ playlistDescription + ", userId=" + userId + ", playlistType=" + playlistType + ", playlistCategory="
+				+ playlistCategory + ", playlistLevel=" + playlistLevel + ", playlistImg=" + playlistImg + "]";
+	}
 
 	public int getPlaylistId() {
 		return playlistId;
@@ -60,10 +73,28 @@ public class PlaylistDto {
 		this.playlistType = playlistType;
 	}
 
-	@Override
-	public String toString() {
-		return "PlaylistDto [playlistId=" + playlistId + ", playlistTitle=" + playlistTitle + ", playlistDescription="
-				+ playlistDescription + ", userId=" + userId + ", playlistType=" + playlistType + "]";
+	public int getPlaylistCategory() {
+		return playlistCategory;
+	}
+
+	public void setPlaylistCategory(int playlistCategory) {
+		this.playlistCategory = playlistCategory;
+	}
+
+	public int getPlaylistLevel() {
+		return playlistLevel;
+	}
+
+	public void setPlaylistLevel(int playlistLevel) {
+		this.playlistLevel = playlistLevel;
+	}
+
+	public String getPlaylistImg() {
+		return playlistImg;
+	}
+
+	public void setPlaylistImg(String playlistImg) {
+		this.playlistImg = playlistImg;
 	}
 
 }
