@@ -12,13 +12,14 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "vuetify"
-    ],
     "typeRoots": ["./types", "./node_modules/@types"],
     "declaration": true,
     "declarationDir": "./types",
+    "types": [
+      "webpack-env",
+      "vuetify",
+      "vue-youtube"
+    ],
     "paths": {
       "@/*": [
         "src/*"
@@ -31,7 +32,6 @@
       "scripthost"
     ]
   },
-  "typeRoots": ["./types", "./node_modules/@types"],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
