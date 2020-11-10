@@ -16,7 +16,11 @@
                   nostrum non maiores quia molestiae aperiam. Magnam.
                 </p>
                 <div>
-                  학습상태 (수강중)
+                  <p
+                    style="font-size: 0.75em; font-weight: bold !important; margin: 0 0 10px 0"
+                  >
+                    학습상태 (수강중)
+                  </p>
                   <v-progress-linear
                     color="deep-orange"
                     height="18"
@@ -44,6 +48,15 @@
                 @click="goLecture(item.playListName)"
               />
             </div>
+            <div class="content">
+              <video
+                src="@/assets/mainVideo.mp4"
+                @mouseover="autoplay"
+                muted
+                loop
+                type="mp4"
+              ></video>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -57,6 +70,9 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class PlayListRoadmap extends Vue {
   isHover = true;
+  autoplay(e: any) {
+    e.target.play();
+  }
   list = [
     {
       id: 1,
@@ -128,8 +144,7 @@ export default class PlayListRoadmap extends Vue {
 }
 .container .card {
   position: relative;
-  height: 250px;
-  background: #fff;
+  height: 225px;
   display: flex;
   width: 400px;
 }
@@ -168,10 +183,10 @@ export default class PlayListRoadmap extends Vue {
   transition: 0.5s ease-in-out;
 }
 .card:hover .imgBx {
-  width: 150px;
-  height: 150px;
-  left: -75px;
-  top: calc(50% - 75px);
+  width: 100px;
+  height: 100px;
+  left: -50px;
+  top: calc(50% - 50px);
   transition: 0.5s ease-in-out;
   background: #ff00ff00;
 }
@@ -192,17 +207,16 @@ export default class PlayListRoadmap extends Vue {
 
 .card .content {
   position: absolute;
-  right: 0;
-  width: calc(100% - 75px);
+  width: calc(100% - 50px);
   height: 100%;
-  padding: 20px;
+  padding: 0px;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
-.card .content h3 {
-  margin-bottom: 5px;
-  font-size: 24px;
+.card .content video {
+  width: 400px;
+  height: 225px;
 }
 @keyframes fadeInBottom {
   0% {
