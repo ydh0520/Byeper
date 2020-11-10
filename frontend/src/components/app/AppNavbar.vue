@@ -36,7 +36,7 @@
       app
       permanent
       v-if="isSidebar"
-      style="margin-top: 64px;"
+      style="margin-top: 64px; width: 200px"
     >
       <v-list nav dense>
         <v-list-item-group
