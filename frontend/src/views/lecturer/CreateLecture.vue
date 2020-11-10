@@ -138,7 +138,9 @@
                           ></v-text-field>
                         </v-col>
                         <v-col cols="5">
-                          <v-btn @click="deleteSection(idx)" large class="mb-4">섹션 제거</v-btn>
+                          <v-btn @click="deleteSection(idx)" large class="mb-4"
+                            >섹션 제거</v-btn
+                          >
                         </v-col>
                       </v-row>
                       <drop-list
@@ -187,15 +189,35 @@
               </v-row>
             </v-container>
           </v-card>
-          {{ SelectedVideos }}
-          {{ LectureSectionTitles }}
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card class="mb-12" color="grey lighten-1" height="200px">
-            {{ UserVideos }}
-            {{ SelectedVideos }}
-          </v-card>
+          <v-row>
+            <v-col cols="6">
+              <v-card class="mb-12">
+                <v-list v-for="(Section, idx) in SelectedVideos" :key="idx">
+                  <h2>섹션 {{idx + 1}} : {{ LectureSectionTitles[idx] }}</h2>
+                  <v-list-item v-for="Video in Section" :key="Video.videoId">
+                    <v-avatar size="82" class="mr-5" tile>
+                      <img :src="Video.thumbnailurl" :alt="Video.title" />
+                    </v-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title><strong>{{ Video.title }}</strong></v-list-item-title>
+                      <v-list-item-content>{{ Video.description }}</v-list-item-content>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-col>
+            <v-col cols="6">
+              <v-card>
+                hihihihihihih
+              </v-card>
+            </v-col>
+
+
+          </v-row>
+
 
           <v-btn color="primary" @click="CreateLectureStep = 1">
             Continue
@@ -301,7 +323,7 @@ export default class CreateLecture extends Vue {
   }
 
   deleteSection(idx) {
-    this.SelectedVideos[idx].map( elem => this.UserVideos.push(elem));
+    this.SelectedVideos[idx].map(elem => this.UserVideos.push(elem));
     this.SelectedVideos.sort();
     this.SelectedVideos.splice(idx, 1);
   }
