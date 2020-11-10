@@ -7,7 +7,7 @@
             <div class="content">
               <div>
                 <h3 class="mb-5">
-                  쿠팡개발자 김씨의 하루
+                  슬기로운 싸피생활
                 </h3>
                 <p style="font-weight: light; ">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
@@ -29,7 +29,7 @@
               <img
                 class="smallimg"
                 src="@/assets/playBtn.png"
-                @click="goHome"
+                @click="goLecture(item.playListName)"
               />
             </div>
           </div>
@@ -83,8 +83,11 @@ export default class PlayListRoadmap extends Vue {
       playListName: "junho"
     }
   ];
-  goHome() {
-    this.$router.push({ name: "Home" });
+  goLecture(courseName: string) {
+    this.$router.push({
+      name: "LecturePage",
+      params: { courseName: courseName }
+    });
   }
 }
 </script>
@@ -189,7 +192,16 @@ export default class PlayListRoadmap extends Vue {
   margin-bottom: 5px;
   font-size: 24px;
 }
-
+@keyframes fadeInBottom {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY();
+    opacity: 1;
+  }
+}
 @media (max-width: 992px) {
   .card {
     width: 400px;
