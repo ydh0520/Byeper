@@ -99,14 +99,13 @@ export default class ImageCaptureChip extends Vue {
     h2c((await document.querySelector(".ProseMirror")) as HTMLElement).then(
       canvas => {
         const imgData = canvas.toDataURL("image/jpeg");
-        console.log(imgData);
-        const imgWidth = 190;
-        const pageHeight = imgWidth * 1.414;
+        const margin = 10;
+        const imgWidth = 210 - 2 * margin;
+        const pageHeight = 295;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         let heightLeft = imgHeight;
-        const margin = 10;
         const doc = new jsPDF("p", "mm", "a4");
-        let position = 0;
+        let position = 5;
 
         doc.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
