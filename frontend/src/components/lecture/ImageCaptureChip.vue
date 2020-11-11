@@ -68,10 +68,15 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import h2c from "html2canvas";
 import { jsPDF } from "jspdf";
+import { namespace } from "vuex-class";
+
+const LecturesModule = namespace("LecturesModule");
 
 @Component
 export default class ImageCaptureChip extends Vue {
   @Prop(Object) readonly player: any;
+  @Prop(String) readonly videoId!: string;
+  @LecturesModule.Action FETCH_CAPTURE_IMAGE: any;
 
   ticksLabels = ["하", "중", "상"];
 
@@ -87,8 +92,9 @@ export default class ImageCaptureChip extends Vue {
       .catch(err => console.error(err));
   }
   async imageCapture() {
-    this.capture();
+    // this.capture();
     const getVideoTime = await this.player.getCurrentTime();
+    this.FETCH_CAPTURE_IMAGE({ id: this.videoId, time: getVideoTime });
     console.log(getVideoTime);
   }
   imageCaptureAll() {

@@ -26,8 +26,10 @@
       </v-row>
       <text-editor
         :player="player"
+        :videoId="videoURL"
         v-if="$route.query.tab === 'note' || !$route.query.tab"
       />
+      <curriculum v-else-if="$route.query.tab === 'list'" />
       <v-btn @click="startVideo">{{ $route.query.tab }}</v-btn>
     </v-col>
   </v-row>
