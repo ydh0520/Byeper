@@ -9,14 +9,12 @@
         type="mp4"
       ></video>
       <div class="textBox">
-        <h2>Video Summary</h2>
+        <h2>VPT</h2>
         <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati
-          eum voluptate est eius, voluptatibus earum ipsum asperiores modi odit
-          numquam alias. Reiciendis saepe ex, eius animi maxime non debitis!
-          Recusandae!
+          Video Summary 서비스를 이용하여 동영상을 학습하고 자동으로 PPT를
+          추출해보세요!
         </p>
-        <a href="/">Read More</a>
+        <a @click="moveScroll">영상 담기</a>
       </div>
       <div class="videoBx">
         <video
@@ -35,7 +33,13 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class IntroMain extends Vue {}
+export default class IntroMain extends Vue {
+  $vuetify: any;
+
+  moveScroll() {
+    this.$vuetify.goTo(530);
+  }
+}
 </script>
 
 <style scoped>
@@ -71,12 +75,13 @@ export default class IntroMain extends Vue {}
 
 .banner .textBox {
   position: relative;
-  max-width: 550px;
+  max-width: 400px;
+  margin-right: 100px;
   z-index: 2;
 }
 
 .banner .textBox h2 {
-  font-size: 3em;
+  font-size: 2em;
 }
 .banner .textBox p {
   font-size: 1.1em;
@@ -92,7 +97,7 @@ export default class IntroMain extends Vue {}
   font-size: 1.1em;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-weight: 500;
+  font-weight: bold;
 }
 .banner .videoBx {
   position: relative;

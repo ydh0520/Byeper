@@ -3,13 +3,13 @@
     <v-row style="margin: 20px 10%">
       <v-row>
         <v-col
-          v-for="item in list"
-          :key="item.id"
+          v-for="playList in AllPlayList"
+          :key="playList.playlistId"
           class="d-flex child-flex"
           cols="4"
           md="4"
           sm="6"
-          @click="pushPlayList(item.playListName)"
+          @click="pushPlayList(playList.playlistId)"
         >
           <v-hover v-slot="{ hover }">
             <div
@@ -35,9 +35,9 @@
                     class="d-flex transition-fast-in-fast-out black darken-2 v-card--reveal display-3 "
                     style="height: 100%;"
                   >
-                    <div style="color: white; font-size: 0.5em">
-                      <span class="mdi mdi-play-circle"></span>
-                      모두 재생
+                    <div style="color: white; font-size: 0.3em">
+                      자세히 보기
+                      <span class="mdi mdi-launch"></span>
                     </div>
                   </div>
                 </v-expand-transition>
@@ -56,14 +56,14 @@
                       <div
                         style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; padding: 0px"
                       >
-                        [브이로그] 쿠팡개발자 김씨의 하루
+                        [브이로그] 슬기로운 싸피생활
                       </div>
                     </v-row>
                     <v-row>
                       <div
                         style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
                       >
-                        준호야 회사가자
+                        싸피대장
                       </div>
                     </v-row>
                   </v-col>
@@ -78,54 +78,62 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import router from "../../router";
+import { namespace } from "vuex-class";
+import { PlayList } from "../../store/PlayList.interface";
+
+const PlayListModule = namespace("PlayListModule");
 
 @Component
 export default class AllPlayList extends Vue {
-  list = [
-    {
-      id: 1,
-      playListName: "junho"
-    },
-    {
-      id: 2,
-      playListName: "junho"
-    },
-    {
-      id: 3,
-      playListName: "junho"
-    },
-    {
-      id: 4,
-      playListName: "junho"
-    },
-    {
-      id: 5,
-      playListName: "junho"
-    },
-    {
-      id: 6,
-      playListName: "junho"
-    },
-    {
-      id: 7,
-      playListName: "junho"
-    },
-    {
-      id: 8,
-      playListName: "junho"
-    },
-    {
-      id: 9,
-      playListName: "junho"
-    }
-  ];
+  @PlayListModule.State AllPlayList!: PlayList[] | null;
+  @PlayListModule.State scrollEnd!: boolean;
+  @PlayListModule.Action FETCH_ALL_PLAYLIST: any;
+
+  scrollHeight = 0;
+  start = 0;
+
+  scroll() {
+    window.onscroll = () => {
+      const ceilBottomOfWindow =
+        Math.ceil(window.pageYOffset) + window.innerHeight ===
+        document.documentElement.offsetHeight;
+
+      const plusBottomOfWindow =
+        Math.ceil(window.pageYOffset) + window.innerHeight + 1 ===
+        document.documentElement.offsetHeight;
+
+      if (
+        (ceilBottomOfWindow || plusBottomOfWindow) &&
+        !this.scrollEnd &&
+        this.$route.name === "Home"
+      ) {
+        ++this.start;
+        this.FETCH_ALL_PLAYLIST({
+          start: this.start
+        });
+      }
+    };
+  }
+
+  mounted() {
+    this.scroll();
+    this.scrollHeight = window.innerHeight;
+  }
 
   pushPlayList(playListName: string) {
     this.$router.push({
       name: "PlayList",
       params: { playListName: playListName }
+    });
+  }
+
+  @Watch("$route", { immediate: true })
+  fetchAllPlayList() {
+    this.start = 0;
+    this.FETCH_ALL_PLAYLIST({
+      start: this.start
     });
   }
 }

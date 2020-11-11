@@ -16,7 +16,7 @@
         <p>{{ playList.playListDescription }}</p>
       </div>
       <div class="tableBox">
-        <v-simple-table dense>
+        <v-simple-table dense max-height="400px" width="400px">
           <template v-slot:default>
             <thead>
               <tr>
@@ -30,11 +30,13 @@
             </thead>
             <tbody>
               <tr
-                v-for="item in desserts"
-                :key="item.name"
+                v-for="item in play"
+                :key="item.id"
                 @click="moveScroll(item.id)"
               >
-                <td style="cursor: pointer">{{ item.id }}</td>
+                <td class="text-center" style="cursor: pointer;">
+                  {{ item.id }}
+                </td>
                 <td style="cursor: pointer">{{ item.playName }}</td>
               </tr>
             </tbody>
@@ -53,40 +55,27 @@ export default class IntroMain extends Vue {
   $vuetify: any;
 
   playList = {
-    playListName: this.$route.params.playListName,
+    playListName: "슬기로운 싸피 생활",
     playListDescription:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecatieum voluptate est eius, voluptatibus earum ipsum asperiores modi odit numquam alias. Reiciendis saepe ex, eius animi maxime non debitis! Recusandae!"
   };
-
-  desserts = [
+  headers = [
     {
-      id: 1,
-      playName: "머신러닝"
-    },
-    {
-      id: 2,
-      playName: "인공지능 개론"
-    },
-    {
-      id: 3,
-      playName: "인공신경망 최적화"
-    },
-    {
-      id: 4,
-      playName: "IOT 접목하기"
-    },
-    {
-      id: 5,
-      playName: "텐서플로우와 코드"
-    },
-    {
-      id: 6,
-      playName: "KERAS와 코드"
-    },
-    {
-      id: 7,
-      playName: "CNN과 RNN"
+      text: "커리큘럼",
+      align: "start",
+      value: "playName",
+      groupable: false
     }
+  ];
+
+  play = [
+    { id: 1, playName: "머신러닝" },
+    { id: 2, playName: "인공지능 개론" },
+    { id: 3, playName: "인공신경망 최적화" },
+    { id: 4, playName: "IOT 접목하기" },
+    { id: 5, playName: "텐서플로우와 코드" },
+    { id: 6, playName: "KERAS와 코드" },
+    { id: 7, playName: "CNN과 RNN" }
   ];
 
   moveScroll(scrollId: string) {
@@ -148,6 +137,7 @@ export default class IntroMain extends Vue {
 }
 
 .tableBox {
+  margin-left: 80px;
   opacity: 0;
   animation: fadeInBottom 0.5s linear forwards;
   animation-delay: 1.5s;
@@ -168,15 +158,15 @@ export default class IntroMain extends Vue {
 
 .banner .textBox p {
   font-size: 1.1em;
-  margin: 5px 20px 0 0;
+  margin: 5px 0 0 0;
 }
 
 .banner .videoBx {
   position: relative;
   background: #fff;
   margin-right: 80px;
-  width: 500px;
-  height: 300px;
+  width: 300px;
+  height: 200px;
   z-index: 1;
 }
 

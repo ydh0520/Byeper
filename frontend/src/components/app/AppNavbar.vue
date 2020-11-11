@@ -1,9 +1,12 @@
 <template>
   <div>
     <v-app-bar style="position: fixed; z-index: 100">
-      <v-app-bar-nav-icon @click="TOGGLE_SIDEBAR"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        v-if="$route.name !== 'LecturePage'"
+        @click="TOGGLE_SIDEBAR"
+      ></v-app-bar-nav-icon>
       <v-col cols="3">
-        <v-toolbar-title>VideoSummary</v-toolbar-title>
+        <v-toolbar-title style="font-weight: bold">VPT</v-toolbar-title>
       </v-col>
       <v-col cols="6" style="padding: 0">
         <v-text-field
@@ -18,13 +21,13 @@
         >
         </v-text-field>
       </v-col>
-      <v-col cols="1.5"></v-col>
+      <v-col cols="1" style="margin-left: 30px"></v-col>
       <v-col cols="1">
         <v-btn v-if="!isLoggedIn" @click="toGoogleLogin">
           <v-icon>mdi-account</v-icon>로그인
         </v-btn>
         <v-btn v-if="isLoggedIn" @click="logout">
-          <v-icon>mdi-account</v-icon>로그인
+          <v-icon>mdi-account</v-icon>로그아웃
         </v-btn>
       </v-col>
     </v-app-bar>
@@ -33,7 +36,7 @@
       app
       permanent
       v-if="isSidebar"
-      style="margin-top: 64px;"
+      style="margin-top: 64px; width: 200px"
     >
       <v-list nav dense>
         <v-list-item-group
@@ -47,7 +50,7 @@
             <v-list-item-title>홈</v-list-item-title>
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item @click="goStudent">
             <v-list-item-icon>
               <v-icon>mdi-book-open-page-variant</v-icon>
             </v-list-item-icon>
@@ -96,6 +99,9 @@ export default class AppNavbar extends Vue {
   }
   goHome() {
     this.$router.push({ name: "Home" });
+  }
+  goStudent() {
+    this.$router.push({ name: "StudentPage" });
   }
   logout() {
     // this.LOGOUT();

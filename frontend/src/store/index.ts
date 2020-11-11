@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex, { StoreOptions } from "vuex";
 import AccountsModule from "./AccountsModule.store";
-import InstructorModule from "./InstructorModule.store";
+import PlayListModule from "./PlayListModule.store";
 
 Vue.use(Vuex);
 
@@ -15,7 +15,7 @@ const store: StoreOptions<RootState> = {
   },
   modules: {
     AccountsModule,
-    InstructorModule
+    PlayListModule
   }
 };
 
