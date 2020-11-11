@@ -55,7 +55,7 @@ export default class IntroMain extends Vue {
   $vuetify: any;
 
   playList = {
-    playListName: this.$route.params.playListName,
+    playListName: "슬기로운 싸피 생활",
     playListDescription:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecatieum voluptate est eius, voluptatibus earum ipsum asperiores modi odit numquam alias. Reiciendis saepe ex, eius animi maxime non debitis! Recusandae!"
   };

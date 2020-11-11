@@ -3,13 +3,13 @@
     <v-row style="margin: 20px 10%">
       <v-row>
         <v-col
-          v-for="item in list"
-          :key="item.id"
+          v-for="playList in AllPlayList"
+          :key="playList.playlistId"
           class="d-flex child-flex"
           cols="4"
           md="4"
           sm="6"
-          @click="pushPlayList(item.playListName)"
+          @click="pushPlayList(playList.playlistId)"
         >
           <v-hover v-slot="{ hover }">
             <div
@@ -78,54 +78,62 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import router from "../../router";
+import { namespace } from "vuex-class";
+import { PlayList } from "../../store/PlayList.interface";
+
+const PlayListModule = namespace("PlayListModule");
 
 @Component
 export default class AllPlayList extends Vue {
-  list = [
-    {
-      id: 1,
-      playListName: "슬기로운 싸피생활"
-    },
-    {
-      id: 2,
-      playListName: "슬기로운 싸피생활"
-    },
-    {
-      id: 3,
-      playListName: "슬기로운 싸피생활"
-    },
-    {
-      id: 4,
-      playListName: "슬기로운 싸피생활"
-    },
-    {
-      id: 5,
-      playListName: "슬기로운 싸피생활"
-    },
-    {
-      id: 6,
-      playListName: "슬기로운 싸피생활"
-    },
-    {
-      id: 7,
-      playListName: "슬기로운 싸피생활"
-    },
-    {
-      id: 8,
-      playListName: "슬기로운 싸피생활"
-    },
-    {
-      id: 9,
-      playListName: "슬기로운 싸피생활"
-    }
-  ];
+  @PlayListModule.State AllPlayList!: PlayList[] | null;
+  @PlayListModule.State scrollEnd!: boolean;
+  @PlayListModule.Action FETCH_ALL_PLAYLIST: any;
+
+  scrollHeight = 0;
+  start = 0;
+
+  scroll() {
+    window.onscroll = () => {
+      const ceilBottomOfWindow =
+        Math.ceil(window.pageYOffset) + window.innerHeight ===
+        document.documentElement.offsetHeight;
+
+      const plusBottomOfWindow =
+        Math.ceil(window.pageYOffset) + window.innerHeight + 1 ===
+        document.documentElement.offsetHeight;
+
+      if (
+        (ceilBottomOfWindow || plusBottomOfWindow) &&
+        !this.scrollEnd &&
+        this.$route.name === "Home"
+      ) {
+        ++this.start;
+        this.FETCH_ALL_PLAYLIST({
+          start: this.start
+        });
+      }
+    };
+  }
+
+  mounted() {
+    this.scroll();
+    this.scrollHeight = window.innerHeight;
+  }
 
   pushPlayList(playListName: string) {
     this.$router.push({
       name: "PlayList",
       params: { playListName: playListName }
+    });
+  }
+
+  @Watch("$route", { immediate: true })
+  fetchAllPlayList() {
+    this.start = 0;
+    this.FETCH_ALL_PLAYLIST({
+      start: this.start
     });
   }
 }
