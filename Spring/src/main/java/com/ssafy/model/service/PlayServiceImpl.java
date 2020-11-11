@@ -20,4 +20,10 @@ public class PlayServiceImpl implements PlayService {
 		return playRepository.saveAll(plays);
 	}
 
+	@Override
+	public PlayDto updatePlay(PlayDto play) {
+		// TODO Auto-generated method stub
+		return playRepository.save(play);
+	}
+
 }
