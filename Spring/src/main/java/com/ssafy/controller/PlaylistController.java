@@ -208,26 +208,26 @@ public class PlaylistController {
 	}
 
 	@PostMapping(value = "/api/pirvate/playlist/addvideo", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Object AddVideo(@RequestHeader("Authorization") String jwtToken, @RequestParam int playlistId,
-			@RequestBody Video[] videos) {
+	public Object AddVideo(@RequestHeader("Authorization") String jwtToken,
+			@RequestBody List<Video> videos) {
 		BasicResponse response = new BasicResponse();
 
 		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
 
 		List<PlayDto> plays = new LinkedList<PlayDto>();
 
-		for (int i = 0; i < videos.length; i++) {
+		for (int i = 0; i < videos.size(); i++) {
 			PlayDto play = new PlayDto();
 
-			play.setPlaylistId(playlistId);
-			play.setVideoId(videos[i].getVideoId());
+			play.setPlaylistId(5);
+			play.setVideoId(videos.get(i).getVideoId());
 			play.setPlayLog(0);
 			play.setPlayComplete(0);
 
 			plays.add(play);
 		}
 
-		List<Video> videoResult = videoService.SaveAllVideo(Arrays.asList(videos));
+		List<Video> videoResult = videoService.SaveAllVideo(videos);
 		List<PlayDto> playResult = playService.SaveAllPlay(plays);
 
 		response.data = videoResult;
