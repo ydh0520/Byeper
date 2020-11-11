@@ -1,5 +1,7 @@
-export interface AllPlayListModule {
+export interface PlayListModule {
   AllPlayList: PlayList[] | null;
+  PlayList: PlayList | null;
+  scrollEnd: boolean;
 }
 
 export interface PlayList {
