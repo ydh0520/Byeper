@@ -101,7 +101,10 @@
                       >
                         <v-list-item>
                           <v-avatar size="82" class="mr-5" tile>
-                            <img :src="video.videoImg" :alt="video.videoTitle" />
+                            <img
+                              :src="video.videoImg"
+                              :alt="video.videoTitle"
+                            />
                           </v-avatar>
                           <v-list-item-content>
                             <v-list-item-title
@@ -276,7 +279,9 @@
                   </v-avatar>
                   <v-list-item-content>
                     <v-list-item-title
-                      ><strong>{{ Video.videoTitle }}</strong></v-list-item-title
+                      ><strong>{{
+                        Video.videoTitle
+                      }}</strong></v-list-item-title
                     >
                     <v-list-item-content>{{
                       Video.videoDescription
@@ -339,7 +344,7 @@
                   label="내용을 충분히 이해하였으며, 이에 동의합니다."
                   value="1"
                 ></v-checkbox>
-                <v-btn color="primary" @click="CreatePlayList">
+                <v-btn color="primary" @click="createPlayList">
                   강의 생성
                 </v-btn>
 
@@ -347,6 +352,7 @@
                   이전 단계로
                 </v-btn>
               </v-card>
+              {{ SelectedVideos }}
             </v-col>
           </v-row>
         </v-stepper-content>
@@ -356,10 +362,14 @@
 </template>
 
 <script>
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-property-decorator";
 import { Drag, DropList } from "vue-easy-dnd";
 import { Axios } from "@/service/axios.service";
+import { namespace } from "vuex-class";
+//import { PlayList } from "@/store/Instructor.interface";
+import axios from "axios";
 
+const InstructorModule = namespace("InstructorModule");
 
 @Component({
   components: {
@@ -368,47 +378,56 @@ import { Axios } from "@/service/axios.service";
   }
 })
 export default class CreateLecture extends Vue {
+  @InstructorModule.State playListId;
+  @InstructorModule.Action CREATE_PLAYLIST;
+  @InstructorModule.Action ADD_VIDEO;
+
   UserVideos = [
     {
-      "videoId": "t8sjTFM_tfE",
-      "videoTitle": "0.1초 동안 컴퓨터를 빌려보자 - AWS Lambda",
-      "videoDescription": "0.1초 동안만 컴퓨터를 빌릴 수 있다면 얼마나 좋을까요? 0.1초 단위로 컴퓨터를 임대해주는 아마존 웹서비스 람다 수업을 만들었습니다. 람다의 실행방법과 디버깅 ...",
-      "videoImg": "https://i.ytimg.com/vi/t8sjTFM_tfE/hqdefault.jpg",
-      "videoMaxImg": 0,
-      "userId": "test@test.com"
+      videoId: "t8sjTFM_tfE",
+      videoTitle: "0.1초 동안 컴퓨터를 빌려보자 - AWS Lambda",
+      videoDescription:
+        "0.1초 동안만 컴퓨터를 빌릴 수 있다면 얼마나 좋을까요? 0.1초 단위로 컴퓨터를 임대해주는 아마존 웹서비스 람다 수업을 만들었습니다. 람다의 실행방법과 디버깅 ...",
+      videoImg: "https://i.ytimg.com/vi/t8sjTFM_tfE/hqdefault.jpg",
+      videoMaxImg: 0,
+      userId: "test@test.com"
     },
     {
-      "videoId": "87Ra6xwepFI",
-      "videoTitle": "Machine learning 1 - 6. 모델",
-      "videoDescription": "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
-      "videoImg": "https://i.ytimg.com/vi/87Ra6xwepFI/hqdefault.jpg",
-      "videoMaxImg": 0,
-      "userId": "test@test.com"
+      videoId: "87Ra6xwepFI",
+      videoTitle: "Machine learning 1 - 6. 모델",
+      videoDescription:
+        "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
+      videoImg: "https://i.ytimg.com/vi/87Ra6xwepFI/hqdefault.jpg",
+      videoMaxImg: 0,
+      userId: "test@test.com"
     },
     {
-      "videoId": "F5SUlHhjYCk",
-      "videoTitle": "Machine learning 1 - 5. Teachable machine",
-      "videoDescription": "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
-      "videoImg": "https://i.ytimg.com/vi/F5SUlHhjYCk/hqdefault.jpg",
-      "videoMaxImg": 0,
-      "userId": "test@test.com"
+      videoId: "F5SUlHhjYCk",
+      videoTitle: "Machine learning 1 - 5. Teachable machine",
+      videoDescription:
+        "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
+      videoImg: "https://i.ytimg.com/vi/F5SUlHhjYCk/hqdefault.jpg",
+      videoMaxImg: 0,
+      userId: "test@test.com"
     },
     {
-      "videoId": "KR8ddnPjCtk",
-      "videoTitle": "Machine learning 1 - 2. 머신러닝이란?",
-      "videoDescription": "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
-      "videoImg": "https://i.ytimg.com/vi/KR8ddnPjCtk/hqdefault.jpg",
-      "videoMaxImg": 0,
-      "userId": "test@test.com"
+      videoId: "KR8ddnPjCtk",
+      videoTitle: "Machine learning 1 - 2. 머신러닝이란?",
+      videoDescription:
+        "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
+      videoImg: "https://i.ytimg.com/vi/KR8ddnPjCtk/hqdefault.jpg",
+      videoMaxImg: 0,
+      userId: "test@test.com"
     },
     {
-      "videoId": "LPqmPfhnR1o",
-      "videoTitle": "Machine learning 1 - 1. 오리엔테이션",
-      "videoDescription": "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
-      "videoImg": "https://i.ytimg.com/vi/LPqmPfhnR1o/hqdefault.jpg",
-      "videoMaxImg": 0,
-      "userId": "test@test.com"
-    },
+      videoId: "LPqmPfhnR1o",
+      videoTitle: "Machine learning 1 - 1. 오리엔테이션",
+      videoDescription:
+        "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
+      videoImg: "https://i.ytimg.com/vi/LPqmPfhnR1o/hqdefault.jpg",
+      videoMaxImg: 0,
+      userId: "test@test.com"
+    }
   ];
   CreateLectureStep = 1;
 
@@ -467,20 +486,29 @@ export default class CreateLecture extends Vue {
     }
   }
 
-  async CreatePlayList() {
+  createPlayList() {
+    this.CREATE_PLAYLIST({
+      playlistCategory: this.LectureCategory,
+      playlistDescription: this.LectureDescription,
+      playlistId: 0,
+      playlistImg: this.LectureThumbnailLink,
+      playlistLevel: 0,
+      playlistTitle: this.LectureTitle,
+      playlistType: 1,
+      userId: ""
+    });
+    console.log(this.playListId);
+  }
+
+  @Watch("playListId")
+  addVideo() {
+    this.Addvideo();
+  }
+
+  async getVideoList() {
     try {
-      const res = await Axios.instance(
-        "http://k3b108.p.ssafy.io:8080/api/private/playlist/save",
-          {
-          playlistCategory: this.LectureCategory,
-          playlistDescription: this.LectureDescription,
-          playlistId: 0,
-          playlistImg: this.LectureThumbnailLink,
-          playlistLevel: 0,
-          playlistTitle: this.LectureTitle,
-          playlistType: 1,
-          userId: ""
-        },
+      const res = await axios.get(
+        "http://k3b108.p.ssafy.io:8080/api/public/videos",
         {
           headers: {
             "Content-Type": "application/json",
@@ -489,22 +517,25 @@ export default class CreateLecture extends Vue {
           }
         }
       );
-      if(res.data.data.playlistId) this.LectureTrackId = res.data.data.playlistId;
+      console.log(res);
+      if (res.data.data != null) this.UserVideos = res.data.data;
     } catch (e) {
       console.error(e);
     }
   }
 
-  async getVideoList() {
+  async Addvideo() {
     try {
-      const res = await axios.get("http://k3b108.p.ssafy.io:8080/api/public/videos", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNjA1OTQ2NDE2fQ.TZ42tp7hQb8RHfFQmwP7YP_miumbFu5hM0pT3KszXDoXR93MRSIpNVvfKhMxO2TkCNg7DXKH2ev-0VN0LCvS3Q"
-        }
-      })
+      const res = await Axios.instance
+          .post("/api/pirvate/playlist/addvideo", {
+            playlistId: this.playListId,
+            videos: this.SelectedVideos
+          }, {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
       console.log(res);
-      if(res.data.data != null) this.UserVideos = res.data.data;
     } catch (e) {
       console.error(e);
     }
@@ -513,7 +544,6 @@ export default class CreateLecture extends Vue {
   created() {
     this.getVideoList();
   }
-
 }
 </script>
 

@@ -1,6 +1,5 @@
 export interface InstructorModule {
-    playList : PlayList | null;
-    playListId : number | null;
+  playListId: number | null;
 }
 
 export interface Lecture {
