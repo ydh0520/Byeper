@@ -7,7 +7,7 @@ export class Axios {
   });
 
   static readonly instanceDjango: AxiosInstance = axios.create({
-    baseURL: "http://k3b108.p.ssafy.io:8000",
+    baseURL: "http://k3b108.p.ssafy.io",
     timeout: 10000
   });
 }
