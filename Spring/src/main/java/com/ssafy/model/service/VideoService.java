@@ -9,4 +9,8 @@ import com.ssafy.model.dto.Video;
 @Service
 public interface VideoService {
 	public List<Video> SaveAllVideo(List<Video> videos);
+
+	public Video DetailVideo(String videoId);
+
+	public List<Video> FindVideobyPlaylist(int playlistId);
 }
