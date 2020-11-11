@@ -1,6 +1,7 @@
 package com.ssafy.model.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,24 @@ public class VideoServiceImpl implements VideoService {
 	public List<Video> SaveAllVideo(List<Video> videos) {
 		// TODO Auto-generated method stub
 		return videoRepository.saveAll(videos);
+	}
+
+	@Override
+	public Video DetailVideo(String videoId) {
+		// TODO Auto-generated method stub
+		Optional<Video> video = videoRepository.findById(videoId);
+
+		if (video.isPresent())
+			return video.get();
+		else
+			return null;
+	}
+
+	@Override
+	public List<Video> FindVideobyPlaylist(int playlistId) {
+		// TODO Auto-generated method stub
+
+		return videoRepository.findVideoByPlaylist(playlistId);
 	}
 
 }

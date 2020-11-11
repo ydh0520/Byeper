@@ -68,7 +68,7 @@ public class YoutubeController {
 			headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
 			UriComponents builder = UriComponentsBuilder.fromHttpUrl(url).queryParam("part", "snippet")
-					.queryParam("channelId", userinfo.getChannelId()).queryParam("type", "video")
+					.queryParam("channelId", userinfo.getChannelId()).queryParam("type", "video").queryParam("maxResults", 50)
 					.queryParam("order", "date").queryParam("pageToken", nextPageToken).queryParam("key", YOUTUBE_API)
 					.build(false);
 
