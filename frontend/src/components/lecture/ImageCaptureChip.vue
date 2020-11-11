@@ -4,18 +4,9 @@
       <v-btn class="mx-2" fab icon large color="teal" @click="imageCapture">
         <v-icon>mdi-camera-outline</v-icon>
       </v-btn>
-      <v-btn @click="toPdf">ㅇ</v-btn>
       <v-dialog v-model="dialog" width="600px">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            class="mx-2"
-            fab
-            icon
-            large
-            color="teal"
-            v-bind="attrs"
-            v-on="on"
-          >
+          <v-btn fab color="red" v-bind="attrs" v-on="on">
             <v-icon>mdi-image-multiple-outline</v-icon>
           </v-btn>
         </template>
@@ -66,6 +57,9 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-btn class="mx-2" fab icon large color="teal" @click="toPdf">
+        <v-icon>mdi-file-pdf-outline</v-icon>
+      </v-btn>
     </v-chip>
   </v-row>
 </template>
@@ -134,7 +128,7 @@ export default class ImageCaptureChip extends Vue {
   background-color: inherit !important;
 }
 .chip-btn {
-  width: 186px;
+  width: 242px;
   position: fixed;
   bottom: 10px;
   margin: 0 auto;
