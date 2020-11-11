@@ -24,6 +24,9 @@ public class PlayDto {
 	@Column(name = "video_id")
 	private String videoId;
 
+	@Column(name = "play_note")
+	private String playNote;
+
 	public int getPlayId() {
 		return playId;
 	}
@@ -62,6 +65,14 @@ public class PlayDto {
 
 	public void setVideoId(String videoId) {
 		this.videoId = videoId;
+	}
+
+	public String getPlayNote() {
+		return playNote;
+	}
+
+	public void setPlayNote(String playNote) {
+		this.playNote = playNote;
 	}
 
 	@Override
