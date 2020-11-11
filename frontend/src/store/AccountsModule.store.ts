@@ -45,7 +45,6 @@ const module: Module<AccountsModule, RootState> = {
 
   actions: {
     GOOGLE_LOGIN({ commit }, authToken) {
-      console.log(authToken);
       Axios.instance
         .post("/api/public/google/login", authToken)
         .then(({ data }) => {
