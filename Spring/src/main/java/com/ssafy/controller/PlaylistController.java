@@ -45,7 +45,7 @@ public class PlaylistController {
 
 	private String[] allowFile = { "jpg", "png", "JPG", "PNG" };
 
-	@GetMapping("/api/public/palylist/teacher")
+	@GetMapping("/api/public/playlist/teacher")
 	public Object FindAllPlaylist(@RequestParam int start) {
 		BasicResponse response = new BasicResponse();
 
@@ -62,7 +62,7 @@ public class PlaylistController {
 		}
 	}
 
-	@GetMapping("/api/public/palylist/user")
+	@GetMapping("/api/public/playlist/user")
 	public Object FindAllPlaylist(@RequestHeader("Authorization") String jwtToken) {
 		BasicResponse response = new BasicResponse();
 		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
@@ -80,7 +80,7 @@ public class PlaylistController {
 		}
 	}
 
-	@GetMapping("/api/public/palylist/detail")
+	@GetMapping("/api/public/playlist/detail")
 	public Object FindDetailPlaylist(@RequestParam int playlistId) {
 		BasicResponse response = new BasicResponse();
 
