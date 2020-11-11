@@ -168,7 +168,7 @@ public class UserController {
 		}
 
 		response.data = userService.RegistTeacher(user.getUserId(),
-				items.get(0).getAsJsonObject().get("id").toString());
+				items.get(0).getAsJsonObject().get("id").getAsString());
 		response.status = (response.data != null) ? true : false;
 
 		if (response.status) {
