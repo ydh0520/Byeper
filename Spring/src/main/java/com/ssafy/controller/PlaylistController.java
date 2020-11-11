@@ -1,6 +1,7 @@
 package com.ssafy.controller;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -208,25 +209,25 @@ public class PlaylistController {
 
 	@PostMapping(value = "/api/pirvate/playlist/addvideo", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object AddVideo(@RequestHeader("Authorization") String jwtToken, @RequestParam int playlistId,
-			@RequestBody List<Video> videos) {
+			@RequestBody Video[] videos) {
 		BasicResponse response = new BasicResponse();
 
 		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
 
 		List<PlayDto> plays = new LinkedList<PlayDto>();
 
-		for (int i = 0; i < videos.size(); i++) {
+		for (int i = 0; i < videos.length; i++) {
 			PlayDto play = new PlayDto();
 
 			play.setPlaylistId(playlistId);
-			play.setVideoId(videos.get(i).getVideoId());
+			play.setVideoId(videos[i].getVideoId());
 			play.setPlayLog(0);
 			play.setPlayComplete(0);
 
 			plays.add(play);
 		}
 
-		List<Video> videoResult = videoService.SaveAllVideo(videos);
+		List<Video> videoResult = videoService.SaveAllVideo(Arrays.asList(videos));
 		List<PlayDto> playResult = playService.SaveAllPlay(plays);
 
 		response.data = videoResult;
