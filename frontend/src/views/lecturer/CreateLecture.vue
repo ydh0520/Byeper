@@ -358,7 +358,8 @@
 <script>
 import { Vue, Component } from "vue-property-decorator";
 import { Drag, DropList } from "vue-easy-dnd";
-import axios from "axios";
+import { Axios } from "@/service/axios.service";
+
 
 @Component({
   components: {
@@ -468,9 +469,9 @@ export default class CreateLecture extends Vue {
 
   async CreatePlayList() {
     try {
-      const res = await axios.post(
+      const res = await Axios.instance(
         "http://k3b108.p.ssafy.io:8080/api/private/playlist/save",
-        {
+          {
           playlistCategory: this.LectureCategory,
           playlistDescription: this.LectureDescription,
           playlistId: 0,

@@ -1,5 +1,6 @@
 export interface InstructorModule {
-  lectures: Lecture[] | null;
+    playList : PlayList | null;
+    playListId : number | null;
 }
 
 export interface Lecture {
@@ -11,4 +12,15 @@ export interface Lecture {
 export interface LectureSection {
   title: string;
   videoId: string;
+}
+
+export interface PlayList {
+  playlistId: number | null;
+  playlistTitle: string | null;
+  playlistDescription: string | null;
+  userId: string | null;
+  playlistType: number | null;
+  playlistCategory: number | null;
+  playlistLevel: number | null;
+  playlistImg: string | null;
 }
