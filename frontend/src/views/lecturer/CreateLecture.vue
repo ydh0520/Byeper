@@ -344,7 +344,7 @@
                   label="내용을 충분히 이해하였으며, 이에 동의합니다."
                   value="1"
                 ></v-checkbox>
-                <v-btn color="primary" @click="createPlayList">
+                <v-btn color="primary" @click="createLecture">
                   강의 생성
                 </v-btn>
 
@@ -352,7 +352,6 @@
                   이전 단계로
                 </v-btn>
               </v-card>
-              {{ SelectedVideos }}
             </v-col>
           </v-row>
         </v-stepper-content>
@@ -365,11 +364,8 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { Drag, DropList } from "vue-easy-dnd";
 import { Axios } from "@/service/axios.service";
-import { namespace } from "vuex-class";
 //import { PlayList } from "@/store/Instructor.interface";
 import axios from "axios";
-
-const InstructorModule = namespace("InstructorModule");
 
 @Component({
   components: {
@@ -378,10 +374,6 @@ const InstructorModule = namespace("InstructorModule");
   }
 })
 export default class CreateLecture extends Vue {
-  @InstructorModule.State playListId;
-  @InstructorModule.Action CREATE_PLAYLIST;
-  @InstructorModule.Action ADD_VIDEO;
-
   UserVideos = [
     {
       videoId: "t8sjTFM_tfE",
@@ -486,23 +478,29 @@ export default class CreateLecture extends Vue {
     }
   }
 
-  createPlayList() {
-    this.CREATE_PLAYLIST({
-      playlistCategory: this.LectureCategory,
-      playlistDescription: this.LectureDescription,
-      playlistId: 0,
-      playlistImg: this.LectureThumbnailLink,
-      playlistLevel: 0,
-      playlistTitle: this.LectureTitle,
-      playlistType: 1,
-      userId: ""
-    });
-    console.log(this.playListId);
-  }
 
-  @Watch("playListId")
-  addVideo() {
-    this.Addvideo();
+
+  async createPlayList() {
+    try {
+      const res = await Axios.instance.post("/api/private/playlist/save", {
+        playlistCategory: this.LectureCategory,
+        playlistDescription: this.LectureDescription,
+        playlistId: 0,
+        playlistImg: this.LectureThumbnailLink,
+        playlistLevel: 0,
+        playlistTitle: this.LectureTitle,
+        playlistType: 1,
+        userId: ""
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      console.log(res);
+      if(res.data.data) this.LectureTrackId = res.data.data.playlistId;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async getVideoList() {
@@ -524,15 +522,18 @@ export default class CreateLecture extends Vue {
     }
   }
 
-  async Addvideo() {
+  async addVideo() {
     try {
       const res = await Axios.instance
-          .post("/api/pirvate/playlist/addvideo", {
-            playlistId: this.playListId,
-            videos: this.SelectedVideos
-          }, {
+          .post("/api/pirvate/playlist/addvideo",
+            this.SelectedVideos
+          , {
+            params: {
+              playlistId: this.LectureTrackId
+            },
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNjA1OTYzNjY0fQ.6FNwNeQ0AoGpxU1hvJzlc3joh9XYPdWHKfEH4SH7NA3sd_-5Dfhyt6BkRj2DumlZep48R-2hPBTdXBrlSq2AUw"
             }
           })
       console.log(res);
@@ -541,6 +542,10 @@ export default class CreateLecture extends Vue {
     }
   }
 
+  async createLecture() {
+    await this.createPlayList();
+    await this.addVideo();
+  }
   created() {
     this.getVideoList();
   }
