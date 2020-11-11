@@ -9,6 +9,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,8 +30,6 @@ import com.ssafy.model.response.BasicResponse;
 import com.ssafy.model.service.PlayService;
 import com.ssafy.model.service.PlaylistService;
 import com.ssafy.model.service.VideoService;
-
-import io.swagger.models.Response;
 
 @Controller
 public class PlaylistController {
@@ -207,7 +206,7 @@ public class PlaylistController {
 		}
 	}
 
-	@PostMapping("/api/pirvate/playlist/addvideo")
+	@PostMapping(value = "/api/pirvate/playlist/addvideo", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object AddVideo(@RequestHeader("Authorization") String jwtToken, @RequestParam int playlistId,
 			@RequestBody List<Video> videos) {
 		BasicResponse response = new BasicResponse();
