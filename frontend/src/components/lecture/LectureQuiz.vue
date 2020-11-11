@@ -5,15 +5,19 @@
         <v-card color="grey" height="200">
           <v-row class="fill-height" align="center" justify="center">
             <v-col cols="12">
-              <h1 style="font-size: 1rem;" class="white--text">
+              <h1
+                style="font-size: 1rem; text-align: center;"
+                class="white--text"
+              >
                 {{ Quiz.text }}
               </h1>
             </v-col>
-            <v-col>
+            <v-col cols="3">
               <v-text-field
                 label="Solo"
                 placeholder="정답:"
                 solo
+                width="50px"
               ></v-text-field>
             </v-col>
           </v-row>
