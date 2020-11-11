@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-app-bar style="position: fixed; z-index: 100">
-      <v-app-bar-nav-icon @click="TOGGLE_SIDEBAR"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        v-if="$route.name !== 'LecturePage'"
+        @click="TOGGLE_SIDEBAR"
+      ></v-app-bar-nav-icon>
       <v-col cols="3">
         <v-toolbar-title style="font-weight: bold">VPT</v-toolbar-title>
       </v-col>

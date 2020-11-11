@@ -1,3 +1,4 @@
+// @ts-ignore
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -5,6 +6,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "./styles/tiptap/main.scss";
 import GAuth from "vue-google-oauth2";
+import VueYoutube from "vue-youtube";
 
 const gauthOption = {
   clientId:
@@ -13,6 +15,8 @@ const gauthOption = {
   prompt: "select_account"
 };
 
+Vue.use(VueYoutube);
+
 Vue.use(GAuth, gauthOption);
 Vue.config.productionTip = false;
 
@@ -20,5 +24,5 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
+  render: (h: (arg0: typeof App) => any) => h(App)
 }).$mount("#app");
