@@ -56,14 +56,14 @@
                       <div
                         style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; padding: 0px"
                       >
-                        [브이로그] 슬기로운 싸피생활
+                        {{ playList.playlistTitle }}
                       </div>
                     </v-row>
                     <v-row>
                       <div
                         style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
                       >
-                        싸피대장
+                        {{ playList.userId }}
                       </div>
                     </v-row>
                   </v-col>
