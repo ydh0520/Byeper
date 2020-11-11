@@ -208,7 +208,7 @@ public class PlaylistController {
 	}
 
 	@PostMapping(value = "/api/pirvate/playlist/addvideo", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Object AddVideo(@RequestHeader("Authorization") String jwtToken,
+	public Object AddVideo(@RequestHeader("Authorization") String jwtToken, @RequestParam int playlistId,
 			@RequestBody List<Video> videos) {
 		BasicResponse response = new BasicResponse();
 
@@ -219,7 +219,7 @@ public class PlaylistController {
 		for (int i = 0; i < videos.size(); i++) {
 			PlayDto play = new PlayDto();
 
-			play.setPlaylistId(5);
+			play.setPlaylistId(playlistId);
 			play.setVideoId(videos.get(i).getVideoId());
 			play.setPlayLog(0);
 			play.setPlayComplete(0);
