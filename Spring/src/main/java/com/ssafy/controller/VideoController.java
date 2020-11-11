@@ -34,7 +34,7 @@ public class VideoController {
 	}
 
 	@GetMapping("/api/public/video/findplaylist")
-	public Object VideoFindbyPlaylist(@RequestParam String videoId, @RequestParam int playlistId) {
+	public Object VideoFindbyPlaylist(@RequestParam int playlistId) {
 		BasicResponse response = new BasicResponse();
 
 		response.data = videoService.FindVideobyPlaylist(playlistId);
