@@ -101,6 +101,11 @@ public class PlaylistController {
 	public Object Saveplaylist(@RequestHeader("Authorization") String jwtToken, @RequestBody PlaylistDto playlist) {
 		BasicResponse response = new BasicResponse();
 		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+		if (user == null) {
+			response.status = false;
+			response.message = "잘못된 사용자 입니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
 
 		playlist.setUserId(user.getUserId());
 
