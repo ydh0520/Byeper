@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.model.dto.PlayinfoDto;
 import com.ssafy.model.dto.Video;
 import com.ssafy.model.repository.VideoRepository;
 
@@ -33,7 +34,7 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public List<Video> FindVideobyPlaylist(int playlistId) {
+	public List<PlayinfoDto> FindVideobyPlaylist(int playlistId) {
 		// TODO Auto-generated method stub
 
 		return videoRepository.findVideoByPlaylist(playlistId);
