@@ -21,13 +21,18 @@
           <v-btn class="menu-btn" tile @click="toNoteTab">노트</v-btn>
         </v-col>
         <v-col class="menu-col">
+          <v-btn class="menu-btn" tile @click="toQuizTab">문제</v-btn>
+        </v-col>
+        <v-col class="menu-col">
           <v-btn class="menu-btn" tile @click="toListTab">목록</v-btn>
         </v-col>
       </v-row>
       <text-editor
         :player="player"
+        :videoId="videoURL"
         v-if="$route.query.tab === 'note' || !$route.query.tab"
       />
+      <curriculum v-else-if="$route.query.tab === 'list'" />
       <v-btn @click="startVideo">{{ $route.query.tab }}</v-btn>
     </v-col>
   </v-row>
@@ -58,6 +63,9 @@ export default class LecturePage extends Vue {
   }
   toNoteTab() {
     this.$router.replace({ name: "LecturePage", query: { tab: "note" } });
+  }
+  toQuizTab() {
+    this.$router.replace({ name: "LecturePage", query: { tab: "quiz" } });
   }
   toListTab() {
     this.$router.replace({ name: "LecturePage", query: { tab: "list" } });
