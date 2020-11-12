@@ -18,7 +18,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 	@Override
 	public List<PlaylistDto> findAllPlaylistTeacher(int start) {
 		// TODO Auto-generated method stub
-		int index = start * 10;
+		int index = start * 9;
 
 		return playlistRepository.findPlaylistTeacher(1, index);
 	}
