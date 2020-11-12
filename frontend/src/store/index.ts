@@ -18,7 +18,7 @@ const store: StoreOptions<RootState> = {
   modules: {
     AccountsModule,
     PlayListModule,
-    InstructorModule
+    InstructorModule,
     LecturesModule,
   }
 }
