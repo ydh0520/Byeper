@@ -2,7 +2,7 @@
   <div>
     <div class="banner">
       <v-row>
-        <v-col>
+        <v-col cols="3">
           <div class="videoBx">
             <video
               src="@/assets/mainVideo.mp4"
@@ -14,13 +14,13 @@
           </div>
         </v-col>
 
-        <v-col>
+        <v-col cols="6" justify="center" align="center">
           <div class="textBox">
             <h2>{{ playList.playListName }}</h2>
             <p>{{ playList.playListDescription }}</p>
           </div>
         </v-col>
-        <v-col>
+        <v-col cols="3">
           <div class="tableBox">
             <v-simple-table dense max-height="400px" width="400px">
               <template v-slot:default>
@@ -51,12 +51,12 @@
           </div>
         </v-col>
       </v-row>
-      <v-btn class="mx-2" fab dark color="indigo" @click="buyPlayList">
-        <v-icon dark>
-          mdi-plus
-        </v-icon>
-      </v-btn>
     </div>
+    <v-btn class="mx-2" fab dark color="indigo" @click="buyPlayList">
+      <v-icon dark>
+        mdi-plus
+      </v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -116,8 +116,7 @@ export default class IntroMain extends Vue {
       });
     } else {
       if (
-        confirm("로그인이 필요합니다.\n로그인 화면으로 이동하시겠습니까?") ===
-        true
+        confirm("로그인이 필요합니다.\n구글 로그인을 하시겠습니까??") === true
       ) {
         this.$gAuth
           .getAuthCode()
@@ -132,11 +131,11 @@ export default class IntroMain extends Vue {
 .banner {
   position: relative;
   width: 100%;
-  padding: 0 100px;
   display: flex;
   min-height: 500px;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
+  padding: 0 50px 0 50px;
 }
 
 .banner video {
@@ -177,7 +176,6 @@ export default class IntroMain extends Vue {
 }
 
 .tableBox {
-  margin-left: 50px;
   opacity: 0;
   animation: fadeInBottom 0.5s linear forwards;
   animation-delay: 1.5s;
@@ -203,9 +201,8 @@ export default class IntroMain extends Vue {
 
 .banner .videoBx {
   position: relative;
-  background: #fff;
   margin-top: 30px;
-  margin-right: 50px;
+  display: inline;
   width: 300px;
   height: 200px;
   z-index: 1;
