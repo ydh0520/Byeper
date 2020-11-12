@@ -1,6 +1,7 @@
 export interface LecturesModule {
   lectures: Lecture[];
   allCaptureImgs: CaptureImages[];
+  courses: Course[];
 }
 
 export interface Lecture {
@@ -20,4 +21,15 @@ export interface CaptureImages {
   address: string;
   time: number;
   diff: number;
+}
+
+export interface Course {
+  playlistId: number;
+  playlistTitle: string;
+  playlistDescription: string;
+  userId: string;
+  playlistType: number;
+  playlistCategory: number;
+  playlistLevel: number;
+  playlistImg: string;
 }
