@@ -18,7 +18,7 @@
               max-width="100px"
               style="border: 0px; cursor: pointer;"
             >
-              <v-img :aspect-ratio="16 / 9" src="@/assets/jun.png">
+              <v-img :aspect-ratio="16 / 9" :src="playList.playlistImg">
                 <div
                   class="d-flex transition-fast-in-fast-out black darken-2 v-card--reveal display-3 "
                   style="height: 100%; width: 33%; padding: 0px"
