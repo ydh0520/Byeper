@@ -3,7 +3,7 @@
     <v-card flat tile width="100%">
       <v-window v-model="onboarding" vertical>
         <v-window-item v-for="Quiz in Quizes" :key="Quiz.id">
-          <v-card class="quizcard" color="grey" height="600px">
+          <v-card class="quiz-content" color="grey">
             <v-row align="center" justify="center">
               <v-col cols="12">
                 <h1
@@ -68,7 +68,7 @@ export default class Quiz extends Vue {
       ".editor-container"
     ) as HTMLElement;
 
-    editorContainer.style.backgroundColor = "#121212";
+    editorContainer.style.backgroundColor = "#1E1E1E";
     editorContainer.style.paddingBottom = "0";
   }
 
@@ -86,5 +86,11 @@ export default class Quiz extends Vue {
 <style scoped>
 .quiz {
   width: 100%;
+  height: calc(100%-64px);
+}
+.quiz-content {
+  height: calc(100vh - 156px);
+  align-items: center;
+  display: flex;
 }
 </style>
