@@ -1,10 +1,10 @@
 <template>
   <div class="quiz">
     <v-row class="quiz-content" align="center">
-      <v-col cols="10" style="padding-top: 0; padding-bottom: 0">
-        <v-window v-model="window" class="elevation-1" vertical>
+      <v-col class="quiz-col" cols="10">
+        <v-window v-model="window" vertical>
           <v-window-item v-for="Quiz in Quizes" :key="Quiz.id">
-            <v-row class="quiz-text" align="center">
+            <v-row class="quiz-text" align="center" justify="center">
               <p style="text-align: center">
                 {{ Quiz.text }}
               </p>
@@ -69,12 +69,19 @@ export default class Quiz extends Vue {
   width: 100%;
 }
 .quiz-content {
-  height: calc(100vh - 100px);
-  align-items: center;
+  width: 100%;
+  height: calc(100vh - 100px);  
   padding: 0;
 }
 .quiz-text {
+  width: 100%;
   height: calc(100vh - 100px);
   background-color: gray;
+  margin: 0;
+}
+.quiz-col {
+  padding-top: 0; 
+  padding-bottom: 0; 
+  
 }
 </style>
