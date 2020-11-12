@@ -19,4 +19,10 @@ public class ProblemServiceImpl implements ProblemService {
 		return problemRepository.findByVideoId(videoId);
 	}
 
+	@Override
+	public List<ProblemDto> SaveAllProblem(List<ProblemDto> problems) {
+		// TODO Auto-generated method stub
+		return problemRepository.saveAll(problems);
+	}
+
 }

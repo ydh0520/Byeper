@@ -10,4 +10,6 @@ import com.ssafy.model.dto.ProblemDto;
 public interface ProblemService {
 
 	public List<ProblemDto> FindProblemByVideo(String videoId);
+
+	public List<ProblemDto> SaveAllProblem(List<ProblemDto> problems);
 }
