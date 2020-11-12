@@ -40,7 +40,7 @@
             <v-btn color="green darken-1" text @click="dialog = false">
               취소
             </v-btn>
-            <v-btn color="green darken-1" text @click="dialog = false">
+            <v-btn color="green darken-1" text @click="imageCaptureAll">
               적용
             </v-btn>
           </v-card-actions>
@@ -88,11 +88,14 @@ export default class ImageCaptureChip extends Vue {
     this.addCapture({ url: videoUrl, time: getVideoTime });
   }
   imageCaptureAll() {
-    console.log("all");
+    this.selectedCaptures.forEach(img =>
+      this.$emit("addCapture", { url: img.address, time: img.time })
+    );
+    this.dialog = false;
   }
   async toPdf() {
     await this.$vuetify.goTo(0);
-    h2c((await document.querySelector(".ProseMirror")) as HTMLElement).then(
+    h2c((await document.querySelector(".editor__content")) as HTMLElement).then(
       canvas => {
         const imgData = canvas.toDataURL("image/jpeg");
         const margin = 10;
@@ -115,7 +118,7 @@ export default class ImageCaptureChip extends Vue {
       }
     );
   }
-  @Watch("allCaptureImgs")
+  @Watch("allCaptureImgs", { immediate: true })
   setAllImgs() {
     this.selectedCaptures = this.allCaptureImgs;
   }
