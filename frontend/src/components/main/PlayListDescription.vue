@@ -2,7 +2,7 @@
   <div v-if="PlayList">
     <div class="banner">
       <v-row>
-        <v-col cols="3">
+        <v-col cols="2">
           <div class="videoBx">
             <video
               src="@/assets/mainVideo.mp4"
@@ -14,13 +14,13 @@
           </div>
         </v-col>
 
-        <v-col cols="6" justify="center" align="center">
+        <v-col cols="5" justify="center" align="center">
           <div class="textBox">
             <h2>{{ PlayList.playlistTitle }}</h2>
             <p>{{ PlayList.playlistDescription }}</p>
           </div>
         </v-col>
-        <v-col cols="3">
+        <v-col cols="5">
           <div class="tableBox">
             <v-simple-table dense max-height="400px" width="400px">
               <template v-slot:default>
@@ -36,14 +36,14 @@
                 </thead>
                 <tbody>
                   <tr
-                    v-for="item in play"
-                    :key="item.id"
-                    @click="moveScroll(item.id)"
+                    v-for="(video, video_index) in PlayListVideos"
+                    :key="video.video_id"
+                    @click="moveScroll(video.video_id)"
                   >
                     <td class="text-center" style="cursor: pointer;">
-                      {{ item.id }}
+                      {{ video_index + 1 }}
                     </td>
-                    <td style="cursor: pointer">{{ item.playName }}</td>
+                    <td style="cursor: pointer">{{ video.video_title }}</td>
                   </tr>
                 </tbody>
               </template>
@@ -81,11 +81,6 @@ export default class PlayListDescription extends Vue {
   $vuetify: any;
   $gAuth: any;
 
-  playList = {
-    playListName: "슬기로운 싸피 생활",
-    playListDescription:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecatieum voluptate est eius, voluptatibus earum ipsum asperiores modi odit numquam alias. Reiciendis saepe ex, eius animi maxime non debitis! Recusandae!"
-  };
   headers = [
     {
       text: "커리큘럼",
@@ -93,16 +88,6 @@ export default class PlayListDescription extends Vue {
       value: "playName",
       groupable: false
     }
-  ];
-
-  play = [
-    { id: 1, playName: "머신러닝" },
-    { id: 2, playName: "인공지능 개론" },
-    { id: 3, playName: "인공신경망 최적화" },
-    { id: 4, playName: "IOT 접목하기" },
-    { id: 5, playName: "텐서플로우와 코드" },
-    { id: 6, playName: "KERAS와 코드" },
-    { id: 7, playName: "CNN과 RNN" }
   ];
 
   @Watch("$route", { immediate: true })
