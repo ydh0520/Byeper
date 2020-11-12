@@ -19,6 +19,9 @@ const module: Module<LecturesModule, RootState> = {
     },
     SET_COURSE_BY_STUDENT(state, courses) {
       state.courses = courses;
+    },
+    SET_LECTURE_BY_COURSE(state, lectures) {
+      state.lectures = lectures;
     }
   },
 
@@ -48,6 +51,12 @@ const module: Module<LecturesModule, RootState> = {
       Axios.instance
         .get("/api/public/playlist/user")
         .then(({ data }) => commit("SET_COURSE_BY_STUDENT", data.data))
+        .catch(err => console.error(err));
+    },
+    FETCH_LECTURE_BY_COURSE({ commit }, playlistId) {
+      Axios.instance
+        .get("/api/public/video/findplaylist", { params: { playlistId } })
+        .then(({ data }) => commit("SET_LECTURE_BY_COURSE", data.data))
         .catch(err => console.error(err));
     }
   }

@@ -7,25 +7,34 @@
       class="lecture-title text-h3 mb-10 "
       style="text-align: center; font-family: 'Do Hyeon', sans-serif !important;"
     >
-      {{ this.$route.params.courseName }}
+      {{ $route.params.playlistTitle }}
     </div>
-    <statistics-by-cource />
+    <statistics-by-course />
     <play-list-videos />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import StatisticsByCource from "@/components/dashboard/StatisticsByCource.vue";
+import StatisticsByCourse from "@/components/dashboard/StatisticsByCourse.vue";
 import PlayListVideos from "@/components/main/PlayListVideos.vue";
+import { namespace } from "vuex-class";
+
+const LecturesModule = namespace("LecturesModule");
 
 @Component({
   components: {
-    StatisticsByCource,
+    StatisticsByCourse,
     PlayListVideos
   }
 })
-export default class LectureListPage extends Vue {}
+export default class LectureListPage extends Vue {
+  @LecturesModule.Action FETCH_LECTURE_BY_COURSE: any;
+
+  created() {
+    this.FETCH_LECTURE_BY_COURSE(this.$route.params.playlistId);
+  }
+}
 </script>
 
 <style>
@@ -41,7 +50,7 @@ export default class LectureListPage extends Vue {}
   width: 100%;
   height: 300px;
   transform-origin: right;
-  animation: revealText 3s ease-in-out forwards;
+  animation: revealText 2s ease-in-out forwards;
 }
 @keyframes revealText {
   0% {
