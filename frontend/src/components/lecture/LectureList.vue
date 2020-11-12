@@ -11,7 +11,7 @@
         <v-card
           class="mx-auto"
           height="400px"
-          @click="routingToCource(course.playlistId)"
+          @click="routingToCourse(course.playlistId, course.playlistTitle)"
         >
           <v-img :src="course.playlistImg" height="200px"></v-img>
           <v-row align="center">
@@ -54,10 +54,10 @@ const LecturesModule = namespace("LecturesModule");
 export default class LectureList extends Vue {
   @LecturesModule.State courses!: Course[];
 
-  routingToCource(playlistId: number) {
+  routingToCourse(playlistId: number, playlistTitle) {
     this.$router.push({
       name: "LectureListPage",
-      params: { playlistId: String(playlistId) }
+      params: { playlistId: String(playlistId), playlistTitle }
     });
   }
 }
