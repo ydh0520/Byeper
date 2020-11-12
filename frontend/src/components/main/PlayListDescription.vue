@@ -2,25 +2,19 @@
   <div v-if="PlayList">
     <div class="banner">
       <v-row>
-        <v-col cols="2">
-          <div class="videoBx">
-            <video
-              src="@/assets/mainVideo.mp4"
-              muted
-              autoplay
-              loop
-              type="mp4"
-            ></video>
+        <v-col cols="2" lg="2" md="2" sm="12" justify="center" align="center">
+          <div class="imgBx">
+            <img :src="PlayList.playlistImg" />
           </div>
         </v-col>
 
-        <v-col cols="5" justify="center" align="center">
+        <v-col cols="5" lg="5" md="5" sm="12">
           <div class="textBox">
             <h2>{{ PlayList.playlistTitle }}</h2>
             <p>{{ PlayList.playlistDescription }}</p>
           </div>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="5" lg="5" md="5" sm="12" justify="center" align="center">
           <div class="tableBox">
             <v-simple-table dense max-height="400px" width="400px">
               <template v-slot:default>
@@ -139,17 +133,6 @@ export default class PlayListDescription extends Vue {
   padding: 0 50px 0 50px;
 }
 
-.banner video {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.1;
-  pointer-events: none;
-}
-
 .banner .textBox {
   position: relative;
   max-width: 500px;
@@ -192,24 +175,25 @@ export default class PlayListDescription extends Vue {
   }
 }
 .banner .textBox h2 {
+  margin: 10px 0 0 0;
   font-size: 3em;
 }
 
 .banner .textBox p {
   font-size: 1.1em;
-  margin: 5px 0 0 0;
+  margin: 20px 0 0 0;
 }
 
-.banner .videoBx {
+.banner .imgBx {
   position: relative;
-  margin-top: 30px;
-  display: inline;
-  width: 300px;
-  height: 200px;
+  display: contents;
+  width: 128px;
+  height: 72px;
   z-index: 1;
 }
 
-.banner .videoBx video {
-  opacity: 1;
+.banner .imgBx img {
+  width: 100%;
+  height: 100%;
 }
 </style>
