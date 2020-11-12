@@ -7,7 +7,8 @@ const module: Module<LecturesModule, RootState> = {
   namespaced: true,
   state: {
     lectures: [],
-    allCaptureImgs: []
+    allCaptureImgs: [],
+    courses: []
   },
 
   getters: {},
@@ -15,6 +16,9 @@ const module: Module<LecturesModule, RootState> = {
   mutations: {
     SET_ALL_CAPTURE_IMAGES(state, imgs) {
       state.allCaptureImgs = imgs;
+    },
+    SET_COURSE_BY_STUDENT(state, courses) {
+      state.courses = courses;
     }
   },
 
@@ -39,6 +43,12 @@ const module: Module<LecturesModule, RootState> = {
         `http://k3b108.p.ssafy.io/file/${videoId}/${videoId}.json`
       );
       xhr.send();
+    },
+    FETCH_COURSE_BY_STUDENT({ commit }) {
+      Axios.instance
+        .get("/api/public/playlist/user")
+        .then(({ data }) => commit("SET_COURSE_BY_STUDENT", data.data))
+        .catch(err => console.error(err));
     }
   }
 };
