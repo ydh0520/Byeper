@@ -16,6 +16,7 @@
           </v-card-title>
           <v-slider
             class="capture-slider"
+            v-model="sensitivity"
             :tick-labels="ticksLabels"
             :max="2"
             color="#E53935"
@@ -26,25 +27,13 @@
           ></v-slider>
           <v-divider class="slider-divide"></v-divider>
           <v-card-text>
-            Lorem ipsum dolor sit amet, semper quis, sapien id natoque elit.
-            Nostra urna at, magna at neque sed sed ante imperdiet, dolor mauris
-            cursus velit, velit non, sem nec. Volutpat sem ridiculus placerat
-            leo, augue in, duis erat proin condimentum in a eget, sed fermentum
-            sed vestibulum varius ac, vestibulum volutpat orci ut elit eget
-            tortor. Ultrices nascetur nulla gravida ante arcu. Pharetra rhoncus
-            morbi ipsum, nunc tempor debitis, ipsum pellentesque, vitae id quam
-            ut mauris dui tempor, aptent non. Quisque turpis. Phasellus quis
-            lectus luctus orci eget rhoncus. Amet donec vestibulum mattis
-            commodo, nulla aliquet, nibh praesent, elementum nulla. Sit lacus
-            pharetra tempus magna neque pellentesque, nulla vel erat. Justo ex
-            quisque nulla accusamus venenatis, sed quis. Nibh phasellus gravida
-            metus in, fusce aenean ut erat commodo eros. Ut turpis, dui integer,
-            nonummy pede placeat nec in sit leo. Faucibus porttitor illo taciti
-            odio, amet viverra scelerisque quis quis et tortor, curabitur morbi
-            a. Enim tempor at, rutrum elit condimentum, amet rutrum vitae tempor
-            torquent nunc. Praesent vestibulum integer maxime felis. Neque
-            aenean quia vitae nostra, tempus elit enim id dui, at egestas
-            pulvinar.
+            <div v-for="img in selectedCaptures" :key="img.address">
+              <h1>{{ img.address }}</h1>
+              <img
+                :src="`http://k3b108.p.ssafy.io${img.address}`"
+                class="all-capture-img"
+              />
+            </div>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -65,10 +54,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import h2c from "html2canvas";
 import { jsPDF } from "jspdf";
 import { namespace } from "vuex-class";
+import { CaptureImages } from "../../store/Lectures.interface";
 
 const LecturesModule = namespace("LecturesModule");
 
@@ -77,8 +67,11 @@ export default class ImageCaptureChip extends Vue {
   @Prop(Object) readonly player: any;
   @Prop(String) readonly videoId!: string;
   @LecturesModule.Action FETCH_CAPTURE_IMAGE: any;
+  @LecturesModule.State allCaptureImgs!: CaptureImages[];
 
   ticksLabels = ["하", "중", "상"];
+  sensitivity = 2;
+  selectedCaptures: CaptureImages[] = [];
 
   dialog = false;
   $vuetify: any;
@@ -122,6 +115,24 @@ export default class ImageCaptureChip extends Vue {
       }
     );
   }
+  @Watch("allCaptureImgs")
+  setAllImgs() {
+    this.selectedCaptures = this.allCaptureImgs;
+  }
+  @Watch("sensitivity")
+  imgsFilter() {
+    if (this.sensitivity === 0) {
+      this.selectedCaptures = this.allCaptureImgs.filter(
+        img => img.diff >= 10000
+      );
+    } else if (this.sensitivity === 1) {
+      this.selectedCaptures = this.allCaptureImgs.filter(
+        img => img.diff >= 6000
+      );
+    } else {
+      this.selectedCaptures = this.allCaptureImgs;
+    }
+  }
 }
 </script>
 
@@ -145,5 +156,8 @@ export default class ImageCaptureChip extends Vue {
 }
 .v-slider__tick-label {
   color: #ef9a9a !important;
+}
+.all-capture-img {
+  width: 100%;
 }
 </style>
