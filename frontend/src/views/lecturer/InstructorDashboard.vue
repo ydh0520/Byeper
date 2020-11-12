@@ -2,7 +2,11 @@
   <div>
     <v-row style="margin: 10px 10%" cols="12" sm="6" offset-sm="3">
       <h2 class="mt-12">나의 강좌</h2>
-      <vue-slick-carousel v-if="Lectures.length" class="slick mt-12" v-bind="settings">
+      <vue-slick-carousel
+        v-if="Lectures.length"
+        class="slick mt-12"
+        v-bind="settings"
+      >
         <div v-for="lecture in Lectures" :key="lecture.playlistId">
           <img
             class="Lecture-img"
@@ -26,7 +30,11 @@
             v-for="(Lecture, index) in SelectedPlayLists"
             :key="index"
           >
-            <v-list-item v-for="(video, idx) in Lecture.videos" :key="idx">
+            <v-list-item
+              @click="getProblems(video)"
+              v-for="(video, idx) in Lecture.videos"
+              :key="idx"
+            >
               <v-list-item-avatar tile>
                 <v-img :src="video.video_img"></v-img>
               </v-list-item-avatar>
@@ -52,11 +60,34 @@
     <v-dialog v-model="problemPopup">
       <v-row justify="center">
         <v-col cols="4">
-          <v-card height="70vh">hihihihih</v-card>
+          <v-card height="70vh">
+            <h1>추천 문제</h1>
+            <v-list v-for="(problem, idx) in problemCandidate" :key="idx">
+              <v-list-item @click="selectProblem(problem)">
+                <v-list-item-content>
+                  <v-list-item-title>{{ problem.problem }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
         </v-col>
         <v-col cols="5">
-          <v-card class="mb-5" height="35vh">hihidhfidhfidhfi</v-card>
-          <v-card height="30vh">hihihihihihihihih</v-card>
+          <v-card class="mb-5" height="35vh">
+            <v-text-field v-model="problem"></v-text-field>
+            <v-text-field v-model="answer"></v-text-field>
+            <v-btn @click="addProblem()">문제 추가</v-btn>
+          </v-card>
+          <v-card height="30vh">
+            <v-list v-for="(problem, idx) in problemList" :key="idx">
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>{{ problem.problem }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+          <v-btn class="mr-5">문제 생성</v-btn>
+          <v-btn>취소</v-btn>
         </v-col>
       </v-row>
     </v-dialog>
@@ -163,7 +194,50 @@ export default class InstructorDashboard extends Vue {
       }
     ]
   };
+  // 문제 제출 관련 변수들
   problemPopup = false;
+  problemCandidate = [
+    {
+      "problem": "1더하기 1은 _______ 이다",
+      "answer": "2",
+      "video": "1",
+      "origin": "1더하기 1은 2다"
+    },
+    {
+      "problem": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 ______라는 객체를 생성하여 수행한다.",
+      "answer": "XMLHttpRequest",
+      "video": "1",
+      "origin": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 XMLHttpRequest라는 객체를 생성하여 수행한다."
+    },
+    {
+      "problem": "1더하기 1은 _______ 이다",
+      "answer": "2",
+      "video": "1",
+      "origin": "1더하기 1은 2다"
+    },
+    {
+      "problem": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 ______라는 객체를 생성하여 수행한다.",
+      "answer": "XMLHttpRequest",
+      "video": "1",
+      "origin": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 XMLHttpRequest라는 객체를 생성하여 수행한다."
+    },
+    {
+      "problem": "1더하기 1은 _______ 이다",
+      "answer": "2",
+      "video": "1",
+      "origin": "1더하기 1은 2다"
+    },
+    {
+      "problem": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 ______라는 객체를 생성하여 수행한다.",
+      "answer": "XMLHttpRequest",
+      "video": "1",
+      "origin": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 XMLHttpRequest라는 객체를 생성하여 수행한다."
+    },
+  ];
+  problemList = [];
+  // 문제
+  problem = "";
+  answer = "";
 
   async getTotalLecture() {
     const Lectures = await this.getMyPlayList();
@@ -192,13 +266,14 @@ export default class InstructorDashboard extends Vue {
     getLecture(Lectures).then(res => {
       this.LecturePlayLists = res;
       this.SelectedPlayLists.push(this.LecturePlayLists[0]);
-      console.log("초기상태", this.SelectedPlayLists);
     });
   }
 
   async getMyPlayList() {
     try {
-      const myLectures = await Axios.instance.get("/api/public/playlist/management");
+      const myLectures = await Axios.instance.get(
+        "/api/public/playlist/management"
+      );
       if (myLectures) this.Lectures = myLectures.data.data;
       return myLectures.data.data;
     } catch (e) {
@@ -210,7 +285,35 @@ export default class InstructorDashboard extends Vue {
     this.SelectedPlayLists = this.LecturePlayLists.filter(
       playlist => playlist.playlistId === playlistId
     );
-    console.log("나중상태", this.SelectedPlayLists);
+  }
+
+  async getProblems(video) {
+    console.log(video);
+    this.problemPopup = true;
+    try {
+      // const res = await Axios.instanceDjango.post("문제 만드는 API")
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  selectProblem(problem) {
+    this.problem = problem.problem;
+    this.answer = problem.answer;
+  }
+
+  addProblem() {
+    this.problemList.push({
+      problem : this.problem,
+      answer : this.answer
+    })
+    this.problem = "";
+    this.answer = "";
+  }
+
+  async submitProblems(){
+    console.log("문제 제출");
   }
 
   async created() {

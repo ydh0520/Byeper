@@ -19,8 +19,8 @@ const store: StoreOptions<RootState> = {
     AccountsModule,
     PlayListModule,
     InstructorModule,
-    LecturesModule,
+    LecturesModule
   }
-}
+};
 
 export default new Vuex.Store<RootState>(store);
