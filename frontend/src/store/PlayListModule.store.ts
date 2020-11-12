@@ -28,7 +28,7 @@ const module: Module<PlayListModule, RootState> = {
       state.PlayList = playList;
     },
     SET_PLAYLIST_ZERO(state) {
-      state.PlayList = null;
+      state.AllPlayList = null;
     }
   },
 
