@@ -3,7 +3,6 @@ import VueRouter, { RouteConfig } from "vue-router";
 import StudentPage from "@/views/student/StudentPage.vue";
 import LectureListPage from "@/views/student/LectureListPage.vue";
 import LecturePage from "@/views/lecture/LecturePage.vue";
-import LectureQuiz from "@/components/lecture/LectureQuiz.vue";
 import Home from "../views/Home.vue";
 import PlayList from "../views/main/PlayList.vue";
 
@@ -34,11 +33,6 @@ const routes: Array<RouteConfig> = [
     path: "/course/:courseName/lecture",
     name: "LecturePage",
     component: LecturePage
-  },
-  {
-    path: "/Quiz",
-    name: "LectureQuiz",
-    component: LectureQuiz
   },
   {
     path: "/playList/:playListId",
