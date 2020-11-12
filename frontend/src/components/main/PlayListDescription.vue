@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="PlayList">
     <div class="banner">
       <v-row>
         <v-col cols="3">
@@ -71,8 +71,10 @@ const AccountsModule = namespace("AccountsModule");
 @Component
 export default class PlayListDescription extends Vue {
   @PlayListModule.State PlayList!: PlayList;
+  @PlayListModule.State PlayListVideos!: [];
   @PlayListModule.Action FETCH_PLAYLIST_VIDEOS: any;
   @PlayListModule.Action FETCH_PLAYLIST: any;
+  @PlayListModule.Action BUY_PLAYLIST: any;
   @AccountsModule.Getter isLoggedIn!: boolean;
   @AccountsModule.Action GOOGLE_LOGIN: any;
 
@@ -105,7 +107,14 @@ export default class PlayListDescription extends Vue {
 
   @Watch("$route", { immediate: true })
   fetchPlayList() {
-    this.FETCH_PLAYLIST({ playlistId: this.$route.params.playListId });
+    this.FETCH_PLAYLIST({ playlistId: Number(this.$route.params.playListId) });
+  }
+
+  @Watch("$route", { immediate: true })
+  fetchPlayListVideos() {
+    this.FETCH_PLAYLIST_VIDEOS({
+      playlistId: Number(this.$route.params.playListId)
+    });
   }
 
   moveScroll(scrollId: string) {
@@ -118,7 +127,7 @@ export default class PlayListDescription extends Vue {
 
   buyPlayList() {
     if (this.isLoggedIn) {
-      this.FETCH_PLAYLIST_VIDEOS({
+      this.BUY_PLAYLIST({
         playlistId: Number(this.$route.params.playListId)
       });
     } else {

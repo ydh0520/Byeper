@@ -1,7 +1,7 @@
 import { Axios } from "@/service/axios.service";
 import { Module } from "vuex";
 import { RootState } from "./index";
-import { PlayListModule, PlayList } from "./PlayList.interface";
+import { PlayListModule, PlayList, PlayListVideos } from "./PlayList.interface";
 
 const module: Module<PlayListModule, RootState> = {
   namespaced: true,
@@ -27,6 +27,9 @@ const module: Module<PlayListModule, RootState> = {
     SET_PLAYLIST(state, playList: PlayList) {
       state.PlayList = playList;
     },
+    SET_PLAYLIST_VIDEOS(state, playListVideos: PlayListVideos[]) {
+      state.PlayListVideos = playListVideos;
+    },
     SET_PLAYLIST_ZERO(state) {
       state.AllPlayList = null;
     }
@@ -45,10 +48,15 @@ const module: Module<PlayListModule, RootState> = {
         .then(({ data }) => commit("SET_PLAYLIST", data.data))
         .catch(err => console.error(err));
     },
-    FETCH_PLAYLIST_VIDEOS({ commit }, { playlistId }: { playlistId: number }) {
+    BUY_PLAYLIST({ commit }, { playlistId }: { playlistId: number }) {
       Axios.instance
         .get("/api/private/playlist/subscribe", { params: { playlistId } })
-        .then(({ data }) => console.log(data.data))
+        .catch(err => console.error(err));
+    },
+    FETCH_PLAYLIST_VIDEOS({ commit }, { playlistId }: { playlistId: number }) {
+      Axios.instance
+        .get("/api/public/video/findplaylist", { params: { playlistId } })
+        .then(({ data }) => commit("SET_PLAYLIST_VIDEOS", data.data))
         .catch(err => console.error(err));
     }
   }
