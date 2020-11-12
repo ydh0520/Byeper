@@ -17,7 +17,7 @@
       <v-col cols="5">
         <v-card class="mt-12">
           <h2 class="ml-3">강의 목록</h2>
-          <v-list three-line v-for="(Lecture, index) in SelectedPlayLists" :key="index">
+          <v-list v-if="SelectedPlayLists !== []" three-line v-for="(Lecture, index) in SelectedPlayLists" :key="index">
               <v-list-item v-for="(video, idx) in Lecture.videos" :key="idx">
                 <v-list-item-avatar tile>
                   <v-img :src="video.video_img"></v-img>
@@ -36,7 +36,6 @@
       <v-col cols="7">
         <v-card class="mt-12">
           <h2 class="ml-3">수강 통계</h2>
-          {{ LecturePlayLists }}
         </v-card>
       </v-col>
     </v-row>
@@ -107,37 +106,6 @@ export default class InstructorDashboard extends Vue {
       LectureDesc: "파이썬 12만원 타세요"
     }
   ];
-  items = [
-    {
-      avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-      title: "Brunch this weekend?",
-      subtitle: "h"
-    },
-    { divider: true, inset: true },
-    {
-      avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-      title: "dsf",
-      subtitle: "hi"
-    },
-    { divider: true, inset: true },
-    {
-      avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-      title: "Oui oui",
-      subtitle: "jo"
-    },
-    { divider: true, inset: true },
-    {
-      avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-      title: "Birthday gift",
-      subtitle: "fsd"
-    },
-    { divider: true, inset: true },
-    {
-      avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
-      title: "Recipe to try",
-      subtitle: "nana"
-    }
-  ];
   settings = {
     arrows: true,
     dots: false,
@@ -197,8 +165,9 @@ export default class InstructorDashboard extends Vue {
     }
 
     getLecture(Lectures).then(res => {
-      console.log(res);
       this.LecturePlayLists = res;
+      this.SelectedPlayLists.push(this.LecturePlayLists[0]);
+      console.log("초기상태",this.SelectedPlayLists);
     });
   }
 
@@ -215,6 +184,7 @@ export default class InstructorDashboard extends Vue {
 
   selectLecture(playlistId) {
     this.SelectedPlayLists = this.LecturePlayLists.filter(playlist => playlist.playlistId === playlistId);
+    console.log("나중상태", this.SelectedPlayLists);
   }
 
   async created() {

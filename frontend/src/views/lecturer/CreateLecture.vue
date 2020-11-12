@@ -462,8 +462,10 @@ export default class CreateLecture extends Vue {
             "Content-Type": "multipart/form-data",
           }
         })
-        console.log(res);
-        this.LectureThumbnailLink = res;
+        if(res) {
+          const link = "http://k3b108.p.ssafy.io/file/playlist/";
+          this.LectureThumbnailLink = link + res.data.data;
+        }
       } catch (e) {
         console.error(e);
       }
@@ -481,7 +483,7 @@ export default class CreateLecture extends Vue {
           playlistImg: this.LectureThumbnailLink,
           playlistLevel: 0,
           playlistTitle: this.LectureTitle,
-          playlistType: 1,
+          playlistType: 0,
           userId: ""
         },
         {
@@ -505,7 +507,7 @@ export default class CreateLecture extends Vue {
           headers: {
             "Content-Type": "application/json",
             Authorization:
-              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNjA1OTQ2NDE2fQ.TZ42tp7hQb8RHfFQmwP7YP_miumbFu5hM0pT3KszXDoXR93MRSIpNVvfKhMxO2TkCNg7DXKH2ev-0VN0LCvS3Q"
+              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNjA2MDIyNzU2fQ.V3tcA-nOA_9Zjat5NtwBDekY07WXGUw5TMx25EdOVxTOGyc1oXz7sGeQlo3b97uAk5LGI614lJlM57vxbzQ4xQ"
           }
         }
       );
@@ -554,9 +556,9 @@ export default class CreateLecture extends Vue {
   }
 
   async createLecture() {
-    // await this.thumbnail();
-    // await this.createPlayList();
-    // await this.addVideo();
+    await this.thumbnail();
+    await this.createPlayList();
+    await this.addVideo();
     await this.djangoVideoAnalysis();
   }
   created() {
