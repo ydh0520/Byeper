@@ -283,11 +283,17 @@ public class PlaylistController {
 
 		PlaylistDto playlist = playlistService.findPlaylistDetail(playlistId);
 
-		playlist.setPlaylistId(0);
-		playlist.setPlaylistType(playlistId);
-		playlist.setUserId(user.getUserId());
+		PlaylistDto newPlayList = new PlaylistDto();
 
-		playlist = playlistService.savePlaylist(playlist);
+		newPlayList.setPlaylistCategory(playlist.getPlaylistCategory());
+		newPlayList.setPlaylistDescription(playlist.getPlaylistDescription());
+		newPlayList.setPlaylistImg(playlist.getPlaylistImg());
+		newPlayList.setPlaylistLevel(playlist.getPlaylistLevel());
+		newPlayList.setPlaylistTitle(playlist.getPlaylistTitle());
+		newPlayList.setPlaylistType(playlist.getPlaylistId());
+		newPlayList.setUserId(user.getUserId());
+
+		playlist = playlistService.savePlaylist(newPlayList);
 
 		if (playlist == null) {
 			response.status = false;
@@ -303,7 +309,7 @@ public class PlaylistController {
 			PlayDto subscribePlay = new PlayDto();
 
 			subscribePlay.setPlayComplete(0);
-			subscribePlay.setPlaylistId(playlist.getPlaylistId());
+			subscribePlay.setPlaylistId(newPlayList.getPlaylistId());
 			subscribePlay.setPlayLog(plays.get(i).getPlayLog());
 			subscribePlay.setPlayNote("");
 			subscribePlay.setVideoId(plays.get(i).getVideoId());
