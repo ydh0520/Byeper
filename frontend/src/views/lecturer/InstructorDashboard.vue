@@ -2,7 +2,7 @@
   <div>
     <v-row style="margin: 10px 10%" cols="12" sm="6" offset-sm="3">
       <h2 class="mt-12">나의 강좌</h2>
-      <vue-slick-carousel v-if="Lectures" class="slick mt-12" v-bind="settings">
+      <vue-slick-carousel v-if="Lectures.length" class="slick mt-12" v-bind="settings">
         <div v-for="lecture in Lectures" :key="lecture.playlistId">
           <img
             class="Lecture-img"
@@ -49,6 +49,17 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="problemPopup">
+      <v-row justify="center">
+        <v-col cols="4">
+          <v-card height="70vh">hihihihih</v-card>
+        </v-col>
+        <v-col cols="5">
+          <v-card class="mb-5" height="35vh">hihidhfidhfidhfi</v-card>
+          <v-card height="30vh">hihihihihihihihih</v-card>
+        </v-col>
+      </v-row>
+    </v-dialog>
   </div>
 </template>
 
@@ -152,6 +163,7 @@ export default class InstructorDashboard extends Vue {
       }
     ]
   };
+  problemPopup = false;
 
   async getTotalLecture() {
     const Lectures = await this.getMyPlayList();
@@ -186,7 +198,7 @@ export default class InstructorDashboard extends Vue {
 
   async getMyPlayList() {
     try {
-      const myLectures = await Axios.instance.get("/api/public/playlist/user");
+      const myLectures = await Axios.instance.get("/api/public/playlist/management");
       if (myLectures) this.Lectures = myLectures.data.data;
       return myLectures.data.data;
     } catch (e) {
