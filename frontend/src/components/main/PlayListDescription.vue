@@ -1,48 +1,56 @@
 <template>
   <div>
     <div class="banner">
-      <div class="videoBx">
-        <video
-          src="@/assets/mainVideo.mp4"
-          muted
-          autoplay
-          loop
-          type="mp4"
-        ></video>
-      </div>
+      <v-row>
+        <v-col>
+          <div class="videoBx">
+            <video
+              src="@/assets/mainVideo.mp4"
+              muted
+              autoplay
+              loop
+              type="mp4"
+            ></video>
+          </div>
+        </v-col>
 
-      <div class="textBox">
-        <h2>{{ playList.playListName }}</h2>
-        <p>{{ playList.playListDescription }}</p>
-      </div>
-      <div class="tableBox">
-        <v-simple-table dense max-height="400px" width="400px">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">
-                  재생번호
-                </th>
-                <th class="text-left">
-                  제목
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="item in play"
-                :key="item.id"
-                @click="moveScroll(item.id)"
-              >
-                <td class="text-center" style="cursor: pointer;">
-                  {{ item.id }}
-                </td>
-                <td style="cursor: pointer">{{ item.playName }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </div>
+        <v-col>
+          <div class="textBox">
+            <h2>{{ playList.playListName }}</h2>
+            <p>{{ playList.playListDescription }}</p>
+          </div>
+        </v-col>
+        <v-col>
+          <div class="tableBox">
+            <v-simple-table dense max-height="400px" width="400px">
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      재생번호
+                    </th>
+                    <th class="text-left">
+                      제목
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in play"
+                    :key="item.id"
+                    @click="moveScroll(item.id)"
+                  >
+                    <td class="text-center" style="cursor: pointer;">
+                      {{ item.id }}
+                    </td>
+                    <td style="cursor: pointer">{{ item.playName }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>
@@ -100,7 +108,7 @@ export default class IntroMain extends Vue {
 }
 
 .banner video {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -137,7 +145,7 @@ export default class IntroMain extends Vue {
 }
 
 .tableBox {
-  margin-left: 80px;
+  margin-left: 50px;
   opacity: 0;
   animation: fadeInBottom 0.5s linear forwards;
   animation-delay: 1.5s;
@@ -164,7 +172,8 @@ export default class IntroMain extends Vue {
 .banner .videoBx {
   position: relative;
   background: #fff;
-  margin-right: 80px;
+  margin-top: 30px;
+  margin-right: 50px;
   width: 300px;
   height: 200px;
   z-index: 1;
