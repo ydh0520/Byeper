@@ -63,6 +63,15 @@ export default class Quiz extends Vue {
     { id: 3, text: "데이터 분석을 할 때 가장 많이 쓰이는 언어는 ____이다." }
   ];
 
+  mounted() {
+    const editorContainer: HTMLElement = document.querySelector(
+      ".editor-container"
+    ) as HTMLElement;
+
+    editorContainer.style.backgroundColor = "#121212";
+    editorContainer.style.paddingBottom = "0";
+  }
+
   next() {
     this.onboarding =
       this.onboarding + 1 === this.length ? 0 : this.onboarding + 1;
