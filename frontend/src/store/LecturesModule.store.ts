@@ -5,18 +5,40 @@ import { Axios } from "@/service/axios.service";
 
 const module: Module<LecturesModule, RootState> = {
   namespaced: true,
-  state: {},
+  state: {
+    lectures: [],
+    allCaptureImgs: []
+  },
 
   getters: {},
 
-  mutations: {},
+  mutations: {
+    SET_ALL_CAPTURE_IMAGES(state, imgs) {
+      state.allCaptureImgs = imgs;
+    }
+  },
 
   actions: {
     FETCH_CAPTURE_IMAGE(_, { id, time }) {
-      Axios.instanceDjango
+      return Axios.instanceDjango
         .post("/api/django/summary/extract_time/", { id, time })
-        .then(res => console.log(res))
+        .then(({ data }) => data)
         .catch(err => console.error(err));
+    },
+    FETCH_ALL_CAPTURE_IMAGES({ commit }, videoId) {
+      // Axios.instanceDjango
+      //   .get(`/file/${videoId}/${videoId}.json`)
+      //   .then(res => console.log(res))
+      //   .catch(err => console.error(err));
+      const xhr = new XMLHttpRequest();
+      xhr.addEventListener("load", function() {
+        commit("SET_ALL_CAPTURE_IMAGES", JSON.parse(this.responseText));
+      });
+      xhr.open(
+        "GET",
+        `http://k3b108.p.ssafy.io/file/${videoId}/${videoId}.json`
+      );
+      xhr.send();
     }
   }
 };

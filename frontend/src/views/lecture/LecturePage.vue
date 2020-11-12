@@ -43,6 +43,9 @@ import { Component, Vue } from "vue-property-decorator";
 import TextEditor from "@/components/lecture/TextEditor.vue";
 import Curriculum from "@/components/lecture/Curriculum.vue";
 import LectureVideo from "@/components/lecture/LectureVideo.vue";
+import { namespace } from "vuex-class";
+
+const LecturesModule = namespace("LecturesModule");
 
 @Component({
   components: {
@@ -52,10 +55,11 @@ import LectureVideo from "@/components/lecture/LectureVideo.vue";
   }
 })
 export default class LecturePage extends Vue {
+  @LecturesModule.Action FETCH_ALL_CAPTURE_IMAGES: any;
   player: { seekTo: (n: number) => {} } | null = null;
   start = 0;
 
-  videoURL = "s9FHdj6jd_U";
+  videoURL = "6AnnvVrth4w";
 
   startVideo() {
     this.start += 10;
@@ -85,6 +89,7 @@ export default class LecturePage extends Vue {
 
   mounted() {
     this.preventScroll();
+    this.FETCH_ALL_CAPTURE_IMAGES(this.videoURL);
   }
 }
 </script>

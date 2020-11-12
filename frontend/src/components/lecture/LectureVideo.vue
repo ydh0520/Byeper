@@ -7,7 +7,7 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class LectureVideo extends Vue {
-  videoURL = "s9FHdj6jd_U";
+  videoURL = "6AnnvVrth4w";
   mounted() {
     this.$emit("player", this.$refs.youtube.player);
   }
