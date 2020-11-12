@@ -256,7 +256,7 @@ public class PlaylistController {
 		PlaylistDto playlist = playlistService.findPlaylistDetail(playlistId);
 
 		playlist.setPlaylistId(0);
-		playlist.setPlaylistType(2);
+		playlist.setPlaylistType(playlistId);
 		playlist.setUserId(user.getUserId());
 
 		playlist = playlistService.savePlaylist(playlist);
