@@ -3,20 +3,12 @@
     <v-row style="margin: 10px 10%" cols="12" sm="6" offset-sm="3">
       <h2 class="mt-12">나의 강좌</h2>
       <vue-slick-carousel v-if="Lectures" class="slick mt-12" v-bind="settings">
-        <div v-for="lecture in Lectures" :key="lecture.LectureId">
-          <router-link
-            class="router-link"
-            :to="{
-              name: 'DetailArtView',
-              params: { LectureId: lecture.LectureId }
-            }"
-          >
-            <img
-              class="Lecture-img"
-              :src="lecture.LectureThumb"
-              :alt="lecture.LectureName"
-            />
-          </router-link>
+        <div v-for="lecture in Lectures" :key="lecture.playlistId">
+          <img
+            class="Lecture-img"
+            :src="lecture.playlistImg"
+            :alt="lecture.playlistDescription"
+          />
         </div>
       </vue-slick-carousel>
     </v-row>
@@ -57,6 +49,7 @@
       <v-col cols="7">
         <v-card class="mt-12">
           <h2 class="ml-3">수강 통계</h2>
+          {{ LecturePlayLists }}
         </v-card>
       </v-col>
     </v-row>
@@ -65,6 +58,8 @@
 
 <script>
 import { Vue, Component } from "vue-property-decorator";
+import { Axios } from "@/service/axios.service";
+
 // import { namespace } from "vuex-class";
 // carousel 관련 import
 import VueSlickCarousel from "vue-slick-carousel";
@@ -79,120 +74,159 @@ import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
   }
 })
 export default class InstructorDashboard extends Vue {
-  data() {
-    return {
-      Lectures: [
-        {
-          LectureName: "파이썬 좋아",
-          LectureId: "1",
-          LectureThumb:
-            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요"
-        },
-        {
-          LectureName: "파이썬 좋아",
-          LectureId: "2",
-          LectureThumb:
-            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요"
-        },
-        {
-          LectureName: "파이썬 좋아",
-          LectureId: "3",
-          LectureThumb:
-            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요"
-        },
-        {
-          LectureName: "파이썬 좋아",
-          LectureId: "4",
-          LectureThumb:
-            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요"
-        },
-        {
-          LectureName: "파이썬 좋아",
-          LectureId: "5",
-          LectureThumb:
-            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요"
-        },
-        {
-          LectureName: "파이썬 좋아",
-          LectureId: "6",
-          LectureThumb:
-            "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-          LectureDesc: "파이썬 12만원 타세요"
+  LecturePlayLists = [];
+  Lectures = [
+    {
+      LectureName: "파이썬 좋아",
+      LectureId: "1",
+      LectureThumb:
+        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+      LectureDesc: "파이썬 12만원 타세요"
+    },
+    {
+      LectureName: "파이썬 좋아",
+      LectureId: "2",
+      LectureThumb:
+        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+      LectureDesc: "파이썬 12만원 타세요"
+    },
+    {
+      LectureName: "파이썬 좋아",
+      LectureId: "3",
+      LectureThumb:
+        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+      LectureDesc: "파이썬 12만원 타세요"
+    },
+    {
+      LectureName: "파이썬 좋아",
+      LectureId: "4",
+      LectureThumb:
+        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+      LectureDesc: "파이썬 12만원 타세요"
+    },
+    {
+      LectureName: "파이썬 좋아",
+      LectureId: "5",
+      LectureThumb:
+        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+      LectureDesc: "파이썬 12만원 타세요"
+    },
+    {
+      LectureName: "파이썬 좋아",
+      LectureId: "6",
+      LectureThumb:
+        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+      LectureDesc: "파이썬 12만원 타세요"
+    }
+  ];
+  items = [
+    {
+      avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+      title: "Brunch this weekend?",
+      subtitle: "h"
+    },
+    { divider: true, inset: true },
+    {
+      avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
+      title: "dsf",
+      subtitle: "hi"
+    },
+    { divider: true, inset: true },
+    {
+      avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
+      title: "Oui oui",
+      subtitle: "jo"
+    },
+    { divider: true, inset: true },
+    {
+      avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
+      title: "Birthday gift",
+      subtitle: "fsd"
+    },
+    { divider: true, inset: true },
+    {
+      avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
+      title: "Recipe to try",
+      subtitle: "nana"
+    }
+  ];
+  settings = {
+    arrows: true,
+    dots: false,
+    infinite: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 2000,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1399,
+        settings: {
+          slidesToShow: 4
         }
-      ],
-      items: [
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          title: "Brunch this weekend?",
-          subtitle: "h"
-        },
-        { divider: true, inset: true },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-          title: "dsf",
-          subtitle: "hi"
-        },
-        { divider: true, inset: true },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-          title: "Oui oui",
-          subtitle: "jo"
-        },
-        { divider: true, inset: true },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-          title: "Birthday gift",
-          subtitle: "fsd"
-        },
-        { divider: true, inset: true },
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
-          title: "Recipe to try",
-          subtitle: "nana"
+      },
+      {
+        breakpoint: 1099,
+        settings: {
+          slidesToShow: 3
         }
-      ],
-      settings: {
-        arrows: true,
-        dots: false,
-        infinite: true,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        autoplay: true,
-        speed: 2000,
-        autoplaySpeed: 3000,
-        responsive: [
-          {
-            breakpoint: 1399,
-            settings: {
-              slidesToShow: 4
-            }
-          },
-          {
-            breakpoint: 1099,
-            settings: {
-              slidesToShow: 3
-            }
-          },
-          {
-            breakpoint: 799,
-            settings: {
-              slidesToShow: 2
-            }
-          },
-          {
-            breakpoint: 499,
-            settings: {
-              slidesToShow: 2
-            }
-          }
-        ]
+      },
+      {
+        breakpoint: 799,
+        settings: {
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: 499,
+        settings: {
+          slidesToShow: 2
+        }
       }
-    };
+    ]
+  };
+
+  async getTotalLecture() {
+    const Lectures = await this.getMyPlayList();
+
+    const getLectureInfo = async playlistId => {
+      const LectureInfo = await Axios.instance.get("/api/public/video/findplaylist", {
+        params: {
+          playlistId: playlistId
+        }
+      })
+      return { videos: LectureInfo.data.data, playlistId };
+    }
+
+    const getLecture = async Lectures => {
+      const req = Lectures.map(Lecture => {
+        return getLectureInfo(Lecture.playlistId).then(res => {
+          return res;
+        });
+      });
+      return Promise.all(req);
+    }
+
+    getLecture(Lectures).then(res => {
+      console.log(res);
+      this.LecturePlayLists = res;
+    });
+  }
+
+
+  async getMyPlayList() {
+    try {
+      const myLectures = await Axios.instance.get("/api/public/playlist/user");
+      if (myLectures) this.Lectures = myLectures.data.data;
+      return myLectures.data.data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async created() {
+    await this.getTotalLecture();
   }
 }
 </script>

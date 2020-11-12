@@ -321,7 +321,7 @@
                       placeholder="Select your files"
                       prepend-icon="mdi-paperclip"
                       outlined
-                      @change="Thumbnail"
+                      @change="thumbnail"
                     >
                       <template v-slot:selection="{ index, text }">
                         <v-chip color="deep-purple accent-4" dark label small>
@@ -451,25 +451,17 @@ export default class CreateLecture extends Vue {
   //   this.SelectedVideos.splice(idx, 1);
   // }
 
-  async Thumbnail() {
-    this.LectureThumbnailURL = URL.createObjectURL(this.LectureThumbnail);
+  async thumbnail() {
     if (this.LectureThumbnail) {
+    this.LectureThumbnailURL = URL.createObjectURL(this.LectureThumbnail);
       try {
-        const formData = new FormData();
-        formData.append("file", this.LectureThumbnail);
-        const res = await axios.post(
-          "http://k3b108.p.ssafy.io:8080/api/public/playlist/imgupload",
-          {
-            formData
-          },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization:
-                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYnNlaGRndXMwNTIwQGdtYWlsLmNvbSIsImV4cCI6MTYwNTg1NDM4Mn0.AYDJX_HkcRcHyfDa3TfVHcIrF3Zw62SRYl1M1e4vNXMIDOwIhE4hz7mGXBEI_ximxwFWEzY1lFWVIbB50cpHIw"
-            }
+        const file = new FormData();
+        file.append("file", this.LectureThumbnail);
+        const res = await Axios.instance.post("/api/public/playlist/imgupload",file, {
+          headers: {
+            "Content-Type": "multipart/form-data",
           }
-        );
+        })
         console.log(res);
         this.LectureThumbnailLink = res;
       } catch (e) {
@@ -478,26 +470,28 @@ export default class CreateLecture extends Vue {
     }
   }
 
-
-
   async createPlayList() {
     try {
-      const res = await Axios.instance.post("/api/private/playlist/save", {
-        playlistCategory: this.LectureCategory,
-        playlistDescription: this.LectureDescription,
-        playlistId: 0,
-        playlistImg: this.LectureThumbnailLink,
-        playlistLevel: 0,
-        playlistTitle: this.LectureTitle,
-        playlistType: 1,
-        userId: ""
-      }, {
-        headers: {
-          "Content-Type": "application/json"
+      const res = await Axios.instance.post(
+        "/api/private/playlist/save",
+        {
+          playlistCategory: this.LectureCategory,
+          playlistDescription: this.LectureDescription,
+          playlistId: 0,
+          playlistImg: this.LectureThumbnailLink,
+          playlistLevel: 0,
+          playlistTitle: this.LectureTitle,
+          playlistType: 1,
+          userId: ""
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
-      })
+      );
       console.log(res);
-      if(res.data.data) this.LectureTrackId = res.data.data.playlistId;
+      if (res.data.data) this.LectureTrackId = res.data.data.playlistId;
     } catch (e) {
       console.error(e);
     }
@@ -524,27 +518,46 @@ export default class CreateLecture extends Vue {
 
   async addVideo() {
     try {
-      const res = await Axios.instance
-          .post("/api/pirvate/playlist/addvideo",
-            this.SelectedVideos
-          , {
-            params: {
-              playlistId: this.LectureTrackId
-            },
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNjA1OTYzNjY0fQ.6FNwNeQ0AoGpxU1hvJzlc3joh9XYPdWHKfEH4SH7NA3sd_-5Dfhyt6BkRj2DumlZep48R-2hPBTdXBrlSq2AUw"
-            }
-          })
+      const res = await Axios.instance.post(
+        "/api/pirvate/playlist/addvideo",
+        this.SelectedVideos,
+        {
+          params: {
+            playlistId: this.LectureTrackId
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNjA1OTYzNjY0fQ.6FNwNeQ0AoGpxU1hvJzlc3joh9XYPdWHKfEH4SH7NA3sd_-5Dfhyt6BkRj2DumlZep48R-2hPBTdXBrlSq2AUw"
+          }
+        }
+      );
       console.log(res);
     } catch (e) {
       console.error(e);
     }
   }
 
+  async djangoVideoAnalysis() {
+    try {
+      const videoIDs = [];
+      this.SelectedVideos.map(elem => videoIDs.push(elem.videoId));
+      const res = await Axios.instanceDjango.post("api/django/summary/extract/", videoIDs, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      console.log(res);
+    } catch (e) {
+      console.log("어쨋든 요청은 보냄");
+    }
+  }
+
   async createLecture() {
-    await this.createPlayList();
-    await this.addVideo();
+    // await this.thumbnail();
+    // await this.createPlayList();
+    // await this.addVideo();
+    await this.djangoVideoAnalysis();
   }
   created() {
     this.getVideoList();

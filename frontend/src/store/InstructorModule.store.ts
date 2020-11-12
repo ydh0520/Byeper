@@ -16,7 +16,7 @@ const module: Module<InstructorModule, RootState> = {
   },
 
   actions: {
-    CREATE_PLAYLIST({ commit,dispatch }, playlist) {
+    CREATE_PLAYLIST({ commit, dispatch }, playlist) {
       Axios.instance
         .post("/api/private/playlist/save", playlist, {
           headers: {
@@ -29,18 +29,22 @@ const module: Module<InstructorModule, RootState> = {
         })
         .catch(e => console.error(e));
     },
-    ADD_VIDEO({state}, Video) {
+    ADD_VIDEO({ state }, Video) {
       Axios.instance
-          .post("/api/pirvate/playlist/addvideo", {
-            playlistId : state.playListId,
+        .post(
+          "/api/pirvate/playlist/addvideo",
+          {
+            playlistId: state.playListId,
             videos: Video
-          }, {
+          },
+          {
             headers: {
               "Content-Type": "application/json"
             }
-          })
-          .then(res => console.log("add video: "))
-          .catch(e => console.error(e));
+          }
+        )
+        .then(res => console.log("add video: "))
+        .catch(e => console.error(e));
     }
   }
 };
