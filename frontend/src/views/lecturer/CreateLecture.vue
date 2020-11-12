@@ -453,16 +453,20 @@ export default class CreateLecture extends Vue {
 
   async thumbnail() {
     if (this.LectureThumbnail) {
-    this.LectureThumbnailURL = URL.createObjectURL(this.LectureThumbnail);
+      this.LectureThumbnailURL = URL.createObjectURL(this.LectureThumbnail);
       try {
         const file = new FormData();
         file.append("file", this.LectureThumbnail);
-        const res = await Axios.instance.post("/api/public/playlist/imgupload",file, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        const res = await Axios.instance.post(
+          "/api/public/playlist/imgupload",
+          file,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
           }
-        })
-        if(res) {
+        );
+        if (res) {
           const link = "http://k3b108.p.ssafy.io/file/playlist/";
           this.LectureThumbnailLink = link + res.data.data;
         }
@@ -544,11 +548,15 @@ export default class CreateLecture extends Vue {
     try {
       const videoIDs = [];
       this.SelectedVideos.map(elem => videoIDs.push(elem.videoId));
-      const res = await Axios.instanceDjango.post("api/django/summary/extract/", videoIDs, {
-        headers: {
-          "Content-Type": "application/json"
+      const res = await Axios.instanceDjango.post(
+        "api/django/summary/extract/",
+        videoIDs,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
-      });
+      );
       console.log(res);
     } catch (e) {
       console.log("어쨋든 요청은 보냄");

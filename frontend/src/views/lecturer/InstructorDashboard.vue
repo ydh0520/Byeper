@@ -15,21 +15,31 @@
     </v-row>
     <v-row style="margin: 10px 10%">
       <v-col cols="5">
-        <v-card class="mt-12">
+        <v-card
+          v-if="SelectedPlayLists !== []"
+          class="mt-12"
+          style="height: 50vh; overflow-y: scroll; overflow-x: hidden"
+        >
           <h2 class="ml-3">강의 목록</h2>
-          <v-list v-if="SelectedPlayLists !== []" three-line v-for="(Lecture, index) in SelectedPlayLists" :key="index">
-              <v-list-item v-for="(video, idx) in Lecture.videos" :key="idx">
-                <v-list-item-avatar tile>
-                  <v-img :src="video.video_img"></v-img>
-                </v-list-item-avatar>
+          <v-list
+            three-line
+            v-for="(Lecture, index) in SelectedPlayLists"
+            :key="index"
+          >
+            <v-list-item v-for="(video, idx) in Lecture.videos" :key="idx">
+              <v-list-item-avatar tile>
+                <v-img :src="video.video_img"></v-img>
+              </v-list-item-avatar>
 
-                <v-list-item-content>
-                  <v-list-item-title v-html="video.video_title"></v-list-item-title>
-                  <v-list-item-subtitle
-                    v-html="video.video_description"
-                  ></v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title
+                  v-html="video.video_title"
+                ></v-list-item-title>
+                <v-list-item-subtitle
+                  v-html="video.video_description"
+                ></v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-card>
       </v-col>
@@ -147,13 +157,16 @@ export default class InstructorDashboard extends Vue {
     const Lectures = await this.getMyPlayList();
 
     const getLectureInfo = async playlistId => {
-      const LectureInfo = await Axios.instance.get("/api/public/video/findplaylist", {
-        params: {
-          playlistId: playlistId
+      const LectureInfo = await Axios.instance.get(
+        "/api/public/video/findplaylist",
+        {
+          params: {
+            playlistId: playlistId
+          }
         }
-      })
+      );
       return { videos: LectureInfo.data.data, playlistId };
-    }
+    };
 
     const getLecture = async Lectures => {
       const req = Lectures.map(Lecture => {
@@ -162,15 +175,14 @@ export default class InstructorDashboard extends Vue {
         });
       });
       return Promise.all(req);
-    }
+    };
 
     getLecture(Lectures).then(res => {
       this.LecturePlayLists = res;
       this.SelectedPlayLists.push(this.LecturePlayLists[0]);
-      console.log("초기상태",this.SelectedPlayLists);
+      console.log("초기상태", this.SelectedPlayLists);
     });
   }
-
 
   async getMyPlayList() {
     try {
@@ -183,7 +195,9 @@ export default class InstructorDashboard extends Vue {
   }
 
   selectLecture(playlistId) {
-    this.SelectedPlayLists = this.LecturePlayLists.filter(playlist => playlist.playlistId === playlistId);
+    this.SelectedPlayLists = this.LecturePlayLists.filter(
+      playlist => playlist.playlistId === playlistId
+    );
     console.log("나중상태", this.SelectedPlayLists);
   }
 
