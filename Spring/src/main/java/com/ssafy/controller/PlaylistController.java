@@ -297,12 +297,21 @@ public class PlaylistController {
 
 		List<PlayDto> plays = playService.FindPlayByPlaylist(playlistId);
 
+		List<PlayDto> subscribePlays = new LinkedList<>();
+
 		for (int i = 0; i < plays.size(); i++) {
-			plays.get(i).setPlayId(0);
-			plays.get(i).setPlaylistId(playlist.getPlaylistId());
+			PlayDto subscribePlay = new PlayDto();
+
+			subscribePlay.setPlayComplete(0);
+			subscribePlay.setPlaylistId(playlist.getPlaylistId());
+			subscribePlay.setPlayLog(plays.get(i).getPlayLog());
+			subscribePlay.setPlayNote("");
+			subscribePlay.setVideoId(plays.get(i).getVideoId());
+
+			subscribePlays.add(subscribePlay);
 		}
 
-		playService.SaveAllPlay(plays);
+		playService.SaveAllPlay(subscribePlays);
 
 		response.data = playlist;
 		response.status = (response.data != null) ? true : false;
