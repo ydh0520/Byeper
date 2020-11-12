@@ -13,4 +13,6 @@ public interface PlayService {
 	public List<PlayDto> SaveAllPlay(List<PlayDto> plays);
 
 	public PlayDto updatePlay(PlayDto play);
+
+	public List<PlayDto> FindPlayByPlaylist(int plylistid);
 }

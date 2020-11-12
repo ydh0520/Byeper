@@ -240,4 +240,50 @@ public class PlaylistController {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	@GetMapping("/api/private/playlist/subscribe")
+	public Object SubscribePlaylist(@RequestHeader("Authorization") String jwtToken, @RequestParam int playlistId) {
+		BasicResponse response = new BasicResponse();
+
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+
+		if (user == null) {
+			response.status = false;
+			response.message = "잘못된 사용자 입니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		PlaylistDto playlist = playlistService.findPlaylistDetail(playlistId);
+
+		playlist.setPlaylistId(0);
+		playlist.setPlaylistType(2);
+		playlist.setUserId(user.getUserId());
+
+		playlist = playlistService.savePlaylist(playlist);
+
+		if (playlist == null) {
+			response.status = false;
+			response.message = "플레이 리스트 생성에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		List<PlayDto> plays = playService.FindPlayByPlaylist(playlistId);
+
+		for (int i = 0; i < plays.size(); i++) {
+			plays.get(i).setPlayId(0);
+			plays.get(i).setPlaylistId(playlist.getPlaylistId());
+		}
+
+		playService.SaveAllPlay(plays);
+
+		response.data = playlist;
+		response.status = (response.data != null) ? true : false;
+		if (response.status) {
+			response.message = "강의등록에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.message = "강의등록에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
 }

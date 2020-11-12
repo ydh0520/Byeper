@@ -26,4 +26,10 @@ public class PlayServiceImpl implements PlayService {
 		return playRepository.save(play);
 	}
 
+	@Override
+	public List<PlayDto> FindPlayByPlaylist(int playlistid) {
+		// TODO Auto-generated method stub
+		return playRepository.findByPlaylistId(playlistid);
+	}
+
 }
