@@ -62,4 +62,10 @@ public class PlaylistServiceImpl implements PlaylistService {
 		return playlistRepository.save(update);
 	}
 
+	@Override
+	public List<PlaylistDto> findAllPlaylistManangement(String userId) {
+		// TODO Auto-generated method stub
+		return playlistRepository.findByManagement(userId);
+	}
+
 }

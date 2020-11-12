@@ -68,6 +68,30 @@ public class PlaylistController {
 		}
 	}
 
+	@GetMapping("/api/public/playlist/management")
+	public Object FindAllPlaylistManagement(@RequestHeader("Authorization") String jwtToken) {
+		BasicResponse response = new BasicResponse();
+
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+		if (user == null) {
+			response.status = false;
+			response.message = "잘못된 사용자 입니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		
+		response.data = playlistService.findAllPlaylistManangement(user.getUserId());
+
+		if (response.data != null) {
+			response.status = true;
+			response.message = "조회에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.status = false;
+			response.message = "조회에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@GetMapping("/api/public/playlist/user")
 	public Object FindAllPlaylist(@RequestHeader("Authorization") String jwtToken) {
 		BasicResponse response = new BasicResponse();
