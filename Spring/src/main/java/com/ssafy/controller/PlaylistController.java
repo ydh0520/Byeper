@@ -46,10 +46,17 @@ public class PlaylistController {
 	private String[] allowFile = { "jpg", "png", "JPG", "PNG" };
 
 	@GetMapping("/api/public/playlist/teacher")
-	public Object FindAllPlaylist(@RequestParam int start) {
+	public Object FindAllPlaylist(@RequestHeader("Authorization") String jwtToken, @RequestParam int start) {
 		BasicResponse response = new BasicResponse();
 
-		response.data = playlistService.findAllPlaylistTeacher(start);
+		String userId;
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+		if (user == null) {
+			userId = "";
+		} else {
+			userId = user.getUserId();
+		}
+		response.data = playlistService.findAllPlaylistTeacher(user.getUserId(), start);
 
 		if (response.data != null) {
 			response.status = true;
@@ -256,7 +263,7 @@ public class PlaylistController {
 		PlaylistDto playlist = playlistService.findPlaylistDetail(playlistId);
 
 		playlist.setPlaylistId(0);
-		playlist.setPlaylistType(2);
+		playlist.setPlaylistType(playlistId);
 		playlist.setUserId(user.getUserId());
 
 		playlist = playlistService.savePlaylist(playlist);

@@ -11,11 +11,10 @@ import com.ssafy.model.dto.PlaylistDto;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<PlaylistDto, Integer> {
-	@Query(value = "select * from ssafy.playlist where playlist_type = :playlist_type limit :start ,10", nativeQuery = true)
-	public List<PlaylistDto> findPlaylistTeacher(@Param("playlist_type") int playlistType,
+	@Query(value = "select * from ssafy.playlist where playlist_type = 0 and playlist_id not in (select palylist_type from playlist where user_id = :user_id and playlist_type !=0) limit :start ,9", nativeQuery = true)
+	public List<PlaylistDto> findPlaylistTeacher(@Param("user_id") String user_id,
 			@Param("start") Integer start);
 
-	@Query(value = "select * from ssafy.playlist where user_id = :user_id", nativeQuery = true)
+	@Query(value = "select * from ssafy.playlist where user_id = :user_id and playlist_type !=0", nativeQuery = true)
 	public List<PlaylistDto> findbyUserid(@Param("user_id") String userId);
 }
- 

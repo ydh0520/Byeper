@@ -8,7 +8,7 @@ import com.ssafy.model.dto.PlaylistDto;
 
 @Service
 public interface PlaylistService {
-	public List<PlaylistDto> findAllPlaylistTeacher(int start);
+	public List<PlaylistDto> findAllPlaylistTeacher(String userId, int start);
 
 	public List<PlaylistDto> findAllPlaylistUser(String userId);
 

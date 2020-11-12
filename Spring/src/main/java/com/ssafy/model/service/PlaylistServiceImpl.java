@@ -16,11 +16,11 @@ public class PlaylistServiceImpl implements PlaylistService {
 	private PlaylistRepository playlistRepository;
 
 	@Override
-	public List<PlaylistDto> findAllPlaylistTeacher(int start) {
+	public List<PlaylistDto> findAllPlaylistTeacher(String userId, int start) {
 		// TODO Auto-generated method stub
-		int index = start * 10;
+		int index = start * 9;
 
-		return playlistRepository.findPlaylistTeacher(1, index);
+		return playlistRepository.findPlaylistTeacher(userId, index);
 	}
 
 	@Override
