@@ -1,16 +1,7 @@
-export interface InstructorModule {
-  playListId: number | null;
-}
-
-export interface Lecture {
-  title: string;
-  description: string;
-  data: LectureSection;
-}
-
-export interface LectureSection {
-  title: string;
-  videoId: string;
+export interface PlayListModule {
+  AllPlayList: PlayList[] | null;
+  PlayList: PlayList | null;
+  scrollEnd: boolean;
 }
 
 export interface PlayList {

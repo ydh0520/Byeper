@@ -32,8 +32,13 @@
         :videoId="videoURL"
         v-if="$route.query.tab === 'note' || !$route.query.tab"
       />
+      <quiz v-else-if="$route.query.tab === 'quiz'" />
       <curriculum v-else-if="$route.query.tab === 'list'" />
-      <v-btn @click="startVideo">{{ $route.query.tab }}</v-btn>
+      <v-btn
+        v-if="$route.query.tab === 'note' || !$route.query.tab"
+        @click="startVideo"
+        >{{ $route.query.tab }}</v-btn
+      >
     </v-col>
   </v-row>
 </template>
@@ -41,6 +46,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import TextEditor from "@/components/lecture/TextEditor.vue";
+import Quiz from "@/components/lecture/Quiz.vue";
 import Curriculum from "@/components/lecture/Curriculum.vue";
 import LectureVideo from "@/components/lecture/LectureVideo.vue";
 import { namespace } from "vuex-class";
@@ -51,6 +57,7 @@ const LecturesModule = namespace("LecturesModule");
   components: {
     TextEditor,
     Curriculum,
+    Quiz,
     LectureVideo
   }
 })

@@ -2,6 +2,8 @@ import Vue from "vue";
 import Vuex, { StoreOptions } from "vuex";
 import AccountsModule from "./AccountsModule.store";
 import LecturesModule from "./LecturesModule.store";
+import PlayListModule from "./PlayListModule.store";
+import InstructorModule from "./InstructorModule.store";
 
 Vue.use(Vuex);
 
@@ -15,7 +17,9 @@ const store: StoreOptions<RootState> = {
   },
   modules: {
     AccountsModule,
-    LecturesModule
+    PlayListModule,
+    InstructorModule,
+    LecturesModule,
   }
 };
 

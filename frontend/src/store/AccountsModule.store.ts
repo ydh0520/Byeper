@@ -45,13 +45,12 @@ const module: Module<AccountsModule, RootState> = {
 
   actions: {
     GOOGLE_LOGIN({ commit }, authToken) {
-      console.log(authToken);
       Axios.instance
         .post("/api/public/google/login", authToken)
         .then(({ data }) => {
+          console.log(data);
           commit("SET_TOKEN", data.data.userPassword);
           commit("SET_USER_INFO", data.data);
-          router.go(-1);
         })
         .catch(err => console.error(err));
     },
