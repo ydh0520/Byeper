@@ -83,19 +83,16 @@ export default class ImageCaptureChip extends Vue {
   dialog = false;
   $vuetify: any;
 
-  addCapture(img: string) {
-    this.$emit("addCapture", img);
-  }
-  async capture() {
-    h2c(document.querySelector(".editor__content") as HTMLElement)
-      .then(canvas => this.addCapture(canvas.toDataURL("image/jpeg")))
-      .catch(err => console.error(err));
+  addCapture({ url, time }: { url: string; time: number }) {
+    this.$emit("addCapture", { url, time });
   }
   async imageCapture() {
-    // this.capture();
     const getVideoTime = await this.player.getCurrentTime();
-    this.FETCH_CAPTURE_IMAGE({ id: this.videoId, time: getVideoTime });
-    console.log(getVideoTime);
+    const videoUrl = await this.FETCH_CAPTURE_IMAGE({
+      id: this.videoId,
+      time: getVideoTime
+    });
+    this.addCapture({ url: videoUrl, time: getVideoTime });
   }
   imageCaptureAll() {
     console.log("all");

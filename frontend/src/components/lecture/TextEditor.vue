@@ -272,9 +272,9 @@ export default class TextEditor extends Vue {
     this.editor.destroy();
   }
 
-  async addCapture(imgUrl) {
+  async addCapture({ url, time }) {
     this.editor.setContent(
-      `${this.editor.getHTML()}<p><img draggable="true" contenteditable="false" src="${imgUrl}"><br></p>`
+      `${this.editor.getHTML()}<p><img draggable="true" contenteditable="false" src="http://k3b108.p.ssafy.io${url}"><br></p>`
     );
     this.editor.focus();
     const focused = await document.querySelector("#focus-position");
