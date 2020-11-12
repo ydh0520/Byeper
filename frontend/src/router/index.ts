@@ -25,7 +25,7 @@ const routes: Array<RouteConfig> = [
     component: StudentPage
   },
   {
-    path: "/course/:courseName",
+    path: "/course/:playlistId",
     name: "LectureListPage",
     component: LectureListPage
   },
