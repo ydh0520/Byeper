@@ -16,8 +16,8 @@
 
         <v-col cols="6" justify="center" align="center">
           <div class="textBox">
-            <h2>{{ playList.playListName }}</h2>
-            <p>{{ playList.playListDescription }}</p>
+            <h2>{{ PlayList.playlistTitle }}</h2>
+            <p>{{ PlayList.playlistDescription }}</p>
           </div>
         </v-col>
         <v-col cols="3">
@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import { PlayList } from "../../store/PlayList.interface";
 
@@ -69,8 +69,10 @@ const PlayListModule = namespace("PlayListModule");
 const AccountsModule = namespace("AccountsModule");
 
 @Component
-export default class IntroMain extends Vue {
+export default class PlayListDescription extends Vue {
+  @PlayListModule.State PlayList!: PlayList;
   @PlayListModule.Action FETCH_PLAYLIST_VIDEOS: any;
+  @PlayListModule.Action FETCH_PLAYLIST: any;
   @AccountsModule.Getter isLoggedIn!: boolean;
   @AccountsModule.Action GOOGLE_LOGIN: any;
 
@@ -100,6 +102,11 @@ export default class IntroMain extends Vue {
     { id: 6, playName: "KERAS와 코드" },
     { id: 7, playName: "CNN과 RNN" }
   ];
+
+  @Watch("$route", { immediate: true })
+  fetchPlayList() {
+    this.FETCH_PLAYLIST({ playlistId: this.$route.params.playListId });
+  }
 
   moveScroll(scrollId: string) {
     const target: HTMLElement = document.getElementById(
