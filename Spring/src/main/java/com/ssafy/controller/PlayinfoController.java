@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.ssafy.model.dto.PlayDto;
 import com.ssafy.model.dto.PlayinfoDto;
-import com.ssafy.model.dto.UserDto;
 import com.ssafy.model.response.BasicResponse;
 import com.ssafy.model.service.PlayService;
 

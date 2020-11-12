@@ -23,10 +23,10 @@ public class ProblemController {
 
 		response.status = (response.data != null) ? true : false;
 		if (response.status) {
-			response.message = "그림 등록에 성공하였습니다.";
+			response.message = "문제 조회에 성공하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			response.message = "그림 등록에 실패하였습니다.";
+			response.message = "문제 조회에 실패하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}

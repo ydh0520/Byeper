@@ -1,7 +1,6 @@
 package com.ssafy.controller;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -57,6 +56,30 @@ public class PlaylistController {
 			userId = user.getUserId();
 		}
 		response.data = playlistService.findAllPlaylistTeacher(user.getUserId(), start);
+
+		if (response.data != null) {
+			response.status = true;
+			response.message = "조회에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.status = false;
+			response.message = "조회에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/api/public/playlist/management")
+	public Object FindAllPlaylistManagement(@RequestHeader("Authorization") String jwtToken) {
+		BasicResponse response = new BasicResponse();
+
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+		if (user == null) {
+			response.status = false;
+			response.message = "잘못된 사용자 입니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		
+		response.data = playlistService.findAllPlaylistManangement(user.getUserId());
 
 		if (response.data != null) {
 			response.status = true;
@@ -206,10 +229,10 @@ public class PlaylistController {
 		response.data = path;
 		response.status = (response.data != null) ? true : false;
 		if (response.status) {
-			response.message = "그림 등록에 성공하였습니다.";
+			response.message = "썸네일 등록에 성공하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			response.message = "그림 등록에 실패하였습니다.";
+			response.message = "썸네일 등록에 실패하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -240,10 +263,10 @@ public class PlaylistController {
 		response.data = videoResult;
 		response.status = (response.data != null) ? true : false;
 		if (response.status) {
-			response.message = "그림 등록에 성공하였습니다.";
+			response.message = "비디오 등록에 성공하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			response.message = "그림 등록에 실패하였습니다.";
+			response.message = "비디오 등록에 실패하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
