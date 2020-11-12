@@ -48,14 +48,12 @@ public class PlaylistController {
 	public Object FindAllPlaylist(@RequestHeader("Authorization") String jwtToken, @RequestParam int start) {
 		BasicResponse response = new BasicResponse();
 
-		String userId;
+		String userId = "";
 		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
-		if (user == null) {
-			userId = "";
-		} else {
+		if (user != null) {
 			userId = user.getUserId();
 		}
-		response.data = playlistService.findAllPlaylistTeacher(user.getUserId(), start);
+		response.data = playlistService.findAllPlaylistTeacher(userId, start);
 
 		if (response.data != null) {
 			response.status = true;
@@ -78,7 +76,7 @@ public class PlaylistController {
 			response.message = "잘못된 사용자 입니다.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
-		
+
 		response.data = playlistService.findAllPlaylistManangement(user.getUserId());
 
 		if (response.data != null) {
