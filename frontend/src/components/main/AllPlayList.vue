@@ -18,7 +18,7 @@
               max-width="100px"
               style="border: 0px; cursor: pointer;"
             >
-              <v-img :aspect-ratio="16 / 9" src="@/assets/jun.png">
+              <v-img :aspect-ratio="16 / 9" :src="playList.playlistImg">
                 <div
                   class="d-flex transition-fast-in-fast-out black darken-2 v-card--reveal display-3 "
                   style="height: 100%; width: 33%; padding: 0px"
@@ -89,6 +89,7 @@ const PlayListModule = namespace("PlayListModule");
 export default class AllPlayList extends Vue {
   @PlayListModule.State AllPlayList!: PlayList[] | null;
   @PlayListModule.State scrollEnd!: boolean;
+  @PlayListModule.Mutation SET_PLAYLIST_ZERO: any;
   @PlayListModule.Action FETCH_ALL_PLAYLIST: any;
 
   scrollHeight = 0;
@@ -122,10 +123,10 @@ export default class AllPlayList extends Vue {
     this.scrollHeight = window.innerHeight;
   }
 
-  pushPlayList(playListName: string) {
+  pushPlayList(playListId: string) {
     this.$router.push({
       name: "PlayList",
-      params: { playListName: playListName }
+      params: { playListId: playListId }
     });
   }
 
@@ -135,6 +136,10 @@ export default class AllPlayList extends Vue {
     this.FETCH_ALL_PLAYLIST({
       start: this.start
     });
+  }
+
+  destroyed() {
+    this.SET_PLAYLIST_ZERO();
   }
 }
 </script>
