@@ -1,7 +1,6 @@
 package com.ssafy.controller;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -206,10 +205,10 @@ public class PlaylistController {
 		response.data = path;
 		response.status = (response.data != null) ? true : false;
 		if (response.status) {
-			response.message = "그림 등록에 성공하였습니다.";
+			response.message = "썸네일 등록에 성공하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			response.message = "그림 등록에 실패하였습니다.";
+			response.message = "썸네일 등록에 실패하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -240,10 +239,10 @@ public class PlaylistController {
 		response.data = videoResult;
 		response.status = (response.data != null) ? true : false;
 		if (response.status) {
-			response.message = "그림 등록에 성공하였습니다.";
+			response.message = "비디오 등록에 성공하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			response.message = "그림 등록에 실패하였습니다.";
+			response.message = "비디오 등록에 실패하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
