@@ -51,16 +51,31 @@
           </div>
         </v-col>
       </v-row>
+      <v-btn class="mx-2" fab dark color="indigo" @click="buyPlayList">
+        <v-icon dark>
+          mdi-plus
+        </v-icon>
+      </v-btn>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { namespace } from "vuex-class";
+import { PlayList } from "../../store/PlayList.interface";
+
+const PlayListModule = namespace("PlayListModule");
+const AccountsModule = namespace("AccountsModule");
 
 @Component
 export default class IntroMain extends Vue {
+  @PlayListModule.Action FETCH_PLAYLIST_VIDEOS: any;
+  @AccountsModule.Getter isLoggedIn!: boolean;
+  @AccountsModule.Action GOOGLE_LOGIN: any;
+
   $vuetify: any;
+  $gAuth: any;
 
   playList = {
     playListName: "슬기로운 싸피 생활",
@@ -92,6 +107,23 @@ export default class IntroMain extends Vue {
     ) as HTMLElement;
     const scrollLocation: number = target.offsetTop;
     this.$vuetify.goTo(scrollLocation + 500);
+  }
+
+  buyPlayList() {
+    if (this.isLoggedIn) {
+      this.FETCH_PLAYLIST_VIDEOS({
+        playlistId: Number(this.$route.params.playListId)
+      });
+    } else {
+      if (
+        confirm("로그인이 필요합니다.\n로그인 화면으로 이동하시겠습니까?") ===
+        true
+      ) {
+        this.$gAuth
+          .getAuthCode()
+          .then((authToken: string) => this.GOOGLE_LOGIN(authToken));
+      }
+    }
   }
 }
 </script>

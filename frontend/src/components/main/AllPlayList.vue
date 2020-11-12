@@ -122,10 +122,10 @@ export default class AllPlayList extends Vue {
     this.scrollHeight = window.innerHeight;
   }
 
-  pushPlayList(playListName: string) {
+  pushPlayList(playListId: string) {
     this.$router.push({
       name: "PlayList",
-      params: { playListName: playListName }
+      params: { playListId: playListId }
     });
   }
 

@@ -2,6 +2,7 @@ export interface PlayListModule {
   AllPlayList: PlayList[] | null;
   PlayList: PlayList | null;
   scrollEnd: boolean;
+  PlayListVideos: [] | null;
 }
 
 export interface PlayList {

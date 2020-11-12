@@ -8,7 +8,8 @@ const module: Module<PlayListModule, RootState> = {
   state: {
     AllPlayList: [],
     scrollEnd: false,
-    PlayList: null
+    PlayList: null,
+    PlayListVideos: null
   },
 
   getters: {},
@@ -42,6 +43,12 @@ const module: Module<PlayListModule, RootState> = {
       Axios.instance
         .get("/api/public/playlist/detail", { params: { playlistId } })
         .then(({ data }) => commit("SET_PLAYLIST", data.data))
+        .catch(err => console.error(err));
+    },
+    FETCH_PLAYLIST_VIDEOS({ commit }, { playlistId }: { playlistId: number }) {
+      Axios.instance
+        .get("/api/private/playlist/subscribe", { params: { playlistId } })
+        .then(({ data }) => console.log(data.data))
         .catch(err => console.error(err));
     }
   }
