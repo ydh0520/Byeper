@@ -7,7 +7,8 @@
           <img
             class="Lecture-img"
             :src="lecture.playlistImg"
-            :alt="lecture.playlistDescription"
+            :alt="lecture.playlistTitle"
+            @click="selectLecture(lecture.playlistId)"
           />
         </div>
       </vue-slick-carousel>
@@ -15,34 +16,20 @@
     <v-row style="margin: 10px 10%">
       <v-col cols="5">
         <v-card class="mt-12">
-          <h2 class="ml-3">최근 질문</h2>
-          <v-list three-line>
-            <template v-for="(item, index) in items">
-              <v-subheader
-                v-if="item.header"
-                :key="item.header"
-                v-text="item.header"
-              ></v-subheader>
-
-              <v-divider
-                v-else-if="item.divider"
-                :key="index"
-                :inset="item.inset"
-              ></v-divider>
-
-              <v-list-item v-else :key="item.title">
-                <v-list-item-avatar>
-                  <v-img :src="item.avatar"></v-img>
+          <h2 class="ml-3">강의 목록</h2>
+          <v-list three-line v-for="(Lecture, index) in SelectedPlayLists" :key="index">
+              <v-list-item v-for="(video, idx) in Lecture.videos" :key="idx">
+                <v-list-item-avatar tile>
+                  <v-img :src="video.video_img"></v-img>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title v-html="item.title"></v-list-item-title>
+                  <v-list-item-title v-html="video.video_title"></v-list-item-title>
                   <v-list-item-subtitle
-                    v-html="item.subtitle"
+                    v-html="video.video_description"
                   ></v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-            </template>
           </v-list>
         </v-card>
       </v-col>
@@ -75,6 +62,7 @@ import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 })
 export default class InstructorDashboard extends Vue {
   LecturePlayLists = [];
+  SelectedPlayLists = [];
   Lectures = [
     {
       LectureName: "파이썬 좋아",
@@ -223,6 +211,10 @@ export default class InstructorDashboard extends Vue {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  selectLecture(playlistId) {
+    this.SelectedPlayLists = this.LecturePlayLists.filter(playlist => playlist.playlistId === playlistId);
   }
 
   async created() {
