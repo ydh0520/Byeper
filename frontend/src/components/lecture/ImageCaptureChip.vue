@@ -58,7 +58,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import h2c from "html2canvas";
 import { jsPDF } from "jspdf";
 import { namespace } from "vuex-class";
-import { CaptureImages } from "../../store/Lectures.interface";
+import { CaptureImages, Lecture } from "../../store/Lectures.interface";
 
 const LecturesModule = namespace("LecturesModule");
 
@@ -66,6 +66,7 @@ const LecturesModule = namespace("LecturesModule");
 export default class ImageCaptureChip extends Vue {
   @Prop(Object) readonly player: any;
   @Prop(String) readonly videoId!: string;
+  @LecturesModule.State lecture!: Lecture;
   @LecturesModule.Action FETCH_CAPTURE_IMAGE: any;
   @LecturesModule.State allCaptureImgs!: CaptureImages[];
 
@@ -82,7 +83,7 @@ export default class ImageCaptureChip extends Vue {
   async imageCapture() {
     const getVideoTime = await this.player.getCurrentTime();
     const videoUrl = await this.FETCH_CAPTURE_IMAGE({
-      id: this.videoId,
+      id: this.lecture.video_id,
       time: getVideoTime
     });
     this.addCapture({ url: videoUrl, time: getVideoTime });

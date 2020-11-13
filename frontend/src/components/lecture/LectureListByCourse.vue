@@ -72,7 +72,7 @@ const LecturesModule = namespace("LecturesModule");
 export default class LectureListByCourse extends Vue {
   @LecturesModule.State lectures!: Lecture[];
 
-  goLecture(playId) {
+  goLecture(playId: string) {
     this.$router.push({
       name: "LecturePage",
       params: {
