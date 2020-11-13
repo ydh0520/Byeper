@@ -67,6 +67,17 @@ const module: Module<AccountsModule, RootState> = {
         .get("/api/private/user/detail")
         .then(({ data }) => commit("SET_USER_INFO", data.data))
         .catch(err => console.error(err));
+    },
+    CHANGE_USER_NAME({ dispatch }, userName) {
+      Axios.instance
+        .put("/api/private/user/changeusername", { userName })
+        .then(({ data }) => {
+          if (data.status) {
+            dispatch("FETCH_USER_INFO");
+            alert("수정이 완료되었습니다.");
+          }
+        })
+        .catch(err => console.error(err));
     }
   }
 };
