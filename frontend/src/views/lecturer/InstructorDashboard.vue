@@ -2,6 +2,7 @@
   <div>
     <v-row style="margin: 10px 10%" cols="12" sm="6" offset-sm="3">
       <h2 class="mt-12">나의 강좌</h2>
+      <v-btn @click="$router.push({name: 'CreateLecture'})" class="ml-auto mt-12">강의 만들기</v-btn>
       <vue-slick-carousel
         v-if="Lectures.length"
         class="slick mt-12"
@@ -72,22 +73,22 @@
           </v-card>
         </v-col>
         <v-col cols="5">
-          <v-card class="mb-5" height="35vh">
-            <v-text-field v-model="problem"></v-text-field>
-            <v-text-field v-model="answer"></v-text-field>
-            <v-btn @click="addProblem()">문제 추가</v-btn>
+          <v-card class="mb-5" height="45vh">
+            <v-textarea outlined label="문제" v-model="problem"></v-textarea>
+            <v-textarea outlined label="정답" v-model="answer"></v-textarea>
+            <v-btn class="ml-3" style="width: 37vw" @click="addProblem()">문제 추가</v-btn>
           </v-card>
-          <v-card height="30vh">
+          <v-card height="25vh">
             <v-list v-for="(problem, idx) in problemList" :key="idx">
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title>{{ problem.problem }}</v-list-item-title>
+                  <v-list-item-title><strong>{{idx+1}}</strong>  {{ problem.problem }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
           </v-card>
-          <v-btn class="mr-5">문제 생성</v-btn>
-          <v-btn>취소</v-btn>
+            <v-btn class="mr-5">문제 생성</v-btn>
+            <v-btn @click="problemPopup = !problemPopup">취소</v-btn>
         </v-col>
       </v-row>
     </v-dialog>
@@ -197,45 +198,10 @@ export default class InstructorDashboard extends Vue {
   // 문제 제출 관련 변수들
   problemPopup = false;
   problemCandidate = [
-    {
-      "problem": "1더하기 1은 _______ 이다",
-      "answer": "2",
-      "video": "1",
-      "origin": "1더하기 1은 2다"
-    },
-    {
-      "problem": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 ______라는 객체를 생성하여 수행한다.",
-      "answer": "XMLHttpRequest",
-      "video": "1",
-      "origin": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 XMLHttpRequest라는 객체를 생성하여 수행한다."
-    },
-    {
-      "problem": "1더하기 1은 _______ 이다",
-      "answer": "2",
-      "video": "1",
-      "origin": "1더하기 1은 2다"
-    },
-    {
-      "problem": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 ______라는 객체를 생성하여 수행한다.",
-      "answer": "XMLHttpRequest",
-      "video": "1",
-      "origin": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 XMLHttpRequest라는 객체를 생성하여 수행한다."
-    },
-    {
-      "problem": "1더하기 1은 _______ 이다",
-      "answer": "2",
-      "video": "1",
-      "origin": "1더하기 1은 2다"
-    },
-    {
-      "problem": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 ______라는 객체를 생성하여 수행한다.",
-      "answer": "XMLHttpRequest",
-      "video": "1",
-      "origin": "Ajax란 좁은 의미로 클라이언트에서 서버가 비동기적으로 통신하는 기술 HTTP 요청 시 XMLHttpRequest라는 객체를 생성하여 수행한다."
-    },
   ];
   problemList = [];
   // 문제
+  selectedproblem = "";
   problem = "";
   answer = "";
 
@@ -291,23 +257,32 @@ export default class InstructorDashboard extends Vue {
     console.log(video);
     this.problemPopup = true;
     try {
-      // const res = await Axios.instanceDjango.post("문제 만드는 API")
-
+      const res = await Axios.instanceDjango.post("api/django/summary/qna/", {
+            video_id : video.video_id
+          }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      if(res.data.data) this.problemCandidate = res.data.data;
     } catch (e) {
       console.error(e);
     }
   }
 
   selectProblem(problem) {
+    this.selectedproblem = problem;
     this.problem = problem.problem;
     this.answer = problem.answer;
   }
 
   addProblem() {
-    this.problemList.push({
-      problem : this.problem,
-      answer : this.answer
-    })
+    if(this.problem && this.answer) {
+      this.problemList.push({
+        problem : this.problem,
+        answer : this.answer
+      })
+    }
     this.problem = "";
     this.answer = "";
   }
@@ -323,6 +298,7 @@ export default class InstructorDashboard extends Vue {
 </script>
 
 <style scoped>
+
 .slick {
   width: 100%;
   height: 165px;
