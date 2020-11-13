@@ -16,7 +16,7 @@
     <div class="text-h5 my-5">
       전체 재생 목록
     </div>
-    <lecture-list class="mb-10" />
+    <course-list class="mb-10" />
   </div>
 </template>
 
@@ -26,7 +26,7 @@ import Profile from "@/components/dashboard/Profile.vue";
 import StatisticsByAll from "@/components/dashboard/StatisticsByAll.vue";
 import LearningVideo from "@/components/dashboard/LearningVideo.vue";
 import FinishedLecture from "@/components/dashboard/FinishedLecture.vue";
-import LectureList from "@/components/lecture/LectureList.vue";
+import CourseList from "@/components/lecture/CourseList.vue";
 import { namespace } from "vuex-class";
 
 const LecturesModule = namespace("LecturesModule");
@@ -37,7 +37,7 @@ const LecturesModule = namespace("LecturesModule");
     StatisticsByAll,
     LearningVideo,
     FinishedLecture,
-    LectureList
+    CourseList
   }
 })
 export default class StudentPage extends Vue {
