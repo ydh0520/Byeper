@@ -10,39 +10,44 @@
 
         <v-col cols="5" lg="5" md="5" sm="12">
           <div class="textBox">
-            <h2>{{ PlayList.playlistTitle }}</h2>
-            <p>{{ PlayList.playlistDescription }}</p>
+            <h2>
+              {{ PlayList.playlistTitle }}
+            </h2>
+            <p>{{ PlayList.playlistDescription }} Lorem ipsum dolor sit amet</p>
           </div>
         </v-col>
-        <v-col cols="5" lg="5" md="5" sm="12" justify="center" align="center">
-          <div class="tableBox">
-            <v-simple-table dense max-height="400px" width="400px">
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="text-left">
-                      재생번호
-                    </th>
-                    <th class="text-left">
-                      제목
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="(video, video_index) in PlayListVideos"
-                    :key="video.video_id"
-                    @click="moveScroll(video.video_id)"
-                  >
-                    <td class="text-center" style="cursor: pointer;">
-                      {{ video_index + 1 }}
-                    </td>
-                    <td style="cursor: pointer">{{ video.video_title }}</td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </div>
+        <v-col cols="5" lg="5" md="5" sm="12" style="align-self: center">
+          <v-simple-table
+            dense
+            max-height="400px"
+            width="400px"
+            class="tableBox"
+          >
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">
+                    재생번호
+                  </th>
+                  <th class="text-left">
+                    제목
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(video, video_index) in PlayListVideos"
+                  :key="video.video_id"
+                  @click="moveScroll(video.video_id)"
+                >
+                  <td class="text-center" style="cursor: pointer;">
+                    {{ video_index + 1 }}
+                  </td>
+                  <td style="cursor: pointer">{{ video.video_title }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-col>
       </v-row>
     </div>
@@ -137,6 +142,7 @@ export default class PlayListDescription extends Vue {
   position: relative;
   max-width: 500px;
   z-index: 2;
+  overflow: hidden;
 }
 
 .banner .textBox:before {
