@@ -78,7 +78,7 @@
             <v-textarea outlined label="정답" v-model="answer"></v-textarea>
             <v-btn class="ml-3" style="width: 37vw" @click="addProblem()">문제 추가</v-btn>
           </v-card>
-          <v-card height="25vh">
+          <v-card height="25vh" style="overflow-y: scroll">
             <v-list v-for="(problem, idx) in problemList" :key="idx">
               <v-list-item>
                 <v-list-item-content>
