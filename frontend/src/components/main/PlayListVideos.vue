@@ -16,22 +16,6 @@
                 <p style="font-weight: light; ">
                   {{ video.video_description }}
                 </p>
-                <div>
-                  <p
-                    style="font-size: 0.75em; font-weight: bold !important; margin: 0 0 10px 0"
-                  >
-                    학습상태 (수강중)
-                  </p>
-                  <v-progress-linear
-                    color="deep-orange"
-                    height="18"
-                    :value="video.play_log"
-                    striped
-                    ><strong style="font-size: 0.8em"
-                      >{{ video.play_log }}%</strong
-                    ></v-progress-linear
-                  >
-                </div>
               </div>
             </div>
           </div>
