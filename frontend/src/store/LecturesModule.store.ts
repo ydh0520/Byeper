@@ -8,7 +8,8 @@ const module: Module<LecturesModule, RootState> = {
   state: {
     lectures: [],
     allCaptureImgs: [],
-    courses: []
+    courses: [],
+    lecture: null
   },
 
   getters: {},
@@ -22,6 +23,9 @@ const module: Module<LecturesModule, RootState> = {
     },
     SET_LECTURE_BY_COURSE(state, lectures) {
       state.lectures = lectures;
+    },
+    SET_LECTURE(state, lecture) {
+      state.lecture = lecture;
     }
   },
 
@@ -57,6 +61,12 @@ const module: Module<LecturesModule, RootState> = {
       Axios.instance
         .get("/api/public/video/findplaylist", { params: { playlistId } })
         .then(({ data }) => commit("SET_LECTURE_BY_COURSE", data.data))
+        .catch(err => console.error(err));
+    },
+    FETCH_LECTURE_DETAIL({ commit }, playId) {
+      Axios.instance
+        .get("/api/public/play/detail", { params: { playId } })
+        .then(({ data }) => commit("SET_LECTURE", data.data))
         .catch(err => console.error(err));
     }
   }

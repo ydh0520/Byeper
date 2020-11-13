@@ -2,6 +2,7 @@ export interface LecturesModule {
   lectures: Lecture[];
   allCaptureImgs: CaptureImages[];
   courses: Course[];
+  lecture: Lecture | null;
 }
 
 export interface Lecture {
