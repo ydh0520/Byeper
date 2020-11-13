@@ -374,10 +374,59 @@ public class PlaylistController {
 		response.data = progressmap;
 		response.status = (response.data != null) ? true : false;
 		if (response.status) {
-			response.message = "강의등록에 성공하였습니다.";
+			response.message = "조회에 성공하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			response.message = "강의등록에 실패하였습니다.";
+			response.message = "조회에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/api/public/playlist/progressmanage")
+	public Object playlistProgressManage(@RequestHeader("Authorization") String jwtToken) {
+		BasicResponse response = new BasicResponse();
+
+		UserDto user = (UserDto) redisTemplate.opsForValue().get(jwtToken);
+
+		if (user == null) {
+			response.status = false;
+			response.message = "잘못된 사용자 입니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		List<PlaylistProgressDto> progress = playlistService.getPlaylistProgressManage(user.getUserId());
+
+		Map<Integer, Map<String, Integer>> progressmap = new HashMap<Integer, Map<String, Integer>>();
+
+		int total = 0;
+		int complete = 0;
+
+		for (int i = 0; i < progress.size(); i++) {
+			Map<String, Integer> progressinfo = new HashMap<String, Integer>();
+
+			complete += progress.get(i).getcomplete();
+			total += progress.get(i).gettotal();
+
+			progressinfo.put("complete", progress.get(i).getcomplete());
+			progressinfo.put("total", progress.get(i).gettotal());
+
+			progressmap.put(progress.get(i).getplaylist_id(), progressinfo);
+		}
+
+		Map<String, Integer> totalInfo = new HashMap<String, Integer>();
+
+		totalInfo.put("complete", complete);
+		totalInfo.put("total", total);
+
+		progressmap.put(0, totalInfo);
+
+		response.data = progressmap;
+		response.status = (response.data != null) ? true : false;
+		if (response.status) {
+			response.message = "조회에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.message = "조회에 실패하였습니다.";
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
