@@ -15,14 +15,11 @@ const module: Module<LecturesModule, RootState> = {
   },
 
   getters: {
-    totalLectureProgress(state) {
-      let total = 0;
-      let complete = 0;
-      state.courseProgress.forEach(course => {
-        total += course.total;
-        complete += course.complete;
-      });
-      return { total, complete };
+    totalCourseProgress(state) {
+      const complete = state.courseProgress.filter(
+        course => course.total === course.complete
+      ).length;
+      return { total: state.courseProgress.length, complete };
     }
   },
 
