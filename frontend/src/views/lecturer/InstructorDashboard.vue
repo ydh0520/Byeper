@@ -61,7 +61,7 @@
     <v-dialog v-model="problemPopup">
       <v-row justify="center">
         <v-col cols="4">
-          <v-card height="70vh">
+          <v-card height="70vh" style="overflow-y: scroll">
             <h1>추천 문제</h1>
             <v-list v-for="(problem, idx) in problemCandidate" :key="idx">
               <v-list-item @click="selectProblem(problem)">
@@ -82,13 +82,13 @@
             <v-list v-for="(problem, idx) in problemList" :key="idx">
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title><strong>{{idx+1}}</strong>  {{ problem.problem }}</v-list-item-title>
+                  <v-list-item-title><strong>{{idx+1}}</strong>  {{ problem.problemQuestion }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
           </v-card>
-            <v-btn class="mr-5">문제 생성</v-btn>
-            <v-btn @click="problemPopup = !problemPopup">취소</v-btn>
+            <v-btn @click="submitProblems" class="mr-5">문제 생성</v-btn>
+            <v-btn @click="clearProblem">취소</v-btn>
         </v-col>
       </v-row>
     </v-dialog>
@@ -272,6 +272,7 @@ export default class InstructorDashboard extends Vue {
 
   selectProblem(problem) {
     this.selectedproblem = problem;
+    console.log(this.selectedproblem);
     this.problem = problem.problem;
     this.answer = problem.answer;
   }
@@ -279,16 +280,41 @@ export default class InstructorDashboard extends Vue {
   addProblem() {
     if(this.problem && this.answer) {
       this.problemList.push({
-        problem : this.problem,
-        answer : this.answer
+        problemCharfield : this.answer,
+        problemId : 0,
+        problemOrigin: this.selectedproblem.origin,
+        problemQuestion : this.problem,
+        videoId: this.selectedproblem.video
       })
     }
     this.problem = "";
     this.answer = "";
+    this.selectedproblem = "";
+  }
+
+  clearProblem() {
+    this.problem = "";
+    this.answer = "";
+    this.selectedproblem = "";
+    this.problemCandidate = null;
+    this.problemPopup = false;
   }
 
   async submitProblems(){
-    console.log("문제 제출");
+    try {
+      const res = await Axios.instance.post(
+          "/api/public/problem/save",
+          this.problemList,
+          {
+            headers: {
+              "Content-Type" : "application/json"
+            }
+          }
+      )
+      console.log(res);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async created() {
