@@ -3,11 +3,11 @@
     <v-container>
       <v-row
         v-for="video in PlayListVideos"
-        :key="video.video_id"
+        :key="video.play_id"
         style="margin: 50px 0 50px 0"
       >
         <v-col cols="6">
-          <div class="videodescription" :id="video.video_id">
+          <div class="videodescription" :id="video.play_id">
             <div class="content">
               <div>
                 <h3 class="mb-5">
@@ -61,18 +61,17 @@ export default class PlayListRoadmap extends Vue {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Do Hyeon", sans-serif;
 }
 .playlistvideos {
   display: flex;
   justify-content: center;
   align-items: center;
   background: #222;
-  min-height: 100vh;
 }
 .container {
   position: relative;
   width: 1000px;
+  left: 0;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
