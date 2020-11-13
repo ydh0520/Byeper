@@ -25,4 +25,6 @@ public interface PlaylistService {
 	public PlaylistDto updatePlaylist(PlaylistDto update);
 
 	public List<PlaylistProgressDto> getPlaylistProgress(String userId);
+
+	public List<PlaylistProgressDto> getPlaylistProgressManage(String userId);
 }

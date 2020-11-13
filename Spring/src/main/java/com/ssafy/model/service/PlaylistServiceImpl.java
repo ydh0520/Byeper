@@ -75,4 +75,10 @@ public class PlaylistServiceImpl implements PlaylistService {
 		return playlistRepository.findProgressInfo(userId);
 	}
 
+	@Override
+	public List<PlaylistProgressDto> getPlaylistProgressManage(String userId) {
+		// TODO Auto-generated method stub
+		return playlistRepository.findProgressManage(userId);
+	}
+
 }

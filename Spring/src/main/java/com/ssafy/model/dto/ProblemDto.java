@@ -3,6 +3,8 @@ package com.ssafy.model.dto;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -11,6 +13,7 @@ public class ProblemDto {
 
 	@Id
 	@Column(name = "problem_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int problemId;
 
 	@Column(name = "problem_origin")
