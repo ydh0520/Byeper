@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.model.dto.PlaylistDto;
+import com.ssafy.model.dto.PlaylistProgressDto;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<PlaylistDto, Integer> {
@@ -19,5 +20,8 @@ public interface PlaylistRepository extends JpaRepository<PlaylistDto, Integer> 
 
 	@Query(value = "select * from ssafy.playlist where user_id =:user_id and playlist_type = 0", nativeQuery = true)
 	public List<PlaylistDto> findByManagement(@Param("user_id") String userId);
+
+	@Query(value = "select playlist_id,sum(if(play_complete=1,1,0)) as complete ,count(*)  as total from ssafy.play group by playlist_id having playlist_id in (select playlist_id from ssafy.playlist where user_id = :user_id and playlist_type!=0)", nativeQuery = true)
+	public List<PlaylistProgressDto> findProgressInfo(@Param("user_id") String userId);
 
 }
