@@ -5,12 +5,13 @@
       <v-row>
         <v-col>
           <v-progress-circular
+            v-if="totalLectureProgress"
             rotate="-90"
             size="100"
             width="15"
             :value="value"
             color="teal"
-            >{{ value }}</v-progress-circular
+            >{{ totalLectureProgress.complete }}</v-progress-circular
           >
           <v-card-text>완료 강의수</v-card-text>
         </v-col>
@@ -32,10 +33,15 @@
 </template>
 
 <script>
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { namespace } from "vuex-class";
+
+const LecturesModule = namespace("LecturesModule");
 
 @Component
 export default class StatisticsByAll extends Vue {
+  @LecturesModule.State totalLectureProgress;
+
   value = 0;
   value2 = 0;
   interval = {};
@@ -46,27 +52,35 @@ export default class StatisticsByAll extends Vue {
     clearInterval(this.interval2);
   }
 
-  queryAndIndeterminate() {
-    setTimeout(() => {
-      this.query = false;
-
+  @Watch("totalLectureProgress", { immediate: true })
+  totalCourseInterval() {
+    if (this.totalLectureProgress) {
       this.interval = setInterval(() => {
-        if (this.value === 60) {
+        if (
+          this.totalLectureProgress.complete === 0 ||
+          this.value >= (20 / this.totalLectureProgress.total) * 100
+        ) {
           return;
         }
-        this.value += 10;
-      }, 150);
-    });
-    setTimeout(() => {
-      this.query = false;
+        this.value += 5;
+      }, 80);
+    }
+  }
 
-      this.interval2 = setInterval(() => {
-        if (this.value2 === 30) {
-          return;
-        }
-        this.value2 += 10;
-      }, 150);
-    });
+  queryAndIndeterminate() {
+    this.interval2 = setInterval(() => {
+      if (this.value2 === 60) {
+        return;
+      }
+      this.value2 += 10;
+    }, 150);
+
+    // this.interval2 = setInterval(() => {
+    //   if (this.value2 === 30) {
+    //     return;
+    //   }
+    //   this.value2 += 10;
+    // }, 150);
   }
 
   mounted() {

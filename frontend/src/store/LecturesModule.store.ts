@@ -1,6 +1,6 @@
 import { Module } from "vuex";
 import { RootState } from "./index";
-import { LecturesModule } from "./Lectures.interface";
+import { LecturesModule, Progress } from "./Lectures.interface";
 import { Axios } from "@/service/axios.service";
 
 const module: Module<LecturesModule, RootState> = {
@@ -9,10 +9,22 @@ const module: Module<LecturesModule, RootState> = {
     lectures: [],
     allCaptureImgs: [],
     courses: [],
-    lecture: null
+    lecture: null,
+    totalLectureProgress: null,
+    courseProgress: []
   },
 
-  getters: {},
+  getters: {
+    totalLectureProgress(state) {
+      let total = 0;
+      let complete = 0;
+      state.courseProgress.forEach(course => {
+        total += course.total;
+        complete += course.complete;
+      });
+      return { total, complete };
+    }
+  },
 
   mutations: {
     SET_ALL_CAPTURE_IMAGES(state, imgs) {
@@ -26,6 +38,17 @@ const module: Module<LecturesModule, RootState> = {
     },
     SET_LECTURE(state, lecture) {
       state.lecture = lecture;
+    },
+    SET_PLAYLIST_PROGRESS(state, progress) {
+      const arrProgress: Progress[] = [];
+      Object.keys(progress).forEach(el => {
+        const obj: Progress = { id: "0", total: 0, complete: 0 };
+        obj.id = el;
+        obj.total = progress[el].total;
+        obj.complete = progress[el].complete;
+        el === "0" ? (state.totalLectureProgress = obj) : arrProgress.push(obj);
+      });
+      state.courseProgress = arrProgress;
     }
   },
 
@@ -67,6 +90,12 @@ const module: Module<LecturesModule, RootState> = {
       Axios.instance
         .get("/api/public/play/detail", { params: { playId } })
         .then(({ data }) => commit("SET_LECTURE", data.data))
+        .catch(err => console.error(err));
+    },
+    FETCH_PLAYLIST_PROGRESS({ commit }) {
+      Axios.instance
+        .get("/api/public/playlist/progress")
+        .then(({ data }) => commit("SET_PLAYLIST_PROGRESS", data.data))
         .catch(err => console.error(err));
     }
   }

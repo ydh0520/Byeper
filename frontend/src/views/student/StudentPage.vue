@@ -42,9 +42,11 @@ const LecturesModule = namespace("LecturesModule");
 })
 export default class StudentPage extends Vue {
   @LecturesModule.Action FETCH_COURSE_BY_STUDENT: any;
+  @LecturesModule.Action FETCH_PLAYLIST_PROGRESS: any;
 
   created() {
     this.FETCH_COURSE_BY_STUDENT();
+    this.FETCH_PLAYLIST_PROGRESS();
   }
 }
 </script>
