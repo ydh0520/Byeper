@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.model.dto.PlaylistDto;
+import com.ssafy.model.dto.PlaylistProgressDto;
 import com.ssafy.model.repository.PlaylistRepository;
 
 @Service
@@ -66,6 +67,12 @@ public class PlaylistServiceImpl implements PlaylistService {
 	public List<PlaylistDto> findAllPlaylistManangement(String userId) {
 		// TODO Auto-generated method stub
 		return playlistRepository.findByManagement(userId);
+	}
+
+	@Override
+	public List<PlaylistProgressDto> getPlaylistProgress(String userId) {
+		// TODO Auto-generated method stub
+		return playlistRepository.findProgressInfo(userId);
 	}
 
 }
