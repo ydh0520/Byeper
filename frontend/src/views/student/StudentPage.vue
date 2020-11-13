@@ -27,6 +27,9 @@ import StatisticsByAll from "@/components/dashboard/StatisticsByAll.vue";
 import LearningVideo from "@/components/dashboard/LearningVideo.vue";
 import FinishedLecture from "@/components/dashboard/FinishedLecture.vue";
 import LectureList from "@/components/lecture/LectureList.vue";
+import { namespace } from "vuex-class";
+
+const LecturesModule = namespace("LecturesModule");
 
 @Component({
   components: {
@@ -37,7 +40,13 @@ import LectureList from "@/components/lecture/LectureList.vue";
     LectureList
   }
 })
-export default class StudentPage extends Vue {}
+export default class StudentPage extends Vue {
+  @LecturesModule.Action FETCH_COURSE_BY_STUDENT: any;
+
+  created() {
+    this.FETCH_COURSE_BY_STUDENT();
+  }
+}
 </script>
 
 <style scoped>

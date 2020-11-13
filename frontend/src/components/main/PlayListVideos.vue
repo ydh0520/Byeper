@@ -2,7 +2,7 @@
   <div class="playlistvideos">
     <v-container>
       <v-row
-        v-for="video in PlayListVideos"
+        v-for="video in videoList"
         :key="video.video_id"
         style="margin: 50px 0 50px 0"
       >
@@ -60,21 +60,38 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { PlayList } from "../../store/PlayList.interface";
+import { Lecture } from "../../store/Lectures.interface";
+import { PlayListVideos } from "../../store/PlayList.interface";
 
 const PlayListModule = namespace("PlayListModule");
+const LecturesModule = namespace("LecturesModule");
 
 @Component
 export default class PlayListRoadmap extends Vue {
-  @PlayListModule.State PlayListVideos!: [];
+  @PlayListModule.State PlayListVideos!: PlayListVideos[];
+  @LecturesModule.State lectures!: Lecture[];
+
+  videoList: PlayListVideos[] | Lecture[] = [];
 
   goLecture(courseName: string) {
     this.$router.push({
       name: "LecturePage",
       params: { courseName: courseName }
     });
+  }
+  setVideoList() {
+    const routeName = this.$route.name;
+    console.log(routeName);
+    if (routeName === "PlayList") {
+      this.videoList = this.PlayListVideos;
+    } else if (routeName === "LectureListPage") {
+      this.videoList = this.lectures;
+    }
+  }
+  created() {
+    this.setVideoList();
   }
 }
 </script>
