@@ -6,7 +6,7 @@
         :key="video.video_id"
         style="margin: 50px 0 50px 0"
       >
-        <v-col cols="6">
+        <v-col cols="6" lg="6" md="6" sm="12">
           <div class="videodescription" :id="video.video_id">
             <div class="content">
               <div>
@@ -37,9 +37,16 @@
           </div>
         </v-col>
 
-        <v-col cols="1"></v-col>
+        <v-col cols="1" lg="1" md="1" sm="1"></v-col>
 
-        <v-col cols="5" justify="center">
+        <v-col
+          cols="5"
+          lg="5"
+          md="5"
+          sm="12"
+          justify="center"
+          style="display: inline-flex"
+        >
           <div class="card">
             <div class="imgBx">
               <img class="bigimg" :src="video.video_img" />
@@ -180,8 +187,8 @@ export default class LectureListByCourse extends Vue {
   cursor: pointer;
 }
 .card .content img {
-  width: 400px;
-  height: 225px;
+  width: 100%;
+  height: 100%;
 }
 @keyframes fadeInBottom {
   0% {
