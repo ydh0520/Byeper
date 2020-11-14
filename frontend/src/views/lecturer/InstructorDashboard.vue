@@ -62,7 +62,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="problemPopup">
+    <v-dialog v-model="problemPopup" persistent>
       <v-row justify="center" style="background-color: #000; padding: 10px">
         <v-col cols="4">
           <v-card height="70vh" style="overflow-y: scroll">
@@ -96,9 +96,11 @@
               </v-list-item>
             </v-list>
           </v-card>
-          <v-btn @click="submitProblems" class="mr-5">문제 생성</v-btn>
-          <v-btn @click="clearProblem">취소</v-btn>
+          <v-btn @click="submitProblems" width="100%">문제 생성</v-btn>
         </v-col>
+        <v-row style="justify-content: flex-end">
+          <v-btn class="mr-5" @click="clearProblem">닫기</v-btn>
+        </v-row>
       </v-row>
     </v-dialog>
   </div>
