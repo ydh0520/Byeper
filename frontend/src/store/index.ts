@@ -19,7 +19,7 @@ const store: StoreOptions<RootState> = {
     AccountsModule,
     PlayListModule,
     InstructorModule,
-    LecturesModule
+    LecturesModule,
   }
 };
 

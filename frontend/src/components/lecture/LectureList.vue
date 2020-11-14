@@ -5,19 +5,19 @@
         lg="4"
         md="6"
         sm="12"
-        v-for="course in courseList"
-        :key="course.id"
+        v-for="course in courses"
+        :key="course.playlistId"
       >
         <v-card
           class="mx-auto"
           height="400px"
-          @click="routingToCource(course.courseName)"
+          @click="routingToCourse(course.playlistId, course.playlistTitle)"
         >
-          <v-img :src="course.img" height="200px"></v-img>
+          <v-img :src="course.playlistImg" height="200px"></v-img>
           <v-row align="center">
             <v-col style="padding-bottom: 0">
               <v-card-title style="font-size: 1em; height: 120px">
-                {{ course.courseName }}
+                {{ course.playlistTitle }}
               </v-card-title>
             </v-col>
             <v-col cols="3" class="play-icon">
@@ -46,51 +46,18 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { namespace } from "vuex-class";
+import { Course } from "../../store/Lectures.interface";
 
+const LecturesModule = namespace("LecturesModule");
 @Component
 export default class LectureList extends Vue {
-  courseList = [
-    {
-      id: 1,
-      img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-      courseName: "머신러닝으로 주가 예측하기"
-    },
-    {
-      id: 2,
-      img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-      courseName: "인공지능으로 세상을 바꾸다"
-    },
-    {
-      id: 3,
-      img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-      courseName: "회귀분석을 통한 예측"
-    },
-    {
-      id: 4,
-      img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-      courseName: "텐서플로우 구현하기"
-    },
-    {
-      id: 5,
-      img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-      courseName: "JavaScript 완벽 이해하기"
-    },
-    {
-      id: 6,
-      img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-      courseName: "React 완전 정복"
-    },
-    {
-      id: 7,
-      img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-      courseName: "Kaggle 데이터로 본 세상"
-    }
-  ];
+  @LecturesModule.State courses!: Course[];
 
-  routingToCource(courseName: string) {
+  routingToCourse(playlistId: number, playlistTitle: string) {
     this.$router.push({
       name: "LectureListPage",
-      params: { courseName: courseName }
+      params: { playlistId: String(playlistId), playlistTitle }
     });
   }
 }
