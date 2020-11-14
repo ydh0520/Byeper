@@ -182,11 +182,7 @@
 
     <editor-content class="editor__content" :editor="editor" />
     <div id="focus-position"></div>
-    <image-capture-chip
-      :player="player"
-      :videoId="videoId"
-      @addCapture="addCapture"
-    />
+    <image-capture-chip :player="player" @addCapture="addCapture" />
   </div>
 </template>
 
@@ -223,7 +219,6 @@ import ImageCaptureChip from "@/components/lecture/ImageCaptureChip.vue";
 })
 export default class TextEditor extends Vue {
   @Prop(Object) player;
-  @Prop(String) videoId;
   editor = new Editor({
     extensions: [
       new Blockquote(),

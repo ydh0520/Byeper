@@ -29,7 +29,6 @@
       </v-row>
       <text-editor
         :player="player"
-        :videoId="videoURL"
         v-if="$route.query.tab === 'note' || !$route.query.tab"
       />
       <quiz v-else-if="$route.query.tab === 'quiz'" />
@@ -69,8 +68,6 @@ export default class LecturePage extends Vue {
 
   player: { seekTo: (n: number) => {} } | null = null;
   start = 0;
-
-  videoURL = "6AnnvVrth4w";
 
   startVideo() {
     this.start += 10;
