@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-row style="margin: 10px 10%" cols="12" sm="6" offset-sm="3">
+    <v-row
+      style="margin: 10px 10%; padding: 12px"
+      cols="12"
+      sm="6"
+      offset-sm="3"
+    >
       <h2 class="mt-12">나의 강좌</h2>
       <v-btn
         @click="$router.push({ name: 'CreateLecture' })"
@@ -59,35 +64,43 @@
       <v-col cols="7">
         <v-card class="mt-12" style="height: 50vh;">
           <h2 class="ml-3">수강 통계</h2>
-          <div v-if="!totalLectureStatistics" class="align-center justify-center">
-            <h1 v-if="!totalLectureStatistics" class="mt-16 mx-auto">아직 등록된 수강생이 없습니다</h1>
+          <div
+            v-if="!totalLectureStatistics"
+            class="align-center justify-center"
+          >
+            <h1 v-if="!totalLectureStatistics" class="mt-16 mx-auto">
+              아직 등록된 수강생이 없습니다
+            </h1>
           </div>
           <div v-else>
-            <v-row>
+            <v-row align="center" justify="center">
               <v-col>
                 <v-progress-circular
-                    rotate="-90"
-                    size="100"
-                    width="15"
-                    :value="totalProgress"
-                    color="teal"
-                >{{ totalProgress }}</v-progress-circular
+                  rotate="-90"
+                  size="100"
+                  width="15"
+                  :value="totalProgress"
+                  color="teal"
+                  >{{ totalProgress }}</v-progress-circular
                 >
-                <v-card-text style="font-size: 1em;">전체 강의 학습률</v-card-text>
+                <v-card-text style="font-size: 1em;"
+                  >전체 강의 학습률</v-card-text
+                >
               </v-col>
               <v-col>
                 <v-progress-circular
-                    rotate="-90"
-                    size="100"
-                    width="15"
-                    :value="lectureProgress"
-                    color="teal"
-                >{{ lectureProgress }}</v-progress-circular
+                  rotate="-90"
+                  size="100"
+                  width="15"
+                  :value="lectureProgress"
+                  color="teal"
+                  >{{ lectureProgress }}</v-progress-circular
                 >
-                <v-card-text style="font-size: 1em;">해당 강의 학습률</v-card-text>
+                <v-card-text style="font-size: 1em;"
+                  >해당 강의 학습률</v-card-text
+                >
               </v-col>
             </v-row>
-
           </div>
         </v-card>
       </v-col>
@@ -147,9 +160,7 @@ import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 
 // const InstructorModule = namespace("InstructorModule");
-import PieChart from "@/components/Charts/PieChart.vue";
-
-
+// import PieChart from "@/components/Charts/PieChart.vue";
 
 @Component({
   components: {
@@ -238,7 +249,11 @@ export default class InstructorDashboard extends Vue {
       this.LecturePlayLists = res;
       this.SelectedPlayLists.push(this.LecturePlayLists[0]);
       // 해당 강의 학습률 저장
-      this.lectureProgress = Math.round(this.lectureStatistics[this.LecturePlayLists[0].playlistId].complete / this.lectureStatistics[this.LecturePlayLists[0].playlistId].total * 100);
+      this.lectureProgress = Math.round(
+        (this.lectureStatistics[this.LecturePlayLists[0].playlistId].complete /
+          this.lectureStatistics[this.LecturePlayLists[0].playlistId].total) *
+          100
+      );
     });
   }
 
@@ -259,7 +274,11 @@ export default class InstructorDashboard extends Vue {
       playlist => playlist.playlistId === playlistId
     );
     //해당 강의 학습률 확인
-    this.lectureProgress = Math.round(this.lectureStatistics[playlistId].complete / this.lectureStatistics[playlistId].total * 100);
+    this.lectureProgress = Math.round(
+      (this.lectureStatistics[playlistId].complete /
+        this.lectureStatistics[playlistId].total) *
+        100
+    );
   }
 
   async getProblems(video) {
@@ -333,9 +352,7 @@ export default class InstructorDashboard extends Vue {
 
   async getStatistics() {
     try {
-      const res = await Axios.instance.get(
-          "/api/public/playlist/progress", {
-      })
+      const res = await Axios.instance.get("/api/public/playlist/progress", {});
       // res.data.data = {
       //   "0": {
       //     "total": 7,
@@ -351,12 +368,16 @@ export default class InstructorDashboard extends Vue {
       //   }
       // }
 
-      if(res.data.data["0"].total !== 0) {
+      if (res.data.data["0"].total !== 0) {
         this.totalLectureStatistics = res.data.data["0"];
-        this.totalProgress = Math.round(this.totalLectureStatistics.complete / this.totalLectureStatistics.total * 100);
+        this.totalProgress = Math.round(
+          (this.totalLectureStatistics.complete /
+            this.totalLectureStatistics.total) *
+            100
+        );
         this.lectureStatistics = res.data.data;
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     }
   }
