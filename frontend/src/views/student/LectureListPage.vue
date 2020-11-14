@@ -1,23 +1,17 @@
 <template>
-  <div
-    class="lecture-list-page mx-auto mt-10"
-    style="font-family: 'Do Hyeon', sans-serif !important;"
-  >
-    <div
-      class="lecture-title text-h3 mb-10 "
-      style="text-align: center; font-family: 'Do Hyeon', sans-serif !important;"
-    >
+  <div class="lecture-list-page mx-auto mt-10">
+    <div class="lecture-title text-h3 mb-10" style="text-align: center">
       {{ $route.params.playlistTitle }}
     </div>
     <statistics-by-course />
-    <play-list-videos />
+    <lecture-list-by-course />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import StatisticsByCourse from "@/components/dashboard/StatisticsByCourse.vue";
-import PlayListVideos from "@/components/main/PlayListVideos.vue";
+import LectureListByCourse from "@/components/lecture/LectureListByCourse.vue";
 import { namespace } from "vuex-class";
 
 const LecturesModule = namespace("LecturesModule");
@@ -25,7 +19,7 @@ const LecturesModule = namespace("LecturesModule");
 @Component({
   components: {
     StatisticsByCourse,
-    PlayListVideos
+    LectureListByCourse
   }
 })
 export default class LectureListPage extends Vue {
@@ -41,6 +35,7 @@ export default class LectureListPage extends Vue {
 .lecture-list-page {
   width: 80%;
 }
+
 .lecture-title:before {
   content: "";
   position: absolute;

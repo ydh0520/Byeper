@@ -27,11 +27,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/course/:playlistTitle/:playlistId",
     name: "LectureListPage",
-    component: LectureListPage,
-    props: true
+    component: LectureListPage
   },
   {
-    path: "/course/:playlistTitle/:playlistId/lecture",
+    path: "/course/:playlistTitle/:playlistId/lecture/:playId",
     name: "LecturePage",
     component: LecturePage
   },

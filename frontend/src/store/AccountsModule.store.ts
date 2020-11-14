@@ -50,7 +50,6 @@ const module: Module<AccountsModule, RootState> = {
       Axios.instance
         .post("/api/public/google/login", authToken)
         .then(({ data }) => {
-          console.log(data);
           commit("SET_TOKEN", data.data.userPassword);
           commit("SET_USER_INFO", data.data);
         })
@@ -66,6 +65,28 @@ const module: Module<AccountsModule, RootState> = {
       Axios.instance
         .get("/api/private/user/detail")
         .then(({ data }) => commit("SET_USER_INFO", data.data))
+        .catch(err => console.error(err));
+    },
+    CHANGE_USER_NAME({ dispatch }, userName) {
+      Axios.instance
+        .put("/api/private/user/changeusername", { userName })
+        .then(({ data }) => {
+          if (data.status) {
+            dispatch("FETCH_USER_INFO");
+            alert("수정이 완료되었습니다.");
+          }
+        })
+        .catch(err => console.error(err));
+    },
+    REGISTER_TEACHER({ dispatch }) {
+      Axios.instance
+        .put("/api/private/user/registteacher")
+        .then(({ data }) => {
+          if (data.status) {
+            dispatch("FETCH_USER_INFO");
+            alert("강사등록이 완료되었습니다.");
+          }
+        })
         .catch(err => console.error(err));
     }
   }
