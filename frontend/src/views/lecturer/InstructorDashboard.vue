@@ -53,8 +53,38 @@
         </v-card>
       </v-col>
       <v-col cols="7">
-        <v-card class="mt-12">
+        <v-card class="mt-12" style="height: 50vh;">
           <h2 class="ml-3">수강 통계</h2>
+          <div v-if="!totalLectureStatistics" class="align-center justify-center">
+            <h1 v-if="!totalLectureStatistics" class="mt-16 mx-auto">아직 등록된 수강생이 없습니다</h1>
+          </div>
+          <div v-else>
+            <v-row>
+              <v-col>
+                <v-progress-circular
+                    rotate="-90"
+                    size="100"
+                    width="15"
+                    :value="totalProgress"
+                    color="teal"
+                >{{ totalProgress }}</v-progress-circular
+                >
+                <v-card-text style="font-size: 1em;">전체 강의 학습률</v-card-text>
+              </v-col>
+              <v-col>
+                <v-progress-circular
+                    rotate="-90"
+                    size="100"
+                    width="15"
+                    :value="lectureProgress"
+                    color="teal"
+                >{{ lectureProgress }}</v-progress-circular
+                >
+                <v-card-text style="font-size: 1em;">해당 강의 학습률</v-card-text>
+              </v-col>
+            </v-row>
+
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -106,6 +136,9 @@ import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 
 // const InstructorModule = namespace("InstructorModule");
+import PieChart from "@/components/Charts/PieChart.vue";
+
+
 
 @Component({
   components: {
@@ -204,6 +237,11 @@ export default class InstructorDashboard extends Vue {
   selectedproblem = "";
   problem = "";
   answer = "";
+  // 통계
+  lectureStatistics = null;
+  totalLectureStatistics = null;
+  totalProgress = null;
+  lectureProgress = null;
 
   async getTotalLecture() {
     const Lectures = await this.getMyPlayList();
@@ -232,6 +270,8 @@ export default class InstructorDashboard extends Vue {
     getLecture(Lectures).then(res => {
       this.LecturePlayLists = res;
       this.SelectedPlayLists.push(this.LecturePlayLists[0]);
+      // 해당 강의 학습률 저장
+      this.lectureProgress = Math.round(this.lectureStatistics[this.LecturePlayLists[0].playlistId].complete / this.lectureStatistics[this.LecturePlayLists[0].playlistId].total * 100);
     });
   }
 
@@ -251,6 +291,8 @@ export default class InstructorDashboard extends Vue {
     this.SelectedPlayLists = this.LecturePlayLists.filter(
       playlist => playlist.playlistId === playlistId
     );
+    //해당 강의 학습률 확인
+    this.lectureProgress = Math.round(this.lectureStatistics[playlistId].complete / this.lectureStatistics[playlistId].total * 100);
   }
 
   async getProblems(video) {
@@ -301,6 +343,7 @@ export default class InstructorDashboard extends Vue {
   }
 
   async submitProblems(){
+    console.log(this.problemList);
     try {
       const res = await Axios.instance.post(
           "/api/public/problem/save",
@@ -311,13 +354,45 @@ export default class InstructorDashboard extends Vue {
             }
           }
       )
+
       console.log(res);
     } catch (e) {
       console.error(e);
     }
   }
 
+  async getStatistics() {
+    try {
+      const res = await Axios.instance.get(
+          "/api/public/playlist/progress", {
+      })
+      // res.data.data = {
+      //   "0": {
+      //     "total": 7,
+      //     "complete" : 2
+      //   },
+      //   "66": {
+      //     "total": 5,
+      //     "complete": 1
+      //   },
+      //   "84": {
+      //     "total": 2,
+      //     "complete": 1
+      //   }
+      // }
+
+      if(res.data.data["0"].total !== 0) {
+        this.totalLectureStatistics = res.data.data["0"];
+        this.totalProgress = Math.round(this.totalLectureStatistics.complete / this.totalLectureStatistics.total * 100);
+        this.lectureStatistics = res.data.data;
+      }
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
   async created() {
+    await this.getStatistics();
     await this.getTotalLecture();
   }
 }
