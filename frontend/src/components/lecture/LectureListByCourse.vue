@@ -48,13 +48,9 @@
           style="display: inline-flex"
         >
           <div class="card">
-            <div class="imgBx">
+            <div class="imgBx" @click="goLecture(video.play_id)">
               <img class="bigimg" :src="video.video_img" />
-              <img
-                class="smallimg"
-                src="@/assets/playBtn.png"
-                @click="goLecture(video.play_id)"
-              />
+              <img class="smallimg" src="@/assets/playBtn.png" />
             </div>
             <div class="content">
               <img :src="video.video_img" />
