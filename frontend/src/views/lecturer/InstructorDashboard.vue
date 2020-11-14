@@ -92,11 +92,11 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="problemPopup">
-      <v-row justify="center">
+    <v-dialog v-model="problemPopup" persistent>
+      <v-row justify="center" style="background-color: #000; padding: 10px">
         <v-col cols="4">
           <v-card height="70vh" style="overflow-y: scroll">
-            <h1>추천 문제</h1>
+            <h1 style="margin:10px">추천 문제</h1>
             <v-list v-for="(problem, idx) in problemCandidate" :key="idx">
               <v-list-item @click="selectProblem(problem)">
                 <v-list-item-content>
@@ -110,11 +110,11 @@
           <v-card class="mb-5" height="45vh">
             <v-textarea outlined label="문제" v-model="problem"></v-textarea>
             <v-textarea outlined label="정답" v-model="answer"></v-textarea>
-            <v-btn class="ml-3" style="width: 37vw" @click="addProblem()"
-              >문제 추가</v-btn
-            >
+            <v-btn style="width: 100%" @click="addProblem()">문제 추가</v-btn>
           </v-card>
-          <v-card height="25vh" style="overflow-y: scroll">
+        </v-col>
+        <v-col cols="3">
+          <v-card height="45vh" style="overflow-y: scroll; margin-bottom: 15px">
             <v-list v-for="(problem, idx) in problemList" :key="idx">
               <v-list-item>
                 <v-list-item-content>
@@ -126,9 +126,11 @@
               </v-list-item>
             </v-list>
           </v-card>
-          <v-btn @click="submitProblems" class="mr-5">문제 생성</v-btn>
-          <v-btn @click="clearProblem">취소</v-btn>
+          <v-btn @click="submitProblems" width="100%">문제 생성</v-btn>
         </v-col>
+        <v-row style="justify-content: flex-end">
+          <v-btn class="mr-5" @click="clearProblem">닫기</v-btn>
+        </v-row>
       </v-row>
     </v-dialog>
   </div>
@@ -157,50 +159,7 @@ import PieChart from "@/components/Charts/PieChart.vue";
 export default class InstructorDashboard extends Vue {
   LecturePlayLists = [];
   SelectedPlayLists = [];
-  Lectures = [
-    {
-      LectureName: "파이썬 좋아",
-      LectureId: "1",
-      LectureThumb:
-        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-      LectureDesc: "파이썬 12만원 타세요"
-    },
-    {
-      LectureName: "파이썬 좋아",
-      LectureId: "2",
-      LectureThumb:
-        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-      LectureDesc: "파이썬 12만원 타세요"
-    },
-    {
-      LectureName: "파이썬 좋아",
-      LectureId: "3",
-      LectureThumb:
-        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-      LectureDesc: "파이썬 12만원 타세요"
-    },
-    {
-      LectureName: "파이썬 좋아",
-      LectureId: "4",
-      LectureThumb:
-        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-      LectureDesc: "파이썬 12만원 타세요"
-    },
-    {
-      LectureName: "파이썬 좋아",
-      LectureId: "5",
-      LectureThumb:
-        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-      LectureDesc: "파이썬 12만원 타세요"
-    },
-    {
-      LectureName: "파이썬 좋아",
-      LectureId: "6",
-      LectureThumb:
-        "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-      LectureDesc: "파이썬 12만원 타세요"
-    }
-  ];
+  Lectures = [];
   settings = {
     arrows: true,
     dots: false,
@@ -352,6 +311,7 @@ export default class InstructorDashboard extends Vue {
     this.selectedproblem = "";
     this.problemCandidate = null;
     this.problemPopup = false;
+    this.problemList = "";
   }
 
   async submitProblems() {
