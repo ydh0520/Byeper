@@ -20,6 +20,15 @@ const module: Module<LecturesModule, RootState> = {
         course => course.total === course.complete
       ).length;
       return { total: state.courseProgress.length, complete };
+    },
+    computedProgressByCourse(state) {
+      const progress: any = {};
+      state.courseProgress.forEach(course => {
+        progress[course.id] = Number(
+          ((course.complete / course.total) * 100).toFixed(1)
+        );
+      });
+      return progress;
     }
   },
 
