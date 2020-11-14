@@ -78,6 +78,17 @@ const module: Module<AccountsModule, RootState> = {
           }
         })
         .catch(err => console.error(err));
+    },
+    REGISTER_TEACHER({ dispatch }) {
+      Axios.instance
+        .put("/api/private/user/registteacher")
+        .then(({ data }) => {
+          if (data.status) {
+            dispatch("FETCH_USER_INFO");
+            alert("강사등록이 완료되었습니다.");
+          }
+        })
+        .catch(err => console.error(err));
     }
   }
 };
