@@ -6,7 +6,11 @@
         @click="TOGGLE_SIDEBAR"
       ></v-app-bar-nav-icon>
       <v-col cols="3">
-        <v-toolbar-title style="font-weight: bold">Byeper</v-toolbar-title>
+        <v-toolbar-title
+          style="font-weight: bold; cursor: pointer"
+          @click="goHome"
+          >Byeper</v-toolbar-title
+        >
       </v-col>
       <v-col cols="6" style="padding: 0">
         <v-text-field
