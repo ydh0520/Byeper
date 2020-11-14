@@ -11,3 +11,4 @@ import com.ssafy.model.dto.ProblemDto;
 public interface ProblemRepository extends JpaRepository<ProblemDto, Integer> {
 	List<ProblemDto> findByVideoId(String videoId);
 }
+
