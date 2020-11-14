@@ -8,21 +8,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Table(name = "summary_problem")
+@Table(name = "problem")
 public class ProblemDto {
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "problem_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int problemId;
 
-	@Column(name = "origin")
+	@Column(name = "problem_origin")
 	private String problemOrigin;
 
-	@Column(name = "problem")
+	@Column(name = "problem_question")
 	private String problemQuestion;
 
-	@Column(name = "answer")
+	@Column(name = "problem_charfield")
 	private String problemCharfield;
 
 	@Column(name = "video_id")
