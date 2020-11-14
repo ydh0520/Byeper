@@ -10,14 +10,14 @@
       {{ $route.params.playlistTitle }}
     </div>
     <statistics-by-course />
-    <play-list-videos />
+    <lecture-list-by-course />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import StatisticsByCourse from "@/components/dashboard/StatisticsByCourse.vue";
-import PlayListVideos from "@/components/main/PlayListVideos.vue";
+import LectureListByCourse from "@/components/lecture/LectureListByCourse.vue";
 import { namespace } from "vuex-class";
 
 const LecturesModule = namespace("LecturesModule");
@@ -25,7 +25,7 @@ const LecturesModule = namespace("LecturesModule");
 @Component({
   components: {
     StatisticsByCourse,
-    PlayListVideos
+    LectureListByCourse
   }
 })
 export default class LectureListPage extends Vue {

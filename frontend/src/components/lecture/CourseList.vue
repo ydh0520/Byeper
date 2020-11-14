@@ -51,7 +51,7 @@ import { Course } from "../../store/Lectures.interface";
 
 const LecturesModule = namespace("LecturesModule");
 @Component
-export default class LectureList extends Vue {
+export default class CourseList extends Vue {
   @LecturesModule.State courses!: Course[];
 
   routingToCourse(playlistId: number, playlistTitle: string) {

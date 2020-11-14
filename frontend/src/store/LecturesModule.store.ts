@@ -1,6 +1,6 @@
 import { Module } from "vuex";
 import { RootState } from "./index";
-import { LecturesModule } from "./Lectures.interface";
+import { LecturesModule, Progress } from "./Lectures.interface";
 import { Axios } from "@/service/axios.service";
 
 const module: Module<LecturesModule, RootState> = {
@@ -8,10 +8,20 @@ const module: Module<LecturesModule, RootState> = {
   state: {
     lectures: [],
     allCaptureImgs: [],
-    courses: []
+    courses: [],
+    lecture: null,
+    totalLectureProgress: null,
+    courseProgress: []
   },
 
-  getters: {},
+  getters: {
+    totalCourseProgress(state) {
+      const complete = state.courseProgress.filter(
+        course => course.total === course.complete
+      ).length;
+      return { total: state.courseProgress.length, complete };
+    }
+  },
 
   mutations: {
     SET_ALL_CAPTURE_IMAGES(state, imgs) {
@@ -22,6 +32,20 @@ const module: Module<LecturesModule, RootState> = {
     },
     SET_LECTURE_BY_COURSE(state, lectures) {
       state.lectures = lectures;
+    },
+    SET_LECTURE(state, lecture) {
+      state.lecture = lecture;
+    },
+    SET_PLAYLIST_PROGRESS(state, progress) {
+      const arrProgress: Progress[] = [];
+      Object.keys(progress).forEach(el => {
+        const obj: Progress = { id: "0", total: 0, complete: 0 };
+        obj.id = el;
+        obj.total = progress[el].total;
+        obj.complete = progress[el].complete;
+        el === "0" ? (state.totalLectureProgress = obj) : arrProgress.push(obj);
+      });
+      state.courseProgress = arrProgress;
     }
   },
 
@@ -57,6 +81,18 @@ const module: Module<LecturesModule, RootState> = {
       Axios.instance
         .get("/api/public/video/findplaylist", { params: { playlistId } })
         .then(({ data }) => commit("SET_LECTURE_BY_COURSE", data.data))
+        .catch(err => console.error(err));
+    },
+    FETCH_LECTURE_DETAIL({ commit }, playId) {
+      Axios.instance
+        .get("/api/public/play/detail", { params: { playId } })
+        .then(({ data }) => commit("SET_LECTURE", data.data))
+        .catch(err => console.error(err));
+    },
+    FETCH_PLAYLIST_PROGRESS({ commit }) {
+      Axios.instance
+        .get("/api/public/playlist/progress")
+        .then(({ data }) => commit("SET_PLAYLIST_PROGRESS", data.data))
         .catch(err => console.error(err));
     }
   }

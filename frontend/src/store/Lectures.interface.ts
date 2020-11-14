@@ -2,6 +2,9 @@ export interface LecturesModule {
   lectures: Lecture[];
   allCaptureImgs: CaptureImages[];
   courses: Course[];
+  lecture: Lecture | null;
+  totalLectureProgress: Progress | null;
+  courseProgress: Progress[];
 }
 
 export interface Lecture {
@@ -32,4 +35,10 @@ export interface Course {
   playlistCategory: number;
   playlistLevel: number;
   playlistImg: string;
+}
+
+export interface Progress {
+  id: string;
+  total: number;
+  complete: number;
 }
