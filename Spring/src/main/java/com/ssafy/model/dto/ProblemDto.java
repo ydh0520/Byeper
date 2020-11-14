@@ -12,17 +12,17 @@ import javax.persistence.Id;
 public class ProblemDto {
 
 	@Id
-	@Column(name = "problem_id")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int problemId;
 
-	@Column(name = "problem_origin")
+	@Column(name = "origin")
 	private String problemOrigin;
 
-	@Column(name = "problem_question")
+	@Column(name = "problem")
 	private String problemQuestion;
 
-	@Column(name = "problem_charfield")
+	@Column(name = "answer")
 	private String problemCharfield;
 
 	@Column(name = "video_id")
