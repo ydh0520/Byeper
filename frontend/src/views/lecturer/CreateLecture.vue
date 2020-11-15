@@ -482,7 +482,6 @@ export default class CreateLecture extends Vue {
           }
         }
       );
-      console.log(res);
       if (res.data.data) this.LectureTrackId = res.data.data.playlistId;
     } catch (e) {
       console.error(e);
@@ -524,7 +523,6 @@ export default class CreateLecture extends Vue {
           }
         }
       );
-      console.log(res);
     } catch (e) {
       console.error(e);
     }

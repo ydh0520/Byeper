@@ -83,7 +83,6 @@ export default class LecturePage extends Vue {
     this.$router.replace({ name: "LecturePage", query: { tab: "list" } });
   }
   getPlayer(v: { [key: string]: any }) {
-    console.log("vvvvvvvvvv", v);
     this.player = v;
   }
   scroll(event: Event) {
@@ -99,7 +98,6 @@ export default class LecturePage extends Vue {
   @Watch("lecture", { immediate: true, deep: true })
   fetchAllCapture() {
     if (this.lecture) {
-      console.log("hihi", this.lecture.video_id);
       this.FETCH_PROBLEM_LIST(this.lecture.video_id);
       // this.FETCH_ALL_CAPTURE_IMAGES(this.videoURL);
       this.FETCH_ALL_CAPTURE_IMAGES(this.lecture.video_id);

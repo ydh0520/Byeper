@@ -31,7 +31,6 @@ const module: Module<InstructorModule, RootState> = {
           }
         })
         .then(({ data }) => {
-          console.log(data);
           commit("SET_PLAYLIST_ID", data.data.playlistId);
         })
         .catch(e => console.error(e));
