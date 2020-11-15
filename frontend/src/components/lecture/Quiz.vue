@@ -74,7 +74,10 @@
           absolute
           centered
         >
-          <div class="text-center" style="color: #2196F3">
+          <div class="text-center" style="color: #2196F3; font-size: 30px;">
+            <v-icon style="color: #2196F3; font-size: 30px;"
+              >mdi-checkbox-marked-circle-outline</v-icon
+            >
             정답입니다!
           </div>
         </v-snackbar>
@@ -86,8 +89,11 @@
           absolute
           centered
         >
-          <div class="text-center" style="color: #E91E63">
-            틀렸습니다!
+          <div class="text-center" style="color: #E91E63; font-size: 30px;">
+            <v-icon style="color: #E91E63; font-size: 30px;"
+              >mdi-alert-circle-check-outline</v-icon
+            >
+            오답입니다!
           </div>
         </v-snackbar>
       </div>
