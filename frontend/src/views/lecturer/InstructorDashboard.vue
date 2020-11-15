@@ -146,6 +146,32 @@
         </v-row>
       </v-row>
     </v-dialog>
+    <div class="text-center">
+      <v-snackbar v-model="CreateQuizSnackbar" timeout="2000" absolute centered>
+        <div class="text-center" style="color: #2196F3; font-size: 30px;">
+          <v-icon style="color: #2196F3; font-size: 30px;"
+            >mdi-checkbox-marked-circle-outline</v-icon
+          >
+          퀴즈가 생성되었습니다!
+        </div>
+      </v-snackbar>
+    </div>
+
+    <div class="text-center">
+      <v-snackbar
+        v-model="YetAnalysisSnackbar"
+        timeout="2000"
+        absolute
+        centered
+      >
+        <div class="text-center" style="color: #E91E63; font-size: 30px;">
+          <v-icon style="color: #E91E63; font-size: 30px;"
+            >mdi-alert-circle-check-outline</v-icon
+          >
+          분석을 진행중입니다!
+        </div>
+      </v-snackbar>
+    </div>
   </div>
 </template>
 
@@ -171,6 +197,8 @@ export default class InstructorDashboard extends Vue {
   LecturePlayLists = [];
   SelectedPlayLists = [];
   Lectures = [];
+  CreateQuizSnackbar = false;
+  YetAnalysisSnackbar = false;
   settings = {
     arrows: true,
     dots: false,
@@ -285,9 +313,28 @@ export default class InstructorDashboard extends Vue {
     // );
   }
 
+  async checkNotYet(videoId) {
+    await Axios.instance
+      .get("/api/public/video/detail/", { params: { videoId } })
+      .then(({ data }) => {
+        console.log(data.data.videoMaxImg);
+        if (data.data.videoMaxImg === 0) {
+          this.YetAnalysisSnackbar = true;
+          return true;
+        } else {
+          return false;
+        }
+      });
+  }
+
   async getProblems(video) {
     this.problemPopup = true;
-    try {
+    const nowId = video.video_id;
+    console.log(nowId);
+
+    if ((await this.checkNotYet(nowId)) === true) {
+      return;
+    } else {
       const res = await Axios.instanceDjango
         .post(
           "/api/django/summary/qna/",
@@ -301,7 +348,7 @@ export default class InstructorDashboard extends Vue {
           }
         )
         .then(({ data }) => {
-          if (data.data.videoMaxImg === 0) {
+          if (data === -1) {
             alert("아직 분석중입니다!");
             this.problemPopup = false;
           } else {
@@ -309,8 +356,6 @@ export default class InstructorDashboard extends Vue {
           }
         })
         .catch(err => console.error(err));
-    } catch (e) {
-      console.error(e);
     }
   }
 
@@ -335,7 +380,7 @@ export default class InstructorDashboard extends Vue {
         videoId: this.selectedproblem.video
       });
     }
-    console.log(this.problemList);
+
     this.problem = "";
     this.answer = "";
     this.selectedproblem = "";
@@ -350,18 +395,20 @@ export default class InstructorDashboard extends Vue {
     this.problemList = [];
   }
 
+  async checkCreateQuiz() {
+    await this.clearProblem();
+    this.CreateQuizSnackbar = true;
+  }
+
   async submitProblems() {
     try {
-      const res = await Axios.instance.post(
-        "/api/public/problem/save",
-        this.problemList,
-        {
+      const res = await Axios.instance
+        .post("/api/public/problem/save", this.problemList, {
           headers: {
             "Content-Type": "application/json"
           }
-        }
-      );
-      console.log(res);
+        })
+        .then(this.checkCreateQuiz());
     } catch (e) {
       console.error(e);
     }
