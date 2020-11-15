@@ -73,6 +73,7 @@ export default class LectureVideo extends Vue {
 
   beforeDestroy() {
     clearInterval(this.interval);
+    this.checkComplete();
   }
 }
 </script>
