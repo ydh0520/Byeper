@@ -21,7 +21,12 @@
 
       <v-stepper-items>
         <v-stepper-content step="1">
-          <v-card dark flat class="mb-12" style="margin: 10px 20%">
+          <v-card
+            dark
+            flat
+            class="mb-12"
+            style="margin: 10px 20%; padding: 20px"
+          >
             <h3 class="mb-0">강의 제목</h3>
             <v-text-field
               class="classdesc mb-0"
@@ -76,7 +81,10 @@
             >
               다음 단계로
             </v-btn>
-            <v-btn @click="$router.push({name : 'InstructorDashboard' })" class="mt-12">
+            <v-btn
+              @click="$router.push({ name: 'InstructorDashboard' })"
+              class="mt-12"
+            >
               취소하기
             </v-btn>
           </v-card>
@@ -124,9 +132,7 @@
                   <!--                    ><v-icon left>mdi-plus-box-outline</v-icon>섹션-->
                   <!--                    추가하기</v-btn-->
                   <!--                  >-->
-                  <v-card
-                    style="height: 65vh; overflow-y: scroll; overflow-x: hidden"
-                  >
+                  <v-card style="height: 65vh;  overflow-x: hidden">
                     <!--                    <v-card v-for="(Section, idx) in SelectedVideos" :key="idx">-->
                     <!--                      <v-row align="center">-->
                     <!--                        <v-col cols="7">-->
@@ -191,7 +197,7 @@
                       class="list"
                       @insert="onInsert"
                       @reorder="$event.apply(SelectedVideos)"
-                      style="height: 50vh; overflow-x: hidden; overflow-y: hidden"
+                      style="height: 50vh; overflow-x: hidden; overflow-y: scroll"
                     >
                       <template v-slot:item="{ item }">
                         <drag class="item" :key="item.videoId">
@@ -267,7 +273,7 @@
               <!--              </v-card>-->
               <v-card
                 class="mb-12"
-                style="max-height: 80vh; overflow-y: scroll"
+                style="max-height: 80vh; overflow-y: scroll; padding: 20px"
               >
                 <h2>강의 목록</h2>
                 <v-list-item
@@ -291,25 +297,19 @@
               </v-card>
             </v-col>
             <v-col cols="6">
-              <v-card>
+              <v-card style="padding: 20px">
                 <h2 class="mb-5">커버 이미지</h2>
                 <v-row>
-                  <v-col cols="6">
+                  <v-col
+                    cols="6"
+                    style="align-self: center; justify-self: center"
+                  >
                     <v-img
                       v-if="LectureThumbnailURL"
-                      class="ml-15"
-                      width="320"
-                      height="200"
                       :src="LectureThumbnailURL"
                       alt="강의 썸네일 이미지"
                     ></v-img>
-                    <v-img
-                      v-else
-                      class="ml-15"
-                      width="320"
-                      height="200"
-                      src="@/assets/jun.png"
-                    ></v-img>
+                    <v-img v-else src="@/assets/Byeper.png"></v-img>
                   </v-col>
                   <v-col cols="6">
                     <h5 class="mt-10 mb-3">강의를 대표하는 이미지</h5>
@@ -363,7 +363,7 @@
 <script>
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { Drag, DropList } from "vue-easy-dnd";
-import { Axios } from "@/service/axios.service";
+import { Axios } from "../../service/axios.service";
 //import { PlayList } from "@/store/Instructor.interface";
 import axios from "axios";
 
@@ -374,54 +374,9 @@ import axios from "axios";
   }
 })
 export default class CreateLecture extends Vue {
-  UserVideos = [
-    {
-      videoId: "t8sjTFM_tfE",
-      videoTitle: "0.1초 동안 컴퓨터를 빌려보자 - AWS Lambda",
-      videoDescription:
-        "0.1초 동안만 컴퓨터를 빌릴 수 있다면 얼마나 좋을까요? 0.1초 단위로 컴퓨터를 임대해주는 아마존 웹서비스 람다 수업을 만들었습니다. 람다의 실행방법과 디버깅 ...",
-      videoImg: "https://i.ytimg.com/vi/t8sjTFM_tfE/hqdefault.jpg",
-      videoMaxImg: 0,
-      userId: "test@test.com"
-    },
-    {
-      videoId: "87Ra6xwepFI",
-      videoTitle: "Machine learning 1 - 6. 모델",
-      videoDescription:
-        "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
-      videoImg: "https://i.ytimg.com/vi/87Ra6xwepFI/hqdefault.jpg",
-      videoMaxImg: 0,
-      userId: "test@test.com"
-    },
-    {
-      videoId: "F5SUlHhjYCk",
-      videoTitle: "Machine learning 1 - 5. Teachable machine",
-      videoDescription:
-        "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
-      videoImg: "https://i.ytimg.com/vi/F5SUlHhjYCk/hqdefault.jpg",
-      videoMaxImg: 0,
-      userId: "test@test.com"
-    },
-    {
-      videoId: "KR8ddnPjCtk",
-      videoTitle: "Machine learning 1 - 2. 머신러닝이란?",
-      videoDescription:
-        "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
-      videoImg: "https://i.ytimg.com/vi/KR8ddnPjCtk/hqdefault.jpg",
-      videoMaxImg: 0,
-      userId: "test@test.com"
-    },
-    {
-      videoId: "LPqmPfhnR1o",
-      videoTitle: "Machine learning 1 - 1. 오리엔테이션",
-      videoDescription:
-        "이 수업은 머신러닝을 처음 시작하는 분들이 이론없이, 수학없이, 코딩없이 머신러닝을 경험해볼 수 있도록 고안된 수업입니다. 이 수업이 끝나고 나면 머신러닝이 ...",
-      videoImg: "https://i.ytimg.com/vi/LPqmPfhnR1o/hqdefault.jpg",
-      videoMaxImg: 0,
-      userId: "test@test.com"
-    }
-  ];
+  UserVideos = [];
   CreateLectureStep = 1;
+  user = this.$store.state.AccountsModule.user;
 
   SelectedVideos = [];
   LectureTitle = "";
@@ -489,7 +444,7 @@ export default class CreateLecture extends Vue {
           playlistLevel: 0,
           playlistTitle: this.LectureTitle,
           playlistType: 0,
-          userId: ""
+          userId: this.user.userId
         },
         {
           headers: {
@@ -506,18 +461,20 @@ export default class CreateLecture extends Vue {
 
   async getVideoList() {
     try {
-      const res = await axios.get(
-        "http://k3b108.p.ssafy.io:8080/api/public/videos",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNjA2MTE2MjUxfQ.rPtgy9ukKU1sC9jC37t7hTTyVsAxnyX7Wt1Ei_PIJdYvjBphHN8S9MfWIH6g-5WRI9RQkhRlw13GfJ9UkfeZ4w"
-          }
+      if (this.user.userId === "ssafy3dj1085@gmail.com") {
+        const res = await axios.get(
+          "http://k3b108.p.ssafy.io/file/data/youtubemin.json"
+        );
+        if (res.data.data != null) this.UserVideos = res.data.data;
+      } else {
+        const res = await Axios.instance.get("/api/public/videos");
+        if (res.data.data != null) {
+          this.UserVideos = res.data.data;
+        } else {
+          alert("유튜브 계정이 없습니다!");
+          this.$router.push({ name: "Home" });
         }
-      );
-      console.log(res);
-      if (res.data.data != null) this.UserVideos = res.data.data;
+      }
     } catch (e) {
       console.error(e);
     }
@@ -533,7 +490,7 @@ export default class CreateLecture extends Vue {
             playlistId: this.LectureTrackId
           },
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           }
         }
       );
@@ -547,31 +504,29 @@ export default class CreateLecture extends Vue {
     try {
       const videoIDs = [];
       this.SelectedVideos.map(elem => videoIDs.push(elem.videoId));
-      const res = await Axios.instanceDjango.post(
-        "api/django/summary/extract/",
-        videoIDs,
-        {
+      const res = await Axios.instanceDjango
+        .post("api/django/summary/extract/", videoIDs, {
           headers: {
             "Content-Type": "application/json"
           }
-        }
-      );
-      console.log(res);
+        })
+        .then(({ data }) => console.log(data.data))
+        .catch(err => console.error(err));
     } catch (e) {
       console.log("어쨋든 요청은 보냄");
     }
   }
 
   async createLecture() {
-    if(!this.CopyrightAgreement) {
-      alert("저작권 활용 동의가 필요합니다.")
+    if (!this.CopyrightAgreement) {
+      alert("저작권 활용 동의가 필요합니다.");
     } else {
       await this.thumbnail();
       await this.createPlayList();
       await this.addVideo();
       await this.djangoVideoAnalysis();
       alert("강의가 생성되었습니다");
-      await this.$router.push({name: "InstructorDashboard"});
+      await this.$router.push({ name: "InstructorDashboard" });
     }
   }
   created() {

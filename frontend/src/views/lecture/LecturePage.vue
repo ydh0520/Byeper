@@ -65,7 +65,7 @@ export default class LecturePage extends Vue {
   @LecturesModule.State lecture!: Lecture;
   @LecturesModule.Action FETCH_ALL_CAPTURE_IMAGES: any;
   @LecturesModule.Action FETCH_LECTURE_DETAIL: any;
-  // @LecturesModule.Action UPDATE_LECTURE_INFO: any;
+  @LecturesModule.Action FETCH_PROBLEM_LIST: any;
 
   player: { [key: string]: any } = {};
 
@@ -99,6 +99,9 @@ export default class LecturePage extends Vue {
   @Watch("lecture", { immediate: true, deep: true })
   fetchAllCapture() {
     if (this.lecture) {
+      console.log("hihi", this.lecture.video_id);
+      this.FETCH_PROBLEM_LIST(this.lecture.video_id);
+      // this.FETCH_ALL_CAPTURE_IMAGES(this.videoURL);
       this.FETCH_ALL_CAPTURE_IMAGES(this.lecture.video_id);
     }
   }
@@ -106,6 +109,7 @@ export default class LecturePage extends Vue {
   mounted() {
     this.preventScroll();
   }
+
   created() {
     this.FETCH_LECTURE_DETAIL(this.$route.params.playId);
   }
@@ -136,8 +140,6 @@ export default class LecturePage extends Vue {
   min-width: 300px;
   height: 100%;
   padding: 0;
-  background-color: white;
-  padding-bottom: 100px;
 }
 .lecture-video {
   position: fixed;

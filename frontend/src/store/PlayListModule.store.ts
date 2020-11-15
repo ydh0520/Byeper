@@ -6,7 +6,7 @@ import { PlayListModule, PlayList, PlayListVideos } from "./PlayList.interface";
 const module: Module<PlayListModule, RootState> = {
   namespaced: true,
   state: {
-    AllPlayList: [],
+    AllPlayList: null,
     scrollEnd: false,
     PlayList: null,
     PlayListVideos: null
@@ -32,6 +32,9 @@ const module: Module<PlayListModule, RootState> = {
     },
     SET_PLAYLIST_ZERO(state) {
       state.AllPlayList = null;
+    },
+    SET_SCROLL_END_FALSE(state) {
+      state.scrollEnd = false;
     }
   },
 

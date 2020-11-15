@@ -21,12 +21,12 @@
               <v-img :aspect-ratio="16 / 9" :src="playList.playlistImg">
                 <div
                   class="d-flex transition-fast-in-fast-out black darken-2 v-card--reveal display-3 "
-                  style="height: 100%; width: 33%; padding: 0px"
+                  style="height: 100%; width: 33%; padding: 0px; "
                 >
-                  <div style="color: white; font-size: 20px;">
-                    13+
-                    <div class="mdi mdi-play-pause text-center"></div>
-                  </div>
+                  <div
+                    class="mdi mdi-play-pause text-center"
+                    style="font-size: 30px;"
+                  ></div>
                 </div>
 
                 <v-expand-transition>
@@ -91,6 +91,7 @@ export default class AllPlayList extends Vue {
   @PlayListModule.State AllPlayList!: PlayList[] | null;
   @PlayListModule.State scrollEnd!: boolean;
   @PlayListModule.Mutation SET_PLAYLIST_ZERO: any;
+  @PlayListModule.Mutation SET_SCROLL_END_FALSE: any;
   @PlayListModule.Action FETCH_ALL_PLAYLIST: any;
   @AccountsModule.Getter isLoggedIn!: boolean;
   @AccountsModule.State token!: any;
@@ -144,6 +145,7 @@ export default class AllPlayList extends Vue {
 
   destroyed() {
     this.SET_PLAYLIST_ZERO();
+    this.SET_SCROLL_END_FALSE();
   }
 }
 </script>

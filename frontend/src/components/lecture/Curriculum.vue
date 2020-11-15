@@ -87,6 +87,13 @@ export default class Curriculum extends Vue {
       title: "Britta Holt"
     }
   ];
+  mounted() {
+    const editorContainer: HTMLElement = document.querySelector(
+      ".editor-container"
+    ) as HTMLElement;
+    editorContainer.style.backgroundColor = "#1E1E1E";
+    editorContainer.style.paddingBottom = "0";
+  }
 }
 </script>
 
