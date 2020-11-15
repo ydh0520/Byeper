@@ -145,6 +145,14 @@
           <v-btn class="mr-5" @click="clearProblem">닫기</v-btn>
         </v-row>
       </v-row>
+      <v-overlay :value="isLoading">
+        <v-progress-circular
+          indeterminate
+          size="80"
+          width="10"
+          color="rgb(236, 193, 156)"
+        ></v-progress-circular>
+      </v-overlay>
     </v-dialog>
     <div class="text-center">
       <v-snackbar v-model="CreateQuizSnackbar" timeout="2000" absolute centered>
@@ -179,13 +187,13 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Axios } from "@/service/axios.service";
 
-// import { namespace } from "vuex-class";
+import { namespace } from "vuex-class";
 // carousel 관련 import
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 
-// const InstructorModule = namespace("InstructorModule");
+const InstructorModule = namespace("InstructorModule");
 // import PieChart from "@/components/Charts/PieChart.vue";
 
 @Component({
@@ -194,6 +202,9 @@ import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
   }
 })
 export default class InstructorDashboard extends Vue {
+  @InstructorModule.State isLoading;
+  @InstructorModule.Mutation SET_LOADING_TRUE;
+  @InstructorModule.Mutation SET_LOADING_FALSE;
   LecturePlayLists = [];
   SelectedPlayLists = [];
   Lectures = [];
@@ -204,7 +215,7 @@ export default class InstructorDashboard extends Vue {
     dots: false,
     infinite: true,
     slidesToShow: 5,
-    slidesToScroll: 1,
+    slidesToScroll: 3,
     autoplay: true,
     speed: 2000,
     autoplaySpeed: 3000,
@@ -313,25 +324,24 @@ export default class InstructorDashboard extends Vue {
     // );
   }
 
-  async checkNotYet(videoId) {
-    await Axios.instance
+  checkNotYet(videoId) {
+    return Axios.instance
       .get("/api/public/video/detail/", { params: { videoId } })
       .then(({ data }) => {
-        console.log(data.data.videoMaxImg);
         if (data.data.videoMaxImg === 0) {
           this.YetAnalysisSnackbar = true;
           return true;
         } else {
+          this.problemPopup = true;
+          this.SET_LOADING_TRUE();
           return false;
         }
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   async getProblems(video) {
-    this.problemPopup = true;
     const nowId = video.video_id;
-    console.log(nowId);
-
     if ((await this.checkNotYet(nowId)) === true) {
       return;
     } else {
@@ -348,12 +358,8 @@ export default class InstructorDashboard extends Vue {
           }
         )
         .then(({ data }) => {
-          if (data === -1) {
-            alert("아직 분석중입니다!");
-            this.problemPopup = false;
-          } else {
-            this.problemCandidate = data.data;
-          }
+          this.problemCandidate = data.data;
+          this.SET_LOADING_FALSE();
         })
         .catch(err => console.error(err));
     }

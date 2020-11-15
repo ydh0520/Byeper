@@ -97,7 +97,6 @@ const module: Module<LecturesModule, RootState> = {
         .catch(err => console.error(err));
     },
     FETCH_LECTURE_DETAIL({ commit }, playId) {
-      console.log("아이디", playId);
       Axios.instance
         .get("/api/public/play/detail", { params: { playId } })
         .then(({ data }) => commit("SET_LECTURE", data.data))
