@@ -3,6 +3,8 @@
     v-if="lecture"
     :video-id="lecture.video_id"
     fitParent
+    :player-vars="playerVars"
+    @playing="playing"
     ref="youtube"
   ></youtube>
 </template>
@@ -18,13 +20,30 @@ const LecturesModule = namespace("LecturesModule");
 export default class LectureVideo extends Vue {
   @LecturesModule.State lecture;
 
-  @Watch("lecture", { immediate: true })
+  playerVars = {
+    start: 15
+  };
+
+  @Watch("lecture", { immediate: true, deep: true })
   emitVideo() {
-    setTimeout(() => {
-      if (this.$refs.youtube) {
-        this.$emit("player", this.$refs.youtube.player);
-      }
-    }, 50);
+    console.log("수업", this.lecture);
+    if (this.lecture) {
+      setTimeout(() => {
+        if (this.$refs.youtube) {
+          console.log("제발", this.$refs.youtube);
+          this.$emit("player", this.$refs.youtube.player);
+        }
+      }, 50);
+    }
+  }
+
+  async checkComplete() {
+    const currentTime = await this.$refs.youtube.player.getCurrentTime();
+    console.log(currentTime);
+  }
+  playing() {
+    console.log("재생중");
+    // setInterval(this.checkComplete, 2000);
   }
 }
 </script>
