@@ -26,7 +26,7 @@
               </v-btn>
             </v-col>
           </v-row>
-          <div class="mx-2">
+          <div class="mt-4">
             <v-progress-linear
               color="deep-orange"
               height="15"
@@ -38,9 +38,6 @@
               </div>
             </v-progress-linear>
           </div>
-          <v-card-subtitle>
-            진행률
-          </v-card-subtitle>
         </v-card>
       </v-col>
     </v-row>
