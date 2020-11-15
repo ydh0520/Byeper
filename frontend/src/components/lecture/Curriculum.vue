@@ -74,7 +74,7 @@ export default class Curriculum extends Vue {
   }
 
   selected = 0;
-  @Watch("$route", { immediate: true })
+  @Watch("lectures", { immediate: true, deep: true })
   getSelected() {
     this.lectures.forEach((lec, idx) => {
       if (lec.play_id === Number(this.$route.params.playId)) {
