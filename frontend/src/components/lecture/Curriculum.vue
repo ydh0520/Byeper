@@ -90,6 +90,9 @@ export default class Curriculum extends Vue {
         playlistTitle: this.$route.params.playlistTitle,
         playlistId: this.$route.params.playlistId,
         playId: String(playId)
+      },
+      query: {
+        tab: "list"
       }
     });
   }
