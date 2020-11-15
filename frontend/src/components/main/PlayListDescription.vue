@@ -21,7 +21,7 @@
             <h2>
               {{ PlayList.playlistTitle }}
             </h2>
-            <p>{{ PlayList.playlistDescription }} Lorem ipsum dolor sit amet</p>
+            <p>{{ PlayList.playlistDescription }}</p>
           </div>
         </v-col>
         <v-col cols="5" lg="5" md="5" sm="12" style="align-self: center">
