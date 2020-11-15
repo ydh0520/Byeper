@@ -97,6 +97,7 @@ const module: Module<LecturesModule, RootState> = {
         .catch(err => console.error(err));
     },
     FETCH_LECTURE_DETAIL({ commit }, playId) {
+      console.log("아이디", playId);
       Axios.instance
         .get("/api/public/play/detail", { params: { playId } })
         .then(({ data }) => commit("SET_LECTURE", data.data))
@@ -108,10 +109,10 @@ const module: Module<LecturesModule, RootState> = {
         .then(({ data }) => commit("SET_PLAYLIST_PROGRESS", data.data))
         .catch(err => console.error(err));
     },
-    UPDATE_LECTURE_INFO(_, playinfo) {
+    UPDATE_LECTURE_INFO({ dispatch }, playinfo) {
       Axios.instance
         .put("/api/private/play/update", playinfo)
-        .then(res => console.log(res))
+        .then(({ data }) => dispatch("FETCH_LECTURE_DETAIL", data.data.playId))
         .catch(err => console.error(err));
     },
     FETCH_PROBLEM_LIST({ commit }, videoId) {

@@ -12,38 +12,60 @@
 <script>
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { Lecture } from "../../store/Lectures.interface";
 
 const LecturesModule = namespace("LecturesModule");
 
 @Component
 export default class LectureVideo extends Vue {
   @LecturesModule.State lecture;
+  @LecturesModule.Action UPDATE_LECTURE_INFO;
 
   playerVars = {
     start: 15
   };
 
+  runningTime = 0;
+
+  interval = null;
+
   @Watch("lecture", { immediate: true, deep: true })
   emitVideo() {
-    console.log("수업", this.lecture);
     if (this.lecture) {
       setTimeout(() => {
         if (this.$refs.youtube) {
-          console.log("제발", this.$refs.youtube);
           this.$emit("player", this.$refs.youtube.player);
         }
       }, 50);
     }
   }
 
+  async setRunningTime() {
+    this.runningTime = await this.$refs.youtube.player.getDuration();
+  }
+
+  updateCompleteState() {
+    const playInfo = { ...this.lecture };
+    playInfo.play_complete = 1;
+    this.UPDATE_LECTURE_INFO(playInfo);
+  }
+
   async checkComplete() {
     const currentTime = await this.$refs.youtube.player.getCurrentTime();
-    console.log(currentTime);
+    const progress = Number(((currentTime / this.runningTime) * 100).toFixed());
+    if (progress >= 80) {
+      this.updateCompleteState();
+      clearInterval(this.interval);
+    }
   }
   playing() {
-    console.log("재생중");
-    // setInterval(this.checkComplete, 2000);
+    this.setRunningTime();
+    if (this.lecture.play_complete === 0) {
+      this.interval = setInterval(this.checkComplete, 2000);
+    }
+  }
+
+  beforeDestroy() {
+    clearInterval(this.interval);
   }
 }
 </script>
