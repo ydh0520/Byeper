@@ -300,7 +300,14 @@ export default class InstructorDashboard extends Vue {
             }
           }
         )
-        .then(({ data }) => (this.problemCandidate = data.data))
+        .then(({ data }) => {
+          if (data.data.videoMaxImg === 0) {
+            alert("아직 분석중입니다!");
+            this.problemPopup = false;
+          } else {
+            this.problemCandidate = data.data;
+          }
+        })
         .catch(err => console.error(err));
     } catch (e) {
       console.error(e);
