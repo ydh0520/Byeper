@@ -103,6 +103,12 @@ const module: Module<LecturesModule, RootState> = {
         .get("/api/public/playlist/progress")
         .then(({ data }) => commit("SET_PLAYLIST_PROGRESS", data.data))
         .catch(err => console.error(err));
+    },
+    UPDATE_LECTURE_INFO(_, playinfo) {
+      Axios.instance
+        .put("/api/private/play/update", playinfo)
+        .then(res => console.log(res))
+        .catch(err => console.error(err));
     }
   }
 };

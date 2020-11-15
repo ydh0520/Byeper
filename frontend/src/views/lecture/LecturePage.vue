@@ -3,8 +3,13 @@
     <v-col class="video-container">
       <div class="lecture-video">
         <lecture-video @player="getPlayer" />
+        <!-- <youtube
+          v-if="lecture"
+          fitParent
+          :video-id="lecture.video_id"
+          ref="youtube"
+        ></youtube> -->
       </div>
-      <!-- <youtube :video-id="videoURL" ref="youtube"></youtube> -->
       <!-- <iframe
         class="lecture-video"
         width="100%"
@@ -29,15 +34,10 @@
       </v-row>
       <text-editor
         :player="player"
-        v-if="$route.query.tab === 'note' || !$route.query.tab"
+        v-if="!$route.query.tab || $route.query.tab === 'note'"
       />
       <quiz v-else-if="$route.query.tab === 'quiz'" />
       <curriculum v-else-if="$route.query.tab === 'list'" />
-      <v-btn
-        v-if="$route.query.tab === 'note' || !$route.query.tab"
-        @click="startVideo"
-        >{{ $route.query.tab }}</v-btn
-      >
     </v-col>
   </v-row>
 </template>
@@ -65,14 +65,14 @@ export default class LecturePage extends Vue {
   @LecturesModule.State lecture!: Lecture;
   @LecturesModule.Action FETCH_ALL_CAPTURE_IMAGES: any;
   @LecturesModule.Action FETCH_LECTURE_DETAIL: any;
+  // @LecturesModule.Action UPDATE_LECTURE_INFO: any;
 
-  player: { seekTo: (n: number) => {} } | null = null;
-  start = 0;
+  player: { [key: string]: any } = {};
 
-  startVideo() {
-    this.start += 10;
-    this.player?.seekTo(this.start);
-  }
+  playerVars = {
+    start: 15
+  };
+
   toNoteTab() {
     this.$router.replace({ name: "LecturePage", query: { tab: "note" } });
   }
@@ -82,7 +82,8 @@ export default class LecturePage extends Vue {
   toListTab() {
     this.$router.replace({ name: "LecturePage", query: { tab: "list" } });
   }
-  getPlayer(v: { seekTo: (n: number) => {} }) {
+  getPlayer(v: { [key: string]: any }) {
+    console.log("vvvvvvvvvv", v);
     this.player = v;
   }
   scroll(event: Event) {
@@ -95,11 +96,9 @@ export default class LecturePage extends Vue {
     video?.addEventListener("mousewheel", this.scroll);
   }
 
-  @Watch("lecture")
+  @Watch("lecture", { immediate: true, deep: true })
   fetchAllCapture() {
     if (this.lecture) {
-      console.log("hihi", this.lecture.video_id);
-      // this.FETCH_ALL_CAPTURE_IMAGES(this.videoURL);
       this.FETCH_ALL_CAPTURE_IMAGES(this.lecture.video_id);
     }
   }

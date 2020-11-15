@@ -222,7 +222,10 @@ const LecturesModue = namespace("LecturesModule");
 })
 export default class TextEditor extends Vue {
   @LecturesModue.State lecture;
+  @LecturesModue.Action UPDATE_LECTURE_INFO;
+
   @Prop(Object) player;
+
   editor = new Editor({
     extensions: [
       new Blockquote(),
@@ -274,12 +277,20 @@ export default class TextEditor extends Vue {
       }
     }
   });
-  beforeDestroy() {
-    this.editor.destroy();
-  }
 
   async saveNote() {
     const currentTime = await this.player.getCurrentTime();
+    const runningTime = await this.player.getDuration();
+    const progress = Number(((currentTime / runningTime) * 100).toFixed(1));
+    const playInfo = { ...this.lecture };
+    playInfo.play_log = progress;
+    playInfo.play_note = this.editor.getHTML();
+    this.UPDATE_LECTURE_INFO(playInfo);
+  }
+
+  beforeDestroy() {
+    this.editor.destroy();
+    this.saveNote();
   }
 
   async addCapture({ url, time }) {
