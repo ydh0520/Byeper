@@ -11,7 +11,7 @@
     <v-list class="pt-0" two-line>
       <v-list-item-group v-model="selected" active-class="pink--text">
         <template v-for="(item, index) in lectures">
-          <v-list-item :key="item.video_id">
+          <v-list-item :key="item.video_id" @click="goToLecture(item.play_id)">
             <template>
               <v-list-item-icon>
                 <v-icon v-if="item.play_complete === 0" color="grey lighten-1">
@@ -44,7 +44,7 @@
             </template>
           </v-list-item>
 
-          <v-divider v-if="index < items.length - 1" :key="index"></v-divider>
+          <v-divider :key="index"></v-divider>
         </template>
       </v-list-item-group>
     </v-list>
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import { Lecture } from "../../store/Lectures.interface";
 
@@ -73,41 +73,27 @@ export default class Curriculum extends Vue {
     );
   }
 
-  selected = 2;
-  items = [
-    {
-      action: "15 min",
-      headline: "Brunch this weekend?",
-      subtitle:
-        "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-      title: "Ali Connors"
-    },
-    {
-      action: "2 hr",
-      headline: "Summer BBQ",
-      subtitle: "Wish I could come, but I'm out of town this weekend.",
-      title: "me, Scrott, Jennifer"
-    },
-    {
-      action: "6 hr",
-      headline: "Oui oui",
-      subtitle: "Do you have Paris recommendations? Have you ever been?",
-      title: "Sandra Adams"
-    },
-    {
-      action: "12 hr",
-      headline: "Birthday gift",
-      subtitle:
-        "Have any ideas about what we should get Heidi for her birthday?",
-      title: "Trevor Hansen"
-    },
-    {
-      action: "18hr",
-      headline: "Recipe to try",
-      subtitle: "We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-      title: "Britta Holt"
-    }
-  ];
+  selected = 0;
+  @Watch("$route", { immediate: true })
+  getSelected() {
+    this.lectures.forEach((lec, idx) => {
+      if (lec.play_id === Number(this.$route.params.playId)) {
+        this.selected = idx;
+      }
+    });
+  }
+
+  goToLecture(playId: number) {
+    this.$router.push({
+      name: "LecturePage",
+      params: {
+        playlistTitle: this.$route.params.playlistTitle,
+        playlistId: this.$route.params.playlistId,
+        playId: String(playId)
+      }
+    });
+  }
+
   mounted() {
     const editorContainer: HTMLElement = document.querySelector(
       ".editor-container"

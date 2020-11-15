@@ -109,8 +109,8 @@ export default class LecturePage extends Vue {
   mounted() {
     this.preventScroll();
   }
-
-  created() {
+  @Watch("$route", { immediate: true })
+  fetchLectureDetail() {
     this.FETCH_LECTURE_DETAIL(this.$route.params.playId);
   }
 }
