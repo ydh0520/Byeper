@@ -132,7 +132,7 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title
-                    ><strong>{{ idx + 1 }}</strong>
+                    ><strong>{{ idx + 1 }}. </strong>
                     {{ problem.problemQuestion }}</v-list-item-title
                   >
                 </v-list-item-content>
@@ -314,8 +314,13 @@ export default class InstructorDashboard extends Vue {
   }
 
   addProblem() {
-    if (this.problem && this.answer) {
-      this.problemList?.push({
+    if (
+      this.problem &&
+      this.problem.length &&
+      this.answer &&
+      this.answer.length
+    ) {
+      this.problemList = this.problemList?.concat({
         problemCharfield: this.answer,
         problemId: 0,
         problemOrigin: this.selectedproblem.origin,
@@ -335,7 +340,7 @@ export default class InstructorDashboard extends Vue {
     this.selectedproblem = "";
     this.problemCandidate = null;
     this.problemPopup = false;
-    this.problemList = "";
+    this.problemList = [];
   }
 
   async submitProblems() {
