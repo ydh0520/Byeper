@@ -55,12 +55,19 @@ export default class LectureVideo extends Vue {
     if (progress >= 80) {
       this.updateCompleteState();
       clearInterval(this.interval);
+    } else if (this.lecture.play_complete === 1) {
+      clearInterval(this.interval);
     }
   }
   playing() {
     this.setRunningTime();
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
     if (this.lecture.play_complete === 0) {
       this.interval = setInterval(this.checkComplete, 2000);
+    } else {
+      clearInterval(this.interval);
     }
   }
 
