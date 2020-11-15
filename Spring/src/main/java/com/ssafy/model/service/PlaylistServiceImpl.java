@@ -81,4 +81,12 @@ public class PlaylistServiceImpl implements PlaylistService {
 		return playlistRepository.findProgressManage(userId);
 	}
 
+	@Override
+	public List<PlaylistDto> SearchPlaylist(String playlistTitle) {
+		// TODO Auto-generated method stub
+
+		String query = "%" + playlistTitle + "%";
+		return playlistRepository.SearchPlaylist(query);
+	}
+
 }

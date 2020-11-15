@@ -430,4 +430,20 @@ public class PlaylistController {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	@GetMapping("/api/public/playlist/search")
+	public Object SearchPlaylist(@RequestParam String playlistTitle) {
+		BasicResponse response = new BasicResponse();
+
+		response.data = playlistService.SearchPlaylist(playlistTitle);
+		if (response.data != null) {
+			response.status = true;
+			response.message = "조회에 성공하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.status = false;
+			response.message = "조회에 실패하였습니다.";
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
 }

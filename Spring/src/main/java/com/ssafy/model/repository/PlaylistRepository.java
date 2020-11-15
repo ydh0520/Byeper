@@ -26,4 +26,8 @@ public interface PlaylistRepository extends JpaRepository<PlaylistDto, Integer> 
 
 	@Query(value = "select playlist_type as playlist_id, sum(if(complete=total,1,0))as complete, count(*) as total from (select playlist_id,sum(if(play_complete=1,1,0)) as complete ,count(*) as total,(select playlist_type from ssafy.playlist where playlist_id=a.playlist_id)  as playlist_type from ssafy.play as a group by playlist_id having playlist_id in (select playlist_id  from ssafy.playlist where playlist_type in (select playlist_id from ssafy.playlist where user_id = :user_id and playlist_type =0))) as b group by playlist_type", nativeQuery = true)
 	public List<PlaylistProgressDto> findProgressManage(@Param("user_id") String userId);
+
+	@Query(value = "select * from ssafy.playlist where playlist_title like :palylist_title and playlist_type =0", nativeQuery = true)
+	public List<PlaylistDto> SearchPlaylist(@Param("palylist_title") String playlist_title);
+
 }
