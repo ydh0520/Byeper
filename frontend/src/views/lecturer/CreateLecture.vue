@@ -357,6 +357,20 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
+    <v-alert class="createLectureAlert" v-model="lectureCreateAlert" text>
+      <v-row align="center" justify="center" style="font-size: 20px">
+        <v-icon style="color: white; font-size: 23px;"
+          >mdi-checkbox-marked-circle-outline</v-icon
+        >
+        <strong style="margin-left: 10px">강의 생성</strong>을 거의
+        <strong style="margin-left: 8px">완료</strong>하였습니다!
+        <strong style="margin-left: 8px">대시보드</strong>에서 확인해보세요
+
+        <v-btn @click="goDashBoard" style="margin-left: 50px; text-color: #fff"
+          >확인</v-btn
+        >
+      </v-row>
+    </v-alert>
   </div>
 </template>
 
@@ -390,6 +404,7 @@ export default class CreateLecture extends Vue {
   LectureThumbnailLink = null;
   LectureTrackId = null;
   CopyrightAgreement = false;
+  lectureCreateAlert = false;
 
   onInsert(event) {
     this.SelectedVideos.splice(event.index, 0, event.data);
@@ -501,20 +516,16 @@ export default class CreateLecture extends Vue {
   }
 
   async djangoVideoAnalysis() {
-    try {
-      const videoIDs = [];
-      this.SelectedVideos.map(elem => videoIDs.push(elem.videoId));
-      const res = await Axios.instanceDjango
-        .post("api/django/summary/extract/", videoIDs, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(({ data }) => console.log(data.data))
-        .catch(err => console.error(err));
-    } catch (e) {
-      console.log("어쨋든 요청은 보냄");
-    }
+    const videoIDs = [];
+    this.SelectedVideos.map(elem => videoIDs.push(elem.videoId));
+    const res = await Axios.instanceDjango
+      .post("api/django/summary/extract/", videoIDs, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(({ data }) => console.log(data))
+      .catch(err => console.error(err));
   }
 
   async createLecture() {
@@ -525,9 +536,12 @@ export default class CreateLecture extends Vue {
       await this.createPlayList();
       await this.addVideo();
       await this.djangoVideoAnalysis();
-      alert("강의가 생성되었습니다");
-      await this.$router.push({ name: "InstructorDashboard" });
+      this.lectureCreateAlert = true;
+      // await this.$router.push({ name: "InstructorDashboard" });
     }
+  }
+  goDashBoard() {
+    this.$router.push({ name: "InstructorDashboard" });
   }
   created() {
     this.getVideoList();
@@ -577,5 +591,11 @@ body,
       }
     }
   }
+}
+.createLectureAlert {
+  position: absolute;
+  background-color: green !important;
+  top: 100px;
+  width: 100%;
 }
 </style>
