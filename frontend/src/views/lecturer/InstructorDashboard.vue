@@ -215,7 +215,7 @@ export default class InstructorDashboard extends Vue {
     dots: false,
     infinite: true,
     slidesToShow: 5,
-    slidesToScroll: 1,
+    slidesToScroll: 3,
     autoplay: true,
     speed: 2000,
     autoplaySpeed: 3000,
