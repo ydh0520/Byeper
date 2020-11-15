@@ -9,12 +9,12 @@
           }}</v-card-title>
           <v-card-text style="font-size: 1em;">완료 강의수</v-card-text>
         </v-col>
-        <v-col style="text-align: center">
+        <!-- <v-col style="text-align: center">
           <v-card-title style="font-size: 1.5em; display: block"
             >3h 56m</v-card-title
           >
           <v-card-text style="font-size: 1em;">총 학습 시간</v-card-text>
-        </v-col>
+        </v-col> -->
         <v-col style="text-align: center">
           <v-progress-circular
             rotate="-90"
