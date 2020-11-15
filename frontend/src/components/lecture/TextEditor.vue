@@ -187,7 +187,7 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Blockquote,
@@ -209,6 +209,9 @@ import {
   Image
 } from "tiptap-extensions";
 import ImageCaptureChip from "@/components/lecture/ImageCaptureChip.vue";
+import { namespace } from "vuex-class";
+
+const LecturesModue = namespace("LecturesModule");
 
 @Component({
   components: {
@@ -218,6 +221,7 @@ import ImageCaptureChip from "@/components/lecture/ImageCaptureChip.vue";
   }
 })
 export default class TextEditor extends Vue {
+  @LecturesModue.State lecture;
   @Prop(Object) player;
   editor = new Editor({
     extensions: [
@@ -274,6 +278,10 @@ export default class TextEditor extends Vue {
     this.editor.destroy();
   }
 
+  async saveNote() {
+    const currentTime = await this.player.getCurrentTime();
+  }
+
   async addCapture({ url, time }) {
     this.editor.setContent(
       `${this.editor.getHTML()}<img draggable="true" contenteditable="false" src="http://k3b108.p.ssafy.io${url}" alt="${time}"><br>`
@@ -284,6 +292,13 @@ export default class TextEditor extends Vue {
   }
   startVideo(time) {
     this.player.seekTo(time);
+  }
+
+  @Watch("lecture", { immediate: true })
+  setNote() {
+    if (this.lecture) {
+      this.editor.setContent(this.lecture.play_note);
+    }
   }
 }
 </script>

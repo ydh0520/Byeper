@@ -18,11 +18,13 @@ const LecturesModule = namespace("LecturesModule");
 export default class LectureVideo extends Vue {
   @LecturesModule.State lecture;
 
-  @Watch("lecture")
+  @Watch("lecture", { immediate: true })
   emitVideo() {
-    if (this.lecture && this.$refs.youtube) {
-      this.$emit("player", this.$refs.youtube.player);
-    }
+    setTimeout(() => {
+      if (this.$refs.youtube) {
+        this.$emit("player", this.$refs.youtube.player);
+      }
+    }, 50);
   }
 }
 </script>

@@ -41,7 +41,7 @@ const LecturesModule = namespace("LecturesModule");
 @Component
 export default class StatisticsByCourse extends Vue {
   @LecturesModule.State lectures!: Lecture[];
-  @LecturesModule.Getter computedProgressByCourse!: {};
+  @LecturesModule.Getter computedProgressByCourse!: { [key: string]: any };
 
   lectureCnt = 0;
 
